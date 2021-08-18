@@ -49,11 +49,7 @@ class MenuVehiclePage extends StatelessWidget {
                         builderDelegate: PagedChildBuilderDelegate<Vehicle>(
                             itemBuilder: (context, item, index) =>
                                 VehicleSearchListEntry(
-                                  item.id,
-                                  item.vehicleNumber,
-                                  item.vin,
-                                  item.manufacturer?.manufacturerName,
-                                  item.vehicleCategory?.vehicleCategoryName,
+                                  item,
                                 ),
                             firstPageErrorIndicatorBuilder: (context) {
                               return Column(

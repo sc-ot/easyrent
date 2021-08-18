@@ -1,3 +1,4 @@
+import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/services/menu/menu_provider.dart';
 
 import 'package:easyrent/services/menu_images/menu_images_page.dart';
@@ -59,7 +60,7 @@ class MenuPage extends StatelessWidget {
             textColor: Theme.of(context).textTheme.headline5!.color,
             backgroundColor: Theme.of(context).primaryColor.withOpacity(0.2),
             iconSize: 24,
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(Utils.getDevice(context) == Device.PHONE ? 8 : 16),
           ),
         );
         return Scaffold(
@@ -70,7 +71,7 @@ class MenuPage extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(
-                    flex: 9,
+                    flex: Utils.getDevice(context) == Device.PHONE ? 9 : 13,
                     child: PageView(
                       controller: menuProvider.pageController,
                       onPageChanged: (index) {
@@ -108,10 +109,11 @@ class MenuPage extends StatelessWidget {
                           color: Theme.of(context).primaryColorLight,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 16.0, right: 16),
+                          padding: const EdgeInsets.only(left: 16.0, right: 16,),
                           child: GNav(
                               selectedIndex: menuProvider.currentMenuIndex,
                               curve: Curves.easeIn,
+                              
                               tabs: menuButtons),
                         ),
                       ),

@@ -4,8 +4,8 @@ class Vehicle {
   String licensePlate;
   String vin;
   int constructionYear;
-  Manufacturer? manufacturer;
-  VehicleCategory? vehicleCategory;
+  Manufacturer manufacturer;
+  VehicleCategory vehicleCategory;
 
   Vehicle(this.id, this.vehicleNumber, this.licensePlate, this.vin,
       this.constructionYear, this.manufacturer, this.vehicleCategory);
@@ -18,10 +18,10 @@ class Vehicle {
       json["construction_year"] ?? 0,
       json["manufacturer"] != null
           ? Manufacturer.fromJson(json["manufacturer"])
-          : null,
+          : Manufacturer(0, ""),
       json["vehicle_category"] != null
           ? VehicleCategory.fromJson(json["vehicle_category"])
-          : null,
+          : VehicleCategory(0, ""),
     );
   }
 }

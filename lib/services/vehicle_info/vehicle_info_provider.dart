@@ -1,4 +1,5 @@
 import 'package:easyrent/core/state_provider.dart';
+import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/models/vehicle_image.dart';
 import 'package:easyrent/network/repository.dart';
 
@@ -6,9 +7,10 @@ class VehicleInfoProvider extends StateProvider {
   EasyRentRepository easyRentRepository = EasyRentRepository();
 
   List<VehicleImage> vehicleImages = [];
-
-  VehicleInfoProvider(int vehicleId) {
-    getImages(vehicleId);
+  late Vehicle vehicle;
+  VehicleInfoProvider(Vehicle vehicle) {
+    this.vehicle = vehicle;
+    getImages(vehicle.id);
   }
 
   void getImages(int vehicleId) {

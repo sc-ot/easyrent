@@ -1,18 +1,10 @@
 import 'package:easyrent/core/constants.dart';
-import 'package:easyrent/models/camera_image.dart';
+import 'package:easyrent/models/vehicle.dart';
 import 'package:flutter/material.dart';
 
 class VehicleSearchListEntry extends StatelessWidget {
-  final int vehicleId;
-  final String vehicleNumber;
-  final String vin;
-  final String? manufacturerName;
-  final String? vehicleCategoryName;
-
-  const VehicleSearchListEntry(this.vehicleId, this.vehicleNumber, this.vin,
-      this.manufacturerName, this.vehicleCategoryName,
-      {Key? key})
-      : super(key: key);
+  final Vehicle vehicle;
+  const VehicleSearchListEntry(this.vehicle, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +16,12 @@ class VehicleSearchListEntry extends StatelessWidget {
           Navigator.pushNamed(
             context,
             Constants.ROUTE_VEHICLE_INFO,
-            arguments: 
-              vehicleId,
-            
+            arguments: vehicle,
           );
         },
         child: ListTile(
           trailing: Text(
-            vehicleNumber,
+            vehicle.vehicleNumber,
             style: Theme.of(context)
                 .textTheme
                 .headline6!
@@ -39,7 +29,7 @@ class VehicleSearchListEntry extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           title: Text(
-            vin,
+            vehicle.vin,
             style: Theme.of(context).textTheme.bodyText1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -48,7 +38,7 @@ class VehicleSearchListEntry extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  manufacturerName ?? "",
+                  vehicle.manufacturer.manufacturerName,
                   style: Theme.of(context).textTheme.bodyText2,
                   overflow: TextOverflow.fade,
                 ),
@@ -57,7 +47,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    vehicleCategoryName ?? "",
+                    vehicle.vehicleCategory.vehicleCategoryName ,
                     style: Theme.of(context).textTheme.bodyText1,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
