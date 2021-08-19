@@ -18,4 +18,6 @@ class Login  {
       json["last_name"] ?? "",
     );
   }
+
+  
 }

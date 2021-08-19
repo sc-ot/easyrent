@@ -1,4 +1,3 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/services/login/login_provider.dart';
 import 'package:easyrent/widgets/linear_progress_indicator.dart';

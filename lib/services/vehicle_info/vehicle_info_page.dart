@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/models/vehicle.dart';
@@ -7,7 +8,6 @@ import 'package:easyrent/services/vehicle_info/vehicle_info_provider.dart';
 import 'package:easyrent/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
-import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +26,7 @@ class VehicleInfoPage extends StatelessWidget {
 
         return Scaffold(
           body: CustomScrollView(
+            controller: vehicleInfoProvider.scrollController,
             slivers: <Widget>[
               SliverAppBar(
                 expandedHeight: 250.0,
@@ -33,11 +34,13 @@ class VehicleInfoPage extends StatelessWidget {
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
-                  title: Text("Fahrzeug Nr. 3187",
+                  title: Text("Fahrzeug Nr. ${vehicle.vehicleNumber}",
                       style: Theme.of(context).textTheme.headline6),
                   background: vehicleInfoProvider.ui == STATE.LOADING ||
                           vehicleInfoProvider.ui == STATE.IDLE
-                      ? Center(child: ERLoadingIndicator())
+                      ? Center(
+                          child: ERLoadingIndicator(),
+                        )
                       : Swiper(
                           itemCount: vehicleInfoProvider.vehicleImages.length,
                           itemBuilder: (BuildContext context, int index) =>
@@ -81,75 +84,175 @@ class VehicleInfoPage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 16, 8, 8),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context,
+                                            Constants
+                                                .ROUTE_VEHICLE_INFO_MOVEMENTS,
+                                            arguments: vehicle);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 12, 0, 12),
+                                        child: Text(
+                                          "Bewegungen",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.8,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context,
+                                            Constants
+                                                .ROUTE_VEHICLE_INFO_EQUIPMENTS,
+                                            arguments: vehicle);
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 12, 0, 12),
+                                        child: Text(
+                                          "Ausstattungen",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        ),
+                                      ),
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16.0),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                           VehicleInfoCard(
                             "Allgemein",
                             [
                               VehicleInfoCardEntry(
-                                  "Status", "Nicht verfügbar", LineIcons.info),
+                                  "Status",
+                                  vehicle.status.statusDef.statusName,
+                                  LineIcons.info),
                               SizedBox(
                                 height: 8,
                               ),
                               VehicleInfoCardEntry(
-                                  "Vertrag", "MV-3245", LineIcons.fileContract),
+                                  "Vertrag",
+                                  "Mietvertrag noch hinzufügen!",
+                                  LineIcons.fileContract),
                               SizedBox(
                                 height: 8,
                               ),
-                              VehicleInfoCardEntry("Standort",
-                                  "Übach-Palenberg", LineIcons.mapMarker),
+                              VehicleInfoCardEntry(
+                                  "Standort",
+                                  vehicle.location.locationName,
+                                  LineIcons.mapMarker),
                               SizedBox(
                                 height: 8,
                               ),
-                              VehicleInfoCardEntry("Notizen", "Keine Notizen",
+                              VehicleInfoCardEntry("Notizen", vehicle.notes,
                                   LineIcons.stickyNote),
                             ],
                           ),
                           VehicleInfoCard(
                             "Fahrzeugtermine",
                             [
-                              VehicleInfoCardEntry("Nächster TÜV", "31.04.2031",
+                              VehicleInfoCardEntry(
+                                  "Nächster TÜV",
+                                  Utils.formatDateTimestring(
+                                      vehicle.nextGeneralInspectionDate),
                                   LineIcons.calendar),
                               SizedBox(
                                 height: 16,
                               ),
-                              VehicleInfoCardEntry("Nächster SP", "06.05.2021",
+                              VehicleInfoCardEntry(
+                                  "Nächster SP",
+                                  Utils.formatDateTimestring(
+                                      vehicle.nextSecurityInspectionDate),
                                   LineIcons.calendar),
                               SizedBox(
                                 height: 16,
                               ),
-                              VehicleInfoCardEntry("Nächster UVV", "01.03.2021",
+                              VehicleInfoCardEntry(
+                                  "Nächster UVV",
+                                  Utils.formatDateTimestring(
+                                      vehicle.nextUvvInspectionDate),
                                   LineIcons.calendar),
                             ],
                           ),
                           VehicleInfoCard(
                             "Fahrzeugdetails",
                             [
-                              VehicleInfoCardEntry("Hersteller", "31.04.2031",
+                              VehicleInfoCardEntry(
+                                  "Hersteller",
+                                  vehicle.manufacturer.manufacturerName,
                                   LineIcons.angleRight),
                               SizedBox(
                                 height: 8,
                               ),
                               VehicleInfoCardEntry(
-                                  "VIN", "31.04.2031", LineIcons.angleRight),
+                                  "VIN", vehicle.vin, LineIcons.angleRight),
                               SizedBox(
                                 height: 8,
                               ),
-                              VehicleInfoCardEntry("Kategorie", "31.04.2031",
+                              VehicleInfoCardEntry(
+                                  "Kategorie",
+                                  vehicle.vehicleCategory.vehicleCategoryName,
                                   LineIcons.angleRight),
                               SizedBox(
                                 height: 8,
                               ),
-                              VehicleInfoCardEntry("Baujahr", "31.04.2031",
+                              VehicleInfoCardEntry(
+                                  "Baujahr",
+                                  vehicle.constructionYear.toString(),
                                   LineIcons.angleRight),
                               SizedBox(
                                 height: 8,
                               ),
-                              VehicleInfoCardEntry("Erstzulassung",
-                                  "31.04.2031", LineIcons.angleRight),
+                              VehicleInfoCardEntry(
+                                  "Erstzulassung",
+                                  Utils.formatDateTimestring(
+                                      vehicle.firstRegistrationDate),
+                                  LineIcons.angleRight),
                               SizedBox(
                                 height: 8,
                               ),
-                              VehicleInfoCardEntry("Briefnummer", "31.04.2031",
-                                  LineIcons.angleRight),
+                              VehicleInfoCardEntry("Briefnummer",
+                                  vehicle.letterNumber, LineIcons.angleRight),
                               SizedBox(
                                 height: 8,
                               ),
@@ -158,38 +261,61 @@ class VehicleInfoPage extends StatelessWidget {
                           VehicleInfoCard(
                             "Technische Daten",
                             [
-                              VehicleInfoCardEntry("Motorleistung",
-                                  "31.04.2031", LineIcons.angleRight),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              VehicleInfoCardEntry("Antrieb", "31.04.2031",
+                              VehicleInfoCardEntry(
+                                  "Motorleistung",
+                                  vehicle.kilowatt.toString() +
+                                      " kW (${vehicle.horsePower} PS)",
                                   LineIcons.angleRight),
                               SizedBox(
                                 height: 8,
                               ),
                               VehicleInfoCardEntry(
-                                  "Achsen", "31.04.2031", LineIcons.angleRight),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              VehicleInfoCardEntry("Höhe/Breite/Länge",
-                                  "31.04.2031", LineIcons.angleRight),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              VehicleInfoCardEntry("Leergewicht", "31.04.2031",
+                                  "Antrieb",
+                                  vehicle.enginType.enginTypeName,
                                   LineIcons.angleRight),
                               SizedBox(
                                 height: 8,
                               ),
-                              VehicleInfoCardEntry("Maximalgewicht",
-                                  "31.04.2031", LineIcons.angleRight),
+                              VehicleInfoCardEntry(
+                                  "Achsen",
+                                  vehicle.countAxis.toString(),
+                                  LineIcons.angleRight),
                               SizedBox(
                                 height: 8,
                               ),
-                              VehicleInfoCardEntry("Zulässige Ladung",
-                                  "31.04.2031", LineIcons.angleRight),
+                              VehicleInfoCardEntry(
+                                  "Höhe/Breite/Länge (cm)",
+                                  vehicle.totalHeight.toString() +
+                                      "/" +
+                                      vehicle.totalWidth.toString() +
+                                      "/" +
+                                      vehicle.totalLength.toString(),
+                                  LineIcons.angleRight),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              VehicleInfoCardEntry(
+                                  "Leergewicht",
+                                  vehicle.emptyWeight.toStringAsFixed(0) +
+                                      " kg",
+                                  LineIcons.angleRight),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              VehicleInfoCardEntry(
+                                  "Maximalgewicht",
+                                  vehicle.allowedTotalWeight
+                                          .toStringAsFixed(0) +
+                                      " kg",
+                                  LineIcons.angleRight),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              VehicleInfoCardEntry(
+                                  "Zulässige Ladung",
+                                  vehicle.payloadWeight.toStringAsFixed(0) +
+                                      " kg",
+                                  LineIcons.angleRight),
                             ],
                           ),
                           VehicleInfoCard(
@@ -241,7 +367,7 @@ class VehicleInfoCardEntry extends StatelessWidget {
           height: 4,
         ),
         Text(
-          subTitle,
+          subTitle.isEmpty || subTitle == "0" ? "-" : subTitle,
           style: Theme.of(context).textTheme.bodyText1,
         ),
       ],
@@ -258,9 +384,11 @@ class VehicleInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        child: Card(
-          elevation: 7,
+      child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 7,
+        child: InkWell(
+          onTap: () {},
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -268,12 +396,12 @@ class VehicleInfoCard extends StatelessWidget {
                 Expanded(
                   flex: 5,
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
                       title,
                       style: Utils.getDevice(context) == Device.TABLET
-                          ? Theme.of(context).textTheme.headline6
-                          : Theme.of(context).textTheme.bodyText2,
+                          ? Theme.of(context).textTheme.headline5
+                          : Theme.of(context).textTheme.subtitle1,
                     ),
                   ),
                 ),

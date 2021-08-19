@@ -1,4 +1,3 @@
-import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/main.dart';
 import 'package:easyrent/services/login/login_page.dart';
 import 'package:flutter/material.dart';

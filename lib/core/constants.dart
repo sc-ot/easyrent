@@ -8,4 +8,6 @@ class Constants {
   static const String ROUTE_MENU = "/menu";
   static const String ROUTE_CAMERA = "/camera";
   static const String ROUTE_VEHICLE_INFO = "/vehicle_info";
+  static const String ROUTE_VEHICLE_INFO_MOVEMENTS = "/vehicle_info_movements";
+  static const String ROUTE_VEHICLE_INFO_EQUIPMENTS = "/vehicle_info_equipments";
 }

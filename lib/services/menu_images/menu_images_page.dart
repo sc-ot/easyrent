@@ -16,13 +16,13 @@ class MenuImagesPage extends StatelessWidget {
       title,
       subTitle,
       Padding(
-        padding: const EdgeInsets.all(0.0),
+        padding: const EdgeInsets.only(bottom: 16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            MenuCardIconText("Vorhanden", LineIcons.truck),
-            MenuCardIconText("Neu", LineIcons.plus),
-            MenuCardIconText("Unfall", LineIcons.exclamationTriangle),
+            MenuCardIconText("Vorhanden", LineIcons.list),
+            MenuCardIconText("Neu", LineIcons.camera),
+            MenuCardIconText("Unfall", LineIcons.exclamationCircle),
           ],
         ),
       ),

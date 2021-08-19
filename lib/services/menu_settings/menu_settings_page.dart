@@ -1,4 +1,3 @@
-import 'package:easyrent/core/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/menu_page_container_widget.dart';

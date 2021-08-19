@@ -11,11 +11,9 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
-
-
 class MenuData {
-  late String text;
-  late IconData icon;
+  final String text;
+  final IconData icon;
 
   MenuData(this.text, this.icon);
 }
@@ -23,7 +21,7 @@ class MenuData {
 class MenuPage extends StatelessWidget {
   MenuPage({Key? key}) : super(key: key);
 
-  List<MenuData> menu = [
+  final List<MenuData> menu = [
     MenuData("Übergabe", LineIcons.fileUpload),
     MenuData("Fahrzeug", LineIcons.car),
     MenuData("Fotos", LineIcons.camera),
@@ -60,7 +58,8 @@ class MenuPage extends StatelessWidget {
             textColor: Theme.of(context).textTheme.headline5!.color,
             backgroundColor: Theme.of(context).primaryColor.withOpacity(0.2),
             iconSize: 24,
-            padding: EdgeInsets.all(Utils.getDevice(context) == Device.PHONE ? 8 : 16),
+            padding: EdgeInsets.all(
+                Utils.getDevice(context) == Device.PHONE ? 8 : 16),
           ),
         );
         return Scaffold(
@@ -109,11 +108,13 @@ class MenuPage extends StatelessWidget {
                           color: Theme.of(context).primaryColorLight,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(left: 16.0, right: 16,),
+                          padding: const EdgeInsets.only(
+                            left: 16.0,
+                            right: 16,
+                          ),
                           child: GNav(
                               selectedIndex: menuProvider.currentMenuIndex,
                               curve: Curves.easeIn,
-                              
                               tabs: menuButtons),
                         ),
                       ),

@@ -7,7 +7,6 @@ import 'package:easyrent/widgets/menu_page_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class CameraPage extends StatelessWidget {
@@ -216,7 +215,7 @@ class CameraPage extends StatelessWidget {
                                     return cameraProvider
                                             .images[index].showInGalery
                                         ? Card(
-                                            elevation: 6,
+                                            elevation: 7,
                                             semanticContainer: true,
                                             clipBehavior: Clip.hardEdge,
                                             child: Stack(

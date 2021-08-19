@@ -27,6 +27,7 @@ class MenuVehiclePage extends StatelessWidget {
           TextField(
             controller: menuVehicleProvider.vehicleSearchFieldController,
             onChanged: (text) {
+              
               menuVehicleProvider.fetchVehicle(0, isSearch: true);
             },
             decoration: InputDecoration(

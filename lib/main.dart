@@ -3,6 +3,8 @@ import 'package:easyrent/core/themes.dart';
 import 'package:easyrent/services/camera/camera_page.dart';
 import 'package:easyrent/services/menu/menu_page.dart';
 import 'package:easyrent/services/vehicle_info/vehicle_info_page.dart';
+import 'package:easyrent/services/vehicle_info_equipments/vehicle_info_equipments_page.dart';
+import 'package:easyrent/services/vehicle_info_movements/vehicle_info_movements_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +27,10 @@ void main() {
           Constants.ROUTE_MENU: (context) => MenuPage(),
           Constants.ROUTE_CAMERA: (context) => CameraPage(),
           Constants.ROUTE_VEHICLE_INFO: (context) => VehicleInfoPage(),
+          Constants.ROUTE_VEHICLE_INFO_MOVEMENTS: (context) =>
+              VehicleInfoMovementsPage(),
+          Constants.ROUTE_VEHICLE_INFO_EQUIPMENTS: (context) =>
+              VehicleInfoEquipmentsPage(),
         },
       ),
     ),

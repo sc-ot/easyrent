@@ -4,6 +4,7 @@ import 'package:devtools/models/failure.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/client.dart';
 import 'package:easyrent/models/login.dart';
+import 'package:easyrent/models/movement.dart';
 import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/models/vehicle_image.dart';
 
@@ -56,5 +57,16 @@ class EasyRentRepository {
         "fleet/vehicles/$vehicleId/images",
         responseType: ResponseType.LIST,
         serializer: (_) => VehicleImage.fromJson(_),
+      );
+
+  Future<Either<Failure, dynamic>> getMovementsForVehicle(
+    int vehicleId,
+  ) =>
+      api.request(
+        Method.GET,
+        "fleet/vehicles/$vehicleId/movements",
+        responseType: ResponseType.LIST,
+        serializer: (_) => Movement.fromJson(_),
+        retry: true,
       );
 }

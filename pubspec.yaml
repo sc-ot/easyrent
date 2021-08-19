@@ -24,24 +24,20 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^5.0.0
-  animated_text_kit: ^4.2.1
   dartz: ^0.10.0-nullsafety.2
   google_fonts: ^2.1.0
-  video_player: ^2.1.12
   google_nav_bar: ^5.0.5
-  page_transition: ^2.0.2
   line_icons: ^2.0.1
-  auto_size_text: 3.0.0-nullsafety.0
   infinite_scroll_pagination: ^3.1.0
   loading_indicator: ^3.0.1
   connectivity: ^3.0.6
   camera: ^0.8.1+7
   full_screen_image_null_safe: ^2.0.0
   preload_page_view: ^0.1.6
-  photo_view: ^0.12.0
   flutter_svg: ^0.21.0
   card_swiper: ^1.0.4
   cached_network_image: ^3.1.0
+  intl: ^0.17.0
   devtools:
     git:
       url: git@github.com:sc-ot/devtools.git

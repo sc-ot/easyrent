@@ -16,23 +16,34 @@ class MenuVehicleProvider extends StateProvider {
   final PagingController<int, Vehicle> pagingController =
       PagingController(firstPageKey: 0);
 
+  String lastSearchedText = "-";
+
   MenuVehicleProvider() {
     fetchVehicle(0);
-    pagingController.addPageRequestListener((pageKey) {
-      fetchVehicle(pageKey);
-    });
+    pagingController.addPageRequestListener(
+      (pageKey) {
+        fetchVehicle(pageKey, isPaging: true);
+      },
+    );
 
-    internetConnectivitySubscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.mobile ||
-          result == ConnectivityResult.wifi) {
-        pagingController.refresh();
-      }
-    });
+    internetConnectivitySubscription =
+        Connectivity().onConnectivityChanged.listen(
+      (ConnectivityResult result) {
+        if (result == ConnectivityResult.mobile ||
+            result == ConnectivityResult.wifi) {
+          pagingController.refresh();
+        }
+      },
+    );
   }
 
-  void fetchVehicle(int pageKey, {bool isSearch = false}) {
+  void fetchVehicle(int pageKey, {bool isSearch = false, bool isPaging = false}) {
+    if (lastSearchedText == vehicleSearchFieldController.text && !isPaging) {
+      return;
+    }
+
+    lastSearchedText = vehicleSearchFieldController.text;
+
     if (pageKey == 0) {
       setState(state: STATE.LOADING);
     }
