@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:devtools/api.dart';
 import 'package:devtools/models/failure.dart';
+import 'package:devtools/models/file_payload.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/client.dart';
 import 'package:easyrent/models/login.dart';
@@ -25,6 +26,8 @@ class EasyRentRepository {
         "system/login",
         body: body,
         serializer: (_) => Login.fromJson(_),
+        retry: true,
+        cacheRequest: true,
       );
 
   Future<Either<Failure, dynamic>> getClients() => api.request<Client>(
@@ -47,6 +50,7 @@ class EasyRentRepository {
         searchIn: searchQuery != null
             ? ["vehicle_number", "license_plate", "vin"]
             : null,
+        retry: paging == 0 ? true : false,
       );
 
   Future<Either<Failure, dynamic>> getImageForVehicle(
@@ -57,6 +61,7 @@ class EasyRentRepository {
         "fleet/vehicles/$vehicleId/images",
         responseType: ResponseType.LIST,
         serializer: (_) => VehicleImage.fromJson(_),
+        retry: true,
       );
 
   Future<Either<Failure, dynamic>> getMovementsForVehicle(
@@ -68,5 +73,20 @@ class EasyRentRepository {
         responseType: ResponseType.LIST,
         serializer: (_) => Movement.fromJson(_),
         retry: true,
+      );
+
+  Future<Either<Failure, dynamic>> uploadImage(
+    int vehicleId,
+    FilePayload file,
+  ) =>
+      api.request(
+        Method.MULTIPART,
+        "fleet/vehicles/$vehicleId/images/files",
+        retry: true,
+        onProgress: (bytes, length) {
+          print("BYTES $bytes - LENGTH: $length");
+        },
+        file: file,
+        cacheRequest: true,
       );
 }

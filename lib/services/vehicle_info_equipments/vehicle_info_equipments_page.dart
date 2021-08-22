@@ -33,17 +33,31 @@ class VehicleInfoEquipmentsPage extends StatelessWidget {
                   ),
                   title: Text(
                       vehicleInfoEquipmentsProvider
-                          .vehicle
-                          .linkedVehicleEquipments[index]
-                          .fleetVehicleEquipment
-                          .equipmentName,
+                              .vehicle
+                              .linkedVehicleEquipments[index]
+                              .fleetVehicleEquipment
+                              .equipmentName
+                              .isEmpty
+                          ? "-"
+                          : vehicleInfoEquipmentsProvider
+                              .vehicle
+                              .linkedVehicleEquipments[index]
+                              .fleetVehicleEquipment
+                              .equipmentName,
                       style: Theme.of(context).textTheme.subtitle2),
                   subtitle: Text(
                     vehicleInfoEquipmentsProvider
-                        .vehicle
-                        .linkedVehicleEquipments[index]
-                        .fleetVehicleEquipment
-                        .equipmentCode,
+                            .vehicle
+                            .linkedVehicleEquipments[index]
+                            .fleetVehicleEquipment
+                            .equipmentCode
+                            .isEmpty
+                        ? "-"
+                        : vehicleInfoEquipmentsProvider
+                            .vehicle
+                            .linkedVehicleEquipments[index]
+                            .fleetVehicleEquipment
+                            .equipmentCode,
                     style: Theme.of(context)
                         .textTheme
                         .caption!

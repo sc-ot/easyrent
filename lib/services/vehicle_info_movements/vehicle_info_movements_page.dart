@@ -57,16 +57,9 @@ class VehicleInfoMovementsPage extends StatelessWidget {
                         SizedBox(
                           height: 8,
                         ),
-                        VehicleInfoMovementCardRow(
-                          "Datum",
-                          Utils.formatDateTimestring(
-                              vehicleInfoMovementsProvider
-                                  .movements[index].movementDate),
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
                       ],
+                      Utils.formatDateTimestringWithTime(vehicleInfoMovementsProvider
+                          .movements[index].movementDate),
                     );
                   },
                   itemCount: vehicleInfoMovementsProvider.movements.length,
@@ -82,25 +75,43 @@ class VehicleInfoMovementsPage extends StatelessWidget {
 
 class VehicleInfoMovementCard extends StatelessWidget {
   List<Widget> vehicleInfoMovementCardRow = [];
-  VehicleInfoMovementCard(this.vehicleInfoMovementCardRow, {Key? key})
+  String date;
+  VehicleInfoMovementCard(this.vehicleInfoMovementCardRow, this.date,
+      {Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-      child: Card(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        elevation: 7,
-        child: InkWell(
-          onTap: () {},
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: vehicleInfoMovementCardRow,
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Text(
+              date,
+              style: Theme.of(context).textTheme.headline6,
             ),
           ),
-        ),
+          SizedBox(height: 8,),
+          Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            elevation: 7,
+            child: InkWell(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: vehicleInfoMovementCardRow,
+                ),
+              ),
+            ),
+          ),
+           SizedBox(height: 8,),
+        ],
       ),
     );
   }
@@ -118,23 +129,18 @@ class VehicleInfoMovementCardRow extends StatelessWidget {
       children: [
         Expanded(
           flex: 2,
-          child: Text(
-            title,
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1!
-                
-          ),
+          child: Text(title, style: Theme.of(context).textTheme.bodyText1!),
         ),
         SizedBox(
           width: 16,
         ),
         Expanded(
-            flex: 3,
-            child: Text(
-              value.isEmpty ? "-" : value,
-              style: Theme.of(context).textTheme.bodyText1,
-            )),
+          flex: 3,
+          child: Text(
+            value.isEmpty ? "-" : value,
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ),
       ],
     );
   }

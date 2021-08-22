@@ -1,6 +1,8 @@
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/vehicle.dart';
+import 'package:easyrent/services/vehicle/vehicle_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class VehicleSearchListEntry extends StatelessWidget {
   final Vehicle vehicle;
@@ -8,16 +10,15 @@ class VehicleSearchListEntry extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    VehicleProvider vehicleProvider = Provider.of(context, listen: false);
+
     return Card(
       elevation: 3,
       color: Theme.of(context).primaryColorLight,
       child: InkWell(
         onTap: () async {
-          await Navigator.pushNamed(
-            context,
-            Constants.ROUTE_VEHICLE_INFO,
-            arguments: vehicle,
-          );
+          vehicleProvider.vehicle = vehicle;
+          await vehicleProvider.onPressed.call();
           FocusScope.of(context).requestFocus(
             FocusNode(),
           );
@@ -26,7 +27,6 @@ class VehicleSearchListEntry extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
           child: Row(
             children: [
-            
               Expanded(
                 flex: 10,
                 child: Column(

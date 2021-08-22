@@ -1,3 +1,5 @@
+import 'package:easyrent/core/constants.dart';
+import 'package:easyrent/services/camera/camera_page.dart';
 import 'package:easyrent/widgets/menu_card_icon_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
@@ -12,21 +14,50 @@ class MenuImagesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MenuPageContainer(
-      title,
-      subTitle,
-      Padding(
-        padding: const EdgeInsets.only(bottom: 16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            MenuCardIconText("Vorhanden", LineIcons.list),
-            MenuCardIconText("Neu", LineIcons.camera),
-            MenuCardIconText("Unfall", LineIcons.exclamationCircle),
-          ],
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.list),
+        onPressed: () {},
+      ),
+      body: MenuPageContainer(
+        title,
+        subTitle,
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: MenuCardIconText(
+                  "Vorhanden",
+                  LineIcons.list,
+                  () => Navigator.pushNamed(
+                      context, Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST,
+                      arguments: CameraType.VEHICLE),
+                ),
+              ),
+              Flexible(
+                child: MenuCardIconText(
+                  "Neu",
+                  LineIcons.camera,
+                  () => Navigator.pushNamed(
+                      context, Constants.ROUTE_IMAGES_NEW_VEHICLE,
+                      arguments: CameraType.NEW_VEHICLE),
+                ),
+              ),
+              Flexible(
+                child: MenuCardIconText(
+                  "Unfall",
+                  LineIcons.exclamationCircle,
+                  () => Navigator.pushNamed(
+                      context, Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST,
+                      arguments: CameraType.ACCIDENT_VEHICLE),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-

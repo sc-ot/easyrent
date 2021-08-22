@@ -70,8 +70,9 @@ class VehicleInfoPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          autoplay: true,
-                          autoplayDisableOnInteraction: true,
+                          autoplay: vehicleInfoProvider.vehicleImages.length <= 1 ? false : true,
+                          loop: true,
+                          
                         ),
                 ),
               ),
@@ -384,39 +385,35 @@ class VehicleInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Card(
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        elevation: 7,
-        child: InkWell(
-          onTap: () {},
-          child: Padding(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      title,
-                      style: Utils.getDevice(context) == Device.TABLET
-                          ? Theme.of(context).textTheme.headline5
-                          : Theme.of(context).textTheme.subtitle1,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: cardData,
-                  ),
-                  flex: 5,
-                ),
-              ],
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.headline6,
             ),
           ),
-        ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            child: Card(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              elevation: 7,
+              child: InkWell(
+                onTap: () {},
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: cardData,
+                    ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

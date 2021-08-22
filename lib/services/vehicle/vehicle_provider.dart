@@ -7,19 +7,20 @@ import 'package:easyrent/network/repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class MenuVehicleProvider extends StateProvider {
+class VehicleProvider extends StateProvider  {
   EasyRentRepository easyRentRepository = EasyRentRepository();
   StreamSubscription? vehicleStreamSubscription;
   StreamSubscription? internetConnectivitySubscription;
   TextEditingController vehicleSearchFieldController = TextEditingController();
   ScrollController scrollController = ScrollController();
+  late Vehicle vehicle;
+  late Function onPressed;
   final PagingController<int, Vehicle> pagingController =
       PagingController(firstPageKey: 0);
 
   String lastSearchedText = "-";
 
-  MenuVehicleProvider() {
-    fetchVehicle(0);
+  VehicleProvider(this.onPressed) {
     pagingController.addPageRequestListener(
       (pageKey) {
         fetchVehicle(pageKey, isPaging: true);
@@ -37,7 +38,8 @@ class MenuVehicleProvider extends StateProvider {
     );
   }
 
-  void fetchVehicle(int pageKey, {bool isSearch = false, bool isPaging = false}) {
+  void fetchVehicle(int pageKey,
+      {bool isSearch = false, bool isPaging = false}) {
     if (lastSearchedText == vehicleSearchFieldController.text && !isPaging) {
       return;
     }

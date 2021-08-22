@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 class MenuCardIconText extends StatelessWidget {
   final String title;
   final IconData icon;
-  const MenuCardIconText(this.title, this.icon, {Key? key}) : super(key: key);
+  final Function onPressed;
+  const MenuCardIconText(this.title, this.icon, this.onPressed, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,13 @@ class MenuCardIconText extends StatelessWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         elevation: 7,
         child: InkWell(
-          onTap: () {},
+          onTap: () async {
+            await onPressed.call();
+
+            FocusScope.of(context).requestFocus(
+              FocusNode(),
+            );
+          },
           child: Stack(
             children: [
               Center(

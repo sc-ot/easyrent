@@ -28,4 +28,18 @@ class Utils {
       return "";
     }
   }
+
+  static String formatDateTimestringWithTime(String date) {
+    try{
+
+    
+    DateTime parseDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(date);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat('dd.MM.yyyy - HH:mm');
+    return outputFormat.format(inputDate);
+    }
+    catch(e){
+      return "";
+    }
+  }
 }

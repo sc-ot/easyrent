@@ -1,12 +1,27 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:camera/camera.dart';
-import 'package:easyrent/models/camera_image.dart';
+import 'package:devtools/models/file_payload.dart';
+import 'package:easyrent/core/constants.dart';
+import 'package:easyrent/models/camera.dart';
+import 'package:easyrent/models/camera_picture.dart';
+import 'package:easyrent/models/vehicle.dart';
+import 'package:easyrent/network/repository.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import 'camera_page.dart';
 
 class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
+  EasyRentRepository easyRentRepository = EasyRentRepository();
   CameraController? cameraController;
   PageController pageController = PageController();
   List<CameraDescription> cameras = [];
   List<CameraPicture> images = [];
+  StreamSubscription? imageUploadSubscription;
+  Vehicle? vehicle;
+  late Camera camera;
 
   double _currentScale = 1.0;
   double _baseScale = 1.0;
@@ -32,16 +47,32 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
         return i;
       }
     }
+    if (images.length == 0) {
+      return 0;
+    }
     return images.length - 1;
   }
 
   bool initialising = true;
   bool takingPicturefinished = true;
 
-  CameraProvider({this.images = const []}) {
+  CameraProvider(Camera camera) {
+    this.camera = camera;
     WidgetsBinding.instance!.addObserver(this);
 
-    mandatoryImages = images.length;
+    for (var tag in camera.tags) {
+      images.add(
+        CameraPicture(null, tag, true, ""),
+      );
+    }
+
+    if (images.length == 0) {
+      images.add(
+        CameraPicture(null, "Optionales Bild 1", true, ""),
+      );
+    }
+    this.vehicle = camera.vehicle;
+    mandatoryImages = camera.tags.length;
     initCameraFuture = initCamera();
   }
 
@@ -142,7 +173,6 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   bool isOptionalImage() => currentImageIndex < mandatoryImages - 1;
 
   void deletePicture(int index) {
-    // Wenn es ein optionales Bild ist
     if (index > mandatoryImages - 1) {
       images.removeAt(index);
       int optionalImage = 1;
@@ -153,6 +183,148 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
       images[index].image = null;
     }
     notifyListeners();
+  }
+
+  void closeCamera(BuildContext context) {
+    switch (camera.type) {
+      case CameraType.MOVEMENT:
+        Navigator.pop(context, images);
+        break;
+      case CameraType.ACCIDENT_VEHICLE:
+        Navigator.pop(context);
+        break;
+      case CameraType.NEW_VEHICLE:
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    "Abbrechen",
+                    style: Theme.of(context).textTheme.button,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    uploadImages();
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      Constants.ROUTE_MENU,
+                      (route) {
+                        return false;
+                      },
+                    );
+                  },
+                  child: Text(
+                    "Fotos hochladen & beenden",
+                    style: Theme.of(context).textTheme.button,
+                  ),
+                )
+              ],
+              backgroundColor: Theme.of(context).primaryColor,
+              title: Text(
+                "Fotos hochladen",
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle1!
+                    .copyWith(color: Theme.of(context).accentColor),
+              ),
+              content: Text("Möchten Sie wirklich den Vorgang abbrechen?"),
+            );
+          },
+        );
+        break;
+
+      case CameraType.VEHICLE:
+        if (!allMandatoryImagesTaken()) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      "Abbrechen",
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      uploadImages();
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        Constants.ROUTE_MENU,
+                        (route) {
+                          return false;
+                        },
+                      );
+                    },
+                    child: Text(
+                      "Fotos hochladen & beenden",
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                  )
+                ],
+                backgroundColor: Theme.of(context).primaryColor,
+                title: Text(
+                  "Fehlende Bilder",
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1!
+                      .copyWith(color: Theme.of(context).accentColor),
+                ),
+                content: Text(
+                    "Es wurden nicht alle Pflichtbilder aufgenommen. Möchten Sie fortfahren?"),
+              );
+            },
+          );
+          break;
+        }
+    }
+  }
+
+  void uploadImages() {
+    List<CameraPicture> imagesForUpload = List.from(
+      images.where(
+        (element) => element.image != null,
+      ),
+    );
+    switch (camera.type) {
+      case CameraType.VEHICLE:
+        for (var image in imagesForUpload) {
+          easyRentRepository.uploadImage(
+            vehicle!.id,
+            FilePayload(
+              File(image.image!.path),
+              {
+                "tag": image.tag,
+              },
+            ),
+          );
+        }
+        break;
+      case CameraType.NEW_VEHICLE:
+        for (var image in imagesForUpload) {
+          easyRentRepository.uploadImage(
+            0,
+            FilePayload(
+              File(image.image!.path),
+              {
+                "tag": image.tag,
+                "vin": camera.vin!,
+              },
+            ),
+          );
+          break;
+        }
+    }
   }
 
   bool allMandatoryImagesTaken() => mandatoryImagesTaken == mandatoryImages;

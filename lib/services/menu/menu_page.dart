@@ -1,3 +1,4 @@
+import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/services/menu/menu_provider.dart';
 
@@ -5,7 +6,7 @@ import 'package:easyrent/services/menu_images/menu_images_page.dart';
 import 'package:easyrent/services/menu_movement/menu_movement_page.dart';
 import 'package:easyrent/services/menu_settings/menu_settings_page.dart';
 import 'package:easyrent/services/menu_vehicle/menu_vehicle_page.dart';
-import 'package:easyrent/services/menu_vehicle/menu_vehicle_provider.dart';
+import 'package:easyrent/services/vehicle/vehicle_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -37,8 +38,10 @@ class MenuPage extends StatelessWidget {
         ChangeNotifierProvider<MenuProvider>(
           create: (_) => MenuProvider(),
         ),
-        ChangeNotifierProvider<MenuVehicleProvider>(
-          create: (_) => MenuVehicleProvider(),
+        ChangeNotifierProvider<VehicleProvider>(
+          create: (_) => VehicleProvider(
+            () => Navigator.pushNamed(context, Constants.ROUTE_VEHICLE_INFO),
+          ),
         ),
       ],
       builder: (context, child) {

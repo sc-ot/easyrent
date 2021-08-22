@@ -1,3 +1,4 @@
+import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/widgets/menu_card_icon_text_widget.dart';
 import 'package:easyrent/widgets/menu_page_container_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +16,24 @@ class MenuMovementPage extends StatelessWidget {
       title,
       subTitle,
       Column(
-          children: [
-            Spacer(),
-            MenuCardIconText("Eingang", LineIcons.arrowUp),
-            Spacer(),
-            MenuCardIconText("Ausgang", LineIcons.arrowDown),
-            Spacer(),
-          ],
-        ),
+        children: [
+          Spacer(),
+          MenuCardIconText(
+            "Eingang",
+            LineIcons.arrowUp,
+            () => Navigator.pushNamed(
+                context, Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST),
+          ),
+          Spacer(),
+          MenuCardIconText(
+            "Ausgang",
+            LineIcons.arrowDown,
+            () => Navigator.pushNamed(
+                context, Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST),
+          ),
+          Spacer(),
+        ],
+      ),
     );
   }
 }
