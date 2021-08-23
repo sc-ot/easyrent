@@ -6,8 +6,15 @@ class ImagesNewVehicleProvider extends StateProvider{
 
   TextEditingController vinTextEditingController = TextEditingController();
 
-  ImagesNewVehicleProvider(){
-    
+  ImagesNewVehicleProvider();
+
+  void checkValue(){
+    if(vinTextEditingController.text.length == 16){
+      setState(state: STATE.SUCCESS);
+    }
+    else{
+      setState(state: STATE.IDLE);
+    }
   }
 
 }

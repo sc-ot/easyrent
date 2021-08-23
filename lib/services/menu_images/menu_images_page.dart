@@ -17,7 +17,9 @@ class MenuImagesPage extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.list),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(context, Constants.ROUTE_IMAGES_HISTORY);
+        },
       ),
       body: MenuPageContainer(
         title,

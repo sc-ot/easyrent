@@ -1,7 +1,10 @@
+import 'package:devtools/storage.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/themes.dart';
 import 'package:easyrent/services/camera/camera_page.dart';
+import 'package:easyrent/services/images_history/images_history_page.dart';
 import 'package:easyrent/services/images_new_vehicle/images_new_vehicle_page.dart';
+import 'package:easyrent/services/images_vehicle_search_list/images_vehicle_search_list_page.dart';
 import 'package:easyrent/services/menu/menu_page.dart';
 import 'package:easyrent/services/vehicle_info/vehicle_info_page.dart';
 import 'package:easyrent/services/vehicle_info_equipments/vehicle_info_equipments_page.dart';
@@ -10,11 +13,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'core/application.dart';
-import 'services/camera_vehicle_search_list/camera_vehicle_search_list_page.dart';
 import 'services/client/client_page.dart';
 import 'services/login/login_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Storage().init();
+
   runApp(
     ChangeNotifierProvider<Application>(
       create: (BuildContext context) => Application(),
@@ -34,9 +39,10 @@ void main() {
           Constants.ROUTE_VEHICLE_INFO_EQUIPMENTS: (context) =>
               VehicleInfoEquipmentsPage(),
           Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST: (context) =>
-              CameraVehicleSearchListPage(),
+              ImagesVehicleSearchListPage(),
           Constants.ROUTE_IMAGES_NEW_VEHICLE: (context) =>
               ImagesNewVehiclePage(),
+          Constants.ROUTE_IMAGES_HISTORY: (context) => ImagesHistoryPage(),
         },
       ),
     ),

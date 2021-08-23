@@ -11,17 +11,23 @@ class MenuSettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MenuPageContainer(
-      title,
-      subTitle,
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SettingsEntry("Vorlage bei Fahrzeugfotos anzeigen"),
-          SettingsEntry("Vorlage bei Fahrzeugfotos anzeigen"),
-          SettingsEntry("Vorlage bei Fahrzeugfotos anzeigen"),
-          SettingsEntry("Vorlage bei Fahrzeugfotos anzeigen"),
-        ],
+    return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {},
+        backgroundColor: Colors.red,
+        icon: Icon(Icons.exit_to_app, color: Colors.white, ),
+        label: Text("Abmelden", style: Theme.of(context).textTheme.button,),
+      ),
+      body: MenuPageContainer(
+        title,
+        subTitle,
+        Column(
+          children: [
+            SettingsEntry("Vorlage bei Fahrzeugfotos anzeigen"),
+            SettingsEntry("Dunkelmodus aktivieren"),
+            SettingsEntry("App automatisch aktualisieren"),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:easyrent/core/constants.dart';
+import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/models/camera.dart';
 import 'package:easyrent/services/camera/camera_page.dart';
 import 'package:easyrent/services/images_new_vehicle/images_new_vehicle_provider.dart.dart';
@@ -19,12 +20,13 @@ class ImagesNewVehiclePage extends StatelessWidget {
         create: (context) => ImagesNewVehicleProvider(),
         builder: (context, child) {
           ImagesNewVehicleProvider imagesNewVehicleProvider =
-              Provider.of<ImagesNewVehicleProvider>(context, listen: false);
+              Provider.of<ImagesNewVehicleProvider>(context, listen: true);
           return Scaffold(
             appBar: AppBar(),
             floatingActionButton: FloatingActionButton(
+              backgroundColor: imagesNewVehicleProvider.ui == STATE.IDLE  ? Colors.grey : Theme.of(context).accentColor,
               child: Icon(Icons.camera_alt),
-              onPressed: () {
+              onPressed: imagesNewVehicleProvider.ui == STATE.IDLE ? null :  () {
                 Navigator.pushNamed(
                   context,
                   Constants.ROUTE_CAMERA,
@@ -46,6 +48,9 @@ class ImagesNewVehiclePage extends StatelessWidget {
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.9,
                     child: TextField(
+                      onChanged: (value){
+                        imagesNewVehicleProvider.checkValue();
+                      },
                       controller: imagesNewVehicleProvider.vinTextEditingController,
                       style: Theme.of(context).textTheme.headline5,
                       decoration: InputDecoration(

@@ -34,7 +34,7 @@ class ClientPage extends StatelessWidget {
                   flex: 1,
                   child: Text(
                     "Bitte wählen Sie einen Mandanten aus",
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.headline5,
                     textAlign: TextAlign.center,
                   ),
                 ),

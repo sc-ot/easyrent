@@ -6,8 +6,8 @@ import 'package:easyrent/services/vehicle/vehicle_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CameraVehicleSearchListPage extends StatelessWidget {
-  const CameraVehicleSearchListPage({Key? key});
+class ImagesVehicleSearchListPage extends StatelessWidget {
+  const ImagesVehicleSearchListPage({Key? key});
 
   @override
   Widget build(BuildContext context) {

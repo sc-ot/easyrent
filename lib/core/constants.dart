@@ -12,7 +12,10 @@ class Constants {
   static const String ROUTE_VEHICLE_INFO_EQUIPMENTS =
       "/vehicle_info_equipments";
   static const String ROUTE_CAMERA_VEHICLE_SEARCH_LIST =
-      "/camera_vehicle_search_list";
-  static const String ROUTE_IMAGES_NEW_VEHICLE =
-      "/images_new_vehicle";
+      "/image_vehicle_search_list";
+  static const String ROUTE_IMAGES_NEW_VEHICLE = "/images_new_vehicle";
+  static const String ROUTE_IMAGES_HISTORY = "/images_history";
+
+
+  static const String KEY_IMAGES = "KEY_IMAGES";
 }

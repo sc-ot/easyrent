@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:devtools/models/file_payload.dart';
+import 'package:devtools/storage.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/camera.dart';
 import 'package:easyrent/models/camera_picture.dart';
+import 'package:easyrent/models/image_history.dart';
 import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -269,6 +272,29 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
 
   void uploadImages() {
     List<CameraPicture> images = imagesToUpload();
+    List<String> imagePaths = images.map((e) => e.image!.path).toList();
+    ImageHistory imageHistory = ImageHistory(
+      imagePaths,
+      DateTime.now().toIso8601String(),
+    );
+
+    dynamic historyInPref;
+
+    String? history =
+        Storage().sharedPreferences.getString(Constants.KEY_IMAGES);
+    if (history != null) {
+      historyInPref = jsonDecode(history);
+      historyInPref.add(imageHistory);
+      Storage()
+          .sharedPreferences
+          .setString(Constants.KEY_IMAGES, jsonEncode(historyInPref));
+      print("TEST");
+    } else {
+      Storage()
+          .sharedPreferences
+          .setString(Constants.KEY_IMAGES, jsonEncode([imageHistory]));
+    }
+
     switch (camera.type) {
       case CameraType.VEHICLE:
         for (var image in images) {
