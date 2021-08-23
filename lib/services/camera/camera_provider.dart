@@ -186,14 +186,30 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   }
 
   void closeCamera(BuildContext context) {
+    String bodyText = "";
+    String titleText = "";
+    String actionText = "";
+
+    if (!allMandatoryImagesTaken()) {
+      titleText = "Fehlende Fotos";
+      bodyText =
+          "Es wurden nicht alle Pflichtfotos aufgenommen. Möchten Sie den Vorgang abschließen?";
+      actionText = "Hochladen";
+    } else {
+      titleText = "Fotos hochladen";
+      bodyText = "Möchten Sie den Vorgang abschließen?";
+    }
+
+    if (imagesToUpload().length == 0) {
+      actionText = "Beenden";
+    } else {
+      actionText = "Hochladen";
+    }
     switch (camera.type) {
       case CameraType.MOVEMENT:
         Navigator.pop(context, images);
         break;
-      case CameraType.ACCIDENT_VEHICLE:
-        Navigator.pop(context);
-        break;
-      case CameraType.NEW_VEHICLE:
+      default:
         showDialog(
           context: context,
           builder: (context) {
@@ -220,85 +236,42 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                     );
                   },
                   child: Text(
-                    "Fotos hochladen & beenden",
+                    actionText,
                     style: Theme.of(context).textTheme.button,
                   ),
                 )
               ],
               backgroundColor: Theme.of(context).primaryColor,
               title: Text(
-                "Fotos hochladen",
+                titleText,
                 style: Theme.of(context)
                     .textTheme
                     .subtitle1!
                     .copyWith(color: Theme.of(context).accentColor),
               ),
-              content: Text("Möchten Sie wirklich den Vorgang abbrechen?"),
+              content: Text(
+                bodyText,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
             );
           },
         );
-        break;
-
-      case CameraType.VEHICLE:
-        if (!allMandatoryImagesTaken()) {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text(
-                      "Abbrechen",
-                      style: Theme.of(context).textTheme.button,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      uploadImages();
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        Constants.ROUTE_MENU,
-                        (route) {
-                          return false;
-                        },
-                      );
-                    },
-                    child: Text(
-                      "Fotos hochladen & beenden",
-                      style: Theme.of(context).textTheme.button,
-                    ),
-                  )
-                ],
-                backgroundColor: Theme.of(context).primaryColor,
-                title: Text(
-                  "Fehlende Bilder",
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle1!
-                      .copyWith(color: Theme.of(context).accentColor),
-                ),
-                content: Text(
-                    "Es wurden nicht alle Pflichtbilder aufgenommen. Möchten Sie fortfahren?"),
-              );
-            },
-          );
-          break;
-        }
     }
   }
 
-  void uploadImages() {
-    List<CameraPicture> imagesForUpload = List.from(
+  List<CameraPicture> imagesToUpload() {
+    return List.from(
       images.where(
         (element) => element.image != null,
       ),
     );
+  }
+
+  void uploadImages() {
+    List<CameraPicture> images = imagesToUpload();
     switch (camera.type) {
       case CameraType.VEHICLE:
-        for (var image in imagesForUpload) {
+        for (var image in images) {
           easyRentRepository.uploadImage(
             vehicle!.id,
             FilePayload(
@@ -311,7 +284,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
         }
         break;
       case CameraType.NEW_VEHICLE:
-        for (var image in imagesForUpload) {
+        for (var image in images) {
           easyRentRepository.uploadImage(
             0,
             FilePayload(

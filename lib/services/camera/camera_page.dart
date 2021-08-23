@@ -24,7 +24,7 @@ class CameraPage extends StatelessWidget {
 
         return WillPopScope(
           onWillPop: () {
-            cameraProvider.uploadImages();
+            cameraProvider.closeCamera(context);
             return Future.value(true);
           },
           child: Scaffold(
