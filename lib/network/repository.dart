@@ -27,7 +27,6 @@ class EasyRentRepository {
         body: body,
         serializer: (_) => Login.fromJson(_),
         retry: true,
-        cacheRequest: true,
       );
 
   Future<Either<Failure, dynamic>> getClients() => api.request<Client>(
@@ -51,6 +50,7 @@ class EasyRentRepository {
             ? ["vehicle_number", "license_plate", "vin"]
             : null,
         retry: paging == 0 ? true : false,
+        cacheRequest: true,
       );
 
   Future<Either<Failure, dynamic>> getImageForVehicle(

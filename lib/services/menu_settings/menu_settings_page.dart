@@ -1,3 +1,4 @@
+import 'package:easyrent/core/authenticator.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/menu_page_container_widget.dart';
@@ -13,7 +14,9 @@ class MenuSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          Authenticator.logout(context);
+        },
         backgroundColor: Colors.red,
         icon: Icon(Icons.exit_to_app, color: Colors.white, ),
         label: Text("Abmelden", style: Theme.of(context).textTheme.button,),

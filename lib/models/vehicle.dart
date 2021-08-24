@@ -1,4 +1,4 @@
-
+import 'dart:convert';
 
 class Vehicle {
   int id;
@@ -19,7 +19,7 @@ class Vehicle {
   int totalWidth;
   int countAxis;
   String firstRegistrationDate;
-  EnginType enginType;
+  EngineType engineType;
   Status status;
   Location location;
 
@@ -49,7 +49,7 @@ class Vehicle {
     this.totalWidth,
     this.countAxis,
     this.firstRegistrationDate,
-    this.enginType,
+    this.engineType,
     this.status,
     this.location,
     this.nextGeneralInspectionDate,
@@ -81,11 +81,11 @@ class Vehicle {
       json["total_length"] ?? 0,
       json["total_height"] ?? 0,
       json["total_width"] ?? 0,
-      json["total_length"] ?? 0,
+      json["count_axis"] ?? 0,
       json["first_registration_date"] ?? "",
-      json["engin_type"] != null
-          ? EnginType.fromJson(json["engin_type"])
-          : EnginType(0, ""),
+      json["engine_type"] != null
+          ? EngineType.fromJson(json["engine_type"])
+          : EngineType(0, ""),
       json["status"] != null
           ? Status.fromJson(json["status"])
           : Status(
@@ -102,13 +102,46 @@ class Vehicle {
       json["notes"] ?? "",
       json["linked_vehicle_equipments"] != null
           ? json["linked_vehicle_equipments"]
-              .map<LinkedVehicleEquipment>((element) => LinkedVehicleEquipment.fromJson(element))
+              .map<LinkedVehicleEquipment>(
+                  (element) => LinkedVehicleEquipment.fromJson(element))
               .toList()
-          : LinkedVehicleEquipment(
-              0,
-              FleetVehicleEquipment(0, Manufacturer(0, ""), "", ""),
-            ),
+          : [],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "vehicle_number": vehicleNumber,
+      "license_plate": licensePlate,
+      "vin": vin,
+      "construction_year": constructionYear,
+      "manufacturer": manufacturer.toJson(),
+      "vehicle_category": vehicleCategory.toJson(),
+      "letter_number": letterNumber,
+      "kilowatt": kilowatt,
+      "horsepower": horsePower,
+      "allowed_total_height": allowedTotalWeight,
+      "payload_weight": payloadWeight,
+      "total_length": totalLength,
+      "total_height": totalHeight,
+      "total_width": totalWidth,
+      "count_axis": countAxis,
+      "first_registration_date": firstRegistrationDate,
+      "engine_type": engineType.toJson(),
+      "status": status,
+      "location": location.toJson(),
+      "next_general_inspection_date": nextGeneralInspectionDate,
+      "next_security_inspection_date": nextSecurityInspectionDate,
+      "next_speedometer_inspection_date": nextSpeedoMeterInspectionDate,
+      "next_uvv_inspection_date": nextUvvInspectionDate,
+      "notes": notes,
+      "linked_vehicle_equipments": List<dynamic>.from(
+        linkedVehicleEquipments.map(
+          (x) => x.toJson(),
+        ),
+      ),
+    };
   }
 
   factory Vehicle.empty() {
@@ -131,7 +164,7 @@ class Vehicle {
       0,
       0,
       "",
-      EnginType(0, ""),
+      EngineType(0, ""),
       Status(
         0,
         StatusDef(0, ""),
@@ -158,6 +191,13 @@ class Manufacturer {
       json["manufacturer_name"] ?? "",
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "manufacturer_name": manufacturerName,
+    };
+  }
 }
 
 class VehicleCategory {
@@ -172,19 +212,33 @@ class VehicleCategory {
       json["vehicle_category_name"] ?? "",
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "vehicle_category_name": vehicleCategoryName,
+    };
+  }
 }
 
-class EnginType {
+class EngineType {
   int id;
-  String enginTypeName;
+  String engineTypeName;
 
-  EnginType(this.id, this.enginTypeName);
+  EngineType(this.id, this.engineTypeName);
 
-  factory EnginType.fromJson(Map<String, dynamic> json) {
-    return EnginType(
+  factory EngineType.fromJson(Map<String, dynamic> json) {
+    return EngineType(
       json["id"] ?? 0,
-      json["engin_type_name"] ?? "",
+      json["engine_type_name"] ?? "",
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "engine_type_name": engineTypeName,
+    };
   }
 }
 
@@ -202,6 +256,13 @@ class Status {
           : StatusDef(0, ""),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "status_def": statusDef.toJson(),
+    };
+  }
 }
 
 class StatusDef {
@@ -215,6 +276,13 @@ class StatusDef {
       json["id"] ?? 0,
       json["status_name"] ?? "",
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "status_name": statusName,
+    };
   }
 }
 
@@ -230,6 +298,13 @@ class Location {
       json["location_name"] ?? "",
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "location_name": locationName,
+    };
+  }
 }
 
 class LinkedVehicleEquipment {
@@ -242,9 +317,18 @@ class LinkedVehicleEquipment {
     return LinkedVehicleEquipment(
       json["id"] ?? 0,
       json["fleet_vehicle_equipment"] != null
-          ? FleetVehicleEquipment.fromJson(json["fleet_vehicle_equipment"])
+          ? FleetVehicleEquipment.fromJson(
+              json["fleet_vehicle_equipment"],
+            )
           : FleetVehicleEquipment(0, Manufacturer(0, ""), "", ""),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "fleet_vehicle_equipment": fleetVehicleEquipment.toJson(),
+    };
   }
 }
 
@@ -266,5 +350,14 @@ class FleetVehicleEquipment {
       json["equipment_name"] ?? "",
       json["equipment_code"] ?? "",
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "manufacturer": manufacturer.toJson(),
+      "equipment_name": equipmentName,
+      "equipment_code": equipmentCode,
+    };
   }
 }

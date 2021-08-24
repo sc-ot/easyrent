@@ -188,7 +188,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "9590662a643eca4a3e27c81b712022cf0dc829c0"
+      resolved-ref: "68426d285077c3121ab2727bfe61ad5c730a5bfd"
       url: "git@github.com:sc-ot/devtools.git"
     source: git
     version: "0.0.1"

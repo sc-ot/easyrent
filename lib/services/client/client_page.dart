@@ -1,4 +1,5 @@
 import 'package:easyrent/core/application.dart';
+import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/services/client/client_provider.dart';
 import 'package:easyrent/widgets/loading_indicator.dart';
@@ -24,7 +25,7 @@ class ClientPage extends StatelessWidget {
                   flex: 3,
                   child: Center(
                     child: Text(
-                      "Willkommen, ${Provider.of<Application>(context).user.firstName}",
+                      "Willkommen, " + Authenticator.getUsername(),
                       style: Theme.of(context).textTheme.headline4,
                       textAlign: TextAlign.center,
                     ),

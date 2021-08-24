@@ -23,7 +23,6 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   List<CameraDescription> cameras = [];
   List<CameraPicture> images = [];
   StreamSubscription? imageUploadSubscription;
-  Vehicle? vehicle;
   late Camera camera;
 
   double _currentScale = 1.0;
@@ -74,7 +73,6 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
         CameraPicture(null, "Optionales Bild 1", true, ""),
       );
     }
-    this.vehicle = camera.vehicle;
     mandatoryImages = camera.tags.length;
     initCameraFuture = initCamera();
   }
@@ -273,10 +271,8 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   void uploadImages() {
     List<CameraPicture> images = imagesToUpload();
     List<String> imagePaths = images.map((e) => e.image!.path).toList();
-    ImageHistory imageHistory = ImageHistory(
-      imagePaths,
-      DateTime.now().toIso8601String(),
-    );
+    ImageHistory imageHistory = ImageHistory(imagePaths,
+        DateTime.now().toIso8601String(), camera.vehicle, camera.vin);
 
     dynamic historyInPref;
 
@@ -288,7 +284,6 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
       Storage()
           .sharedPreferences
           .setString(Constants.KEY_IMAGES, jsonEncode(historyInPref));
-      print("TEST");
     } else {
       Storage()
           .sharedPreferences
@@ -299,7 +294,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
       case CameraType.VEHICLE:
         for (var image in images) {
           easyRentRepository.uploadImage(
-            vehicle!.id,
+            camera.vehicle!.id,
             FilePayload(
               File(image.image!.path),
               {

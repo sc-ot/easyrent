@@ -272,7 +272,7 @@ class VehicleInfoPage extends StatelessWidget {
                               ),
                               VehicleInfoCardEntry(
                                   "Antrieb",
-                                  vehicle.enginType.enginTypeName,
+                                  vehicle.engineType.engineTypeName,
                                   LineIcons.angleRight),
                               SizedBox(
                                 height: 8,

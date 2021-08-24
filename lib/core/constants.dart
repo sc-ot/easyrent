@@ -16,6 +16,7 @@ class Constants {
   static const String ROUTE_IMAGES_NEW_VEHICLE = "/images_new_vehicle";
   static const String ROUTE_IMAGES_HISTORY = "/images_history";
 
-
   static const String KEY_IMAGES = "KEY_IMAGES";
+  static const String KEY_AUTHORIZATION = "KEY_AUTHORIZATION";
+  static const String KEY_USERNAME = "KEY_USERNAME";
 }

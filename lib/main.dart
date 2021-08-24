@@ -1,4 +1,6 @@
+import 'package:devtools/api.dart';
 import 'package:devtools/storage.dart';
+import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/themes.dart';
 import 'package:easyrent/services/camera/camera_page.dart';
@@ -18,7 +20,9 @@ import 'services/login/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Storage().init();
+  Authenticator.initAuthentication();
 
   runApp(
     ChangeNotifierProvider<Application>(
@@ -52,6 +56,6 @@ void main() async {
 class BaseApplication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return LoginPage();
+    return Authenticator.userLoggedIn() ? ClientPage() : LoginPage();
   }
 }

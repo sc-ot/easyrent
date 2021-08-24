@@ -6,4 +6,6 @@ class CameraPicture {
   bool showInGalery;
   String assetName;
   CameraPicture(this.image, this.tag, this.showInGalery, this.assetName);
+
+
 }
