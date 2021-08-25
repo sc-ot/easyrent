@@ -6,10 +6,10 @@ import 'package:camera/camera.dart';
 import 'package:devtools/models/file_payload.dart';
 import 'package:devtools/storage.dart';
 import 'package:easyrent/core/constants.dart';
+import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/models/camera.dart';
 import 'package:easyrent/models/camera_picture.dart';
 import 'package:easyrent/models/image_history.dart';
-import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,6 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   PageController pageController = PageController();
   List<CameraDescription> cameras = [];
   List<CameraPicture> images = [];
-  StreamSubscription? imageUploadSubscription;
   late Camera camera;
 
   double _currentScale = 1.0;
@@ -270,24 +269,26 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
 
   void uploadImages() {
     List<CameraPicture> images = imagesToUpload();
-    List<String> imagePaths = images.map((e) => e.image!.path).toList();
-    ImageHistory imageHistory = ImageHistory(imagePaths,
-        DateTime.now().toIso8601String(), camera.vehicle, camera.vin);
 
-    dynamic historyInPref;
+    if (images.length > 0) {
+      List<String> imagePaths = images.map((e) => e.image!.path).toList();
+      ImageHistory imageHistory = ImageHistory(
+          imagePaths,
+          Utils.formatDateTimestringWithTime(DateTime.now().toIso8601String()),
+          camera.vehicle,
+          camera.vin);
 
-    String? history =
-        Storage().sharedPreferences.getString(Constants.KEY_IMAGES);
-    if (history != null) {
-      historyInPref = jsonDecode(history);
-      historyInPref.add(imageHistory);
-      Storage()
-          .sharedPreferences
-          .setString(Constants.KEY_IMAGES, jsonEncode(historyInPref));
-    } else {
-      Storage()
-          .sharedPreferences
-          .setString(Constants.KEY_IMAGES, jsonEncode([imageHistory]));
+      dynamic historyInPref;
+
+      String? history = Storage.readString(Constants.KEY_IMAGES);
+
+      if (history != null) {
+        historyInPref = jsonDecode(history);
+        historyInPref.add(imageHistory);
+        Storage.saveData(Constants.KEY_IMAGES, jsonEncode(historyInPref));
+      } else {
+        Storage.saveData(Constants.KEY_IMAGES, jsonEncode([imageHistory]));
+      }
     }
 
     switch (camera.type) {

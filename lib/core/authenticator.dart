@@ -24,39 +24,32 @@ class Authenticator {
   }
 
   static bool userLoggedIn() {
-    Storage storage = Storage();
-    String? authentication =
-        storage.sharedPreferences.getString(Constants.KEY_AUTHORIZATION);
+    String? authentication = Storage.readString(Constants.KEY_AUTHORIZATION);
     return authentication != null ? true : false;
   }
 
   static void saveToken(String token) {
-    Storage storage = Storage();
     Api().addToHeader(
       {"Authorization": token},
     );
-    storage.sharedPreferences.setString(Constants.KEY_AUTHORIZATION, token);
+    Storage.saveData(Constants.KEY_AUTHORIZATION, token);
   }
 
   static String getToken() {
-    Storage storage = Storage();
-    return storage.sharedPreferences.getString(Constants.KEY_AUTHORIZATION) ??
-        "";
+    return Storage.readString(Constants.KEY_AUTHORIZATION) ?? "";
   }
 
   static void saveUser(String username) {
-    Storage storage = Storage();
-    storage.sharedPreferences.setString(Constants.KEY_USERNAME, username);
+    Storage.saveData(Constants.KEY_USERNAME, username);
   }
 
   static String getUsername() {
-    Storage storage = Storage();
-    return storage.sharedPreferences.getString(Constants.KEY_USERNAME) ?? "";
+    return Storage.readString(Constants.KEY_USERNAME) ?? "";
   }
 
   static void logout(BuildContext context) async {
-    Storage storage = Storage();
-    await storage.sharedPreferences.clear();
+    Storage.deleteData(Constants.KEY_AUTHORIZATION);
+    Storage.deleteData(Constants.KEY_USERNAME);
     Navigator.popAndPushNamed(context, Constants.ROUTE_LOGIN);
   }
 }

@@ -2,14 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:devtools/storage.dart';
-import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/models/login.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 class LoginProvider extends StateProvider {
   EasyRentRepository easyRentRepository = EasyRentRepository();

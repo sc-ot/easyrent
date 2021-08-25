@@ -1,4 +1,3 @@
-import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/services/client/client_provider.dart';

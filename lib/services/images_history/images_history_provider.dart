@@ -15,7 +15,7 @@ class ImagesHistoryProvider extends StateProvider {
   List<ImageHistory> imageHistory = [];
 
   void loadImages() {
-    String? result = storage.sharedPreferences.getString(Constants.KEY_IMAGES);
+    String? result = Storage.readString(Constants.KEY_IMAGES);
     if (result != null) {
       var test = jsonDecode(result);
       for (var element in test) {

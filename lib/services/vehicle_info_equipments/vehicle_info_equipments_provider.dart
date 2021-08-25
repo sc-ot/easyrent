@@ -10,22 +10,5 @@ class VehicleInfoMovementsProvider extends StateProvider {
   late Vehicle vehicle;
   VehicleInfoMovementsProvider(Vehicle vehicle) {
     this.vehicle = vehicle;
-    getMovements(vehicle.id);
-  }
-
-  void getMovements(int vehicleId) {
-    easyRentRepository.getMovementsForVehicle(vehicleId).asStream().listen(
-      (response) {
-        response.fold(
-          (error) {
-            setState(state: STATE.ERROR);
-          },
-          (response) {
-            movements = List<Movement>.from(response);
-            setState(state: STATE.SUCCESS);
-          },
-        );
-      },
-    );
   }
 }

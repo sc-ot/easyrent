@@ -1,9 +1,9 @@
-import 'package:devtools/api.dart';
 import 'package:devtools/storage.dart';
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/themes.dart';
 import 'package:easyrent/services/camera/camera_page.dart';
+import 'package:easyrent/services/image_history_galery/images_history_galery_page.dart';
 import 'package:easyrent/services/images_history/images_history_page.dart';
 import 'package:easyrent/services/images_new_vehicle/images_new_vehicle_page.dart';
 import 'package:easyrent/services/images_vehicle_search_list/images_vehicle_search_list_page.dart';
@@ -27,28 +27,35 @@ void main() async {
   runApp(
     ChangeNotifierProvider<Application>(
       create: (BuildContext context) => Application(),
-      child: MaterialApp(
-        theme: Themes.darkTheme,
-        themeMode: ThemeMode.dark,
-        home: BaseApplication(),
-        initialRoute: Constants.ROUTE_HOME,
-        routes: {
-          Constants.ROUTE_LOGIN: (context) => LoginPage(),
-          Constants.ROUTE_CLIENTS: (context) => ClientPage(),
-          Constants.ROUTE_MENU: (context) => MenuPage(),
-          Constants.ROUTE_CAMERA: (context) => CameraPage(),
-          Constants.ROUTE_VEHICLE_INFO: (context) => VehicleInfoPage(),
-          Constants.ROUTE_VEHICLE_INFO_MOVEMENTS: (context) =>
-              VehicleInfoMovementsPage(),
-          Constants.ROUTE_VEHICLE_INFO_EQUIPMENTS: (context) =>
-              VehicleInfoEquipmentsPage(),
-          Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST: (context) =>
-              ImagesVehicleSearchListPage(),
-          Constants.ROUTE_IMAGES_NEW_VEHICLE: (context) =>
-              ImagesNewVehiclePage(),
-          Constants.ROUTE_IMAGES_HISTORY: (context) => ImagesHistoryPage(),
-        },
-      ),
+      builder: (context, child) {
+
+        Application application = Provider.of<Application>(context, listen: true);
+        return MaterialApp(
+          theme: Themes.lightTheme,
+          darkTheme: Themes.darkTheme,
+          themeMode: application.themeMode,
+          home: BaseApplication(),
+          initialRoute: Constants.ROUTE_HOME,
+          routes: {
+            Constants.ROUTE_LOGIN: (context) => LoginPage(),
+            Constants.ROUTE_CLIENTS: (context) => ClientPage(),
+            Constants.ROUTE_MENU: (context) => MenuPage(),
+            Constants.ROUTE_CAMERA: (context) => CameraPage(),
+            Constants.ROUTE_VEHICLE_INFO: (context) => VehicleInfoPage(),
+            Constants.ROUTE_VEHICLE_INFO_MOVEMENTS: (context) =>
+                VehicleInfoMovementsPage(),
+            Constants.ROUTE_VEHICLE_INFO_EQUIPMENTS: (context) =>
+                VehicleInfoEquipmentsPage(),
+            Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST: (context) =>
+                ImagesVehicleSearchListPage(),
+            Constants.ROUTE_IMAGES_NEW_VEHICLE: (context) =>
+                ImagesNewVehiclePage(),
+            Constants.ROUTE_IMAGES_HISTORY: (context) => ImagesHistoryPage(),
+            Constants.ROUTE_IMAGES_HISTORY_GALERY: (context) =>
+                ImagesHistoryGaleryPage(),
+          },
+        );
+      },
     ),
   );
 }

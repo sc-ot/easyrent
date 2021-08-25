@@ -16,29 +16,21 @@ class Utils {
   }
 
   static String formatDateTimestring(String date) {
-    try{
-
-    
-    DateTime parseDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('dd.MM.yyyy');
-    return outputFormat.format(inputDate);
-    }
-    catch(e){
+    try {
+      DateTime parseDate = DateTime.parse(date);
+      var outputFormat = DateFormat('dd.MM.yyyy');
+      return outputFormat.format(parseDate);
+    } catch (e) {
       return "";
     }
   }
 
   static String formatDateTimestringWithTime(String date) {
-    try{
-
-    
-    DateTime parseDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
-    var outputFormat = DateFormat('dd.MM.yyyy - HH:mm');
-    return outputFormat.format(inputDate);
-    }
-    catch(e){
+    try {
+      DateTime parseDate = DateTime.parse(date);
+      var outputFormat = DateFormat('dd.MM.yyyy - HH:mm');
+      return outputFormat.format(parseDate);
+    } catch (e) {
       return "";
     }
   }

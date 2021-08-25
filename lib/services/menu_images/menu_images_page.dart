@@ -16,7 +16,7 @@ class MenuImagesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.list),
+        child: Icon(Icons.list, color: Colors.white,),
         onPressed: () {
           Navigator.pushNamed(context, Constants.ROUTE_IMAGES_HISTORY);
         },
@@ -51,9 +51,7 @@ class MenuImagesPage extends StatelessWidget {
                 child: MenuCardIconText(
                   "Unfall",
                   LineIcons.exclamationCircle,
-                  () => Navigator.pushNamed(
-                      context, Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST,
-                      arguments: CameraType.ACCIDENT_VEHICLE),
+                  () => null,
                 ),
               ),
             ],

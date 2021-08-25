@@ -105,6 +105,13 @@ class MenuPage extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              offset: Offset(0.0, 1.0), //(x,y)
+                              blurRadius: 1.0,
+                            ),
+                          ],
                           borderRadius: BorderRadius.all(
                             Radius.circular(20),
                           ),
