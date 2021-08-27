@@ -16,24 +16,37 @@ class MenuMovementPage extends StatelessWidget {
       title,
       subTitle,
       Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Spacer(),
-          MenuCardIconText(
-            "Eingang",
-            LineIcons.arrowUp,
-            () => Navigator.pushNamed(
-                context, Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST),
+          Flexible(
+            child: MenuCardIconText(
+              "Eingang",
+              LineIcons.arrowDown,
+              () => Navigator.pushNamed(
+                  context, Constants.ROUTE_MOVEMENT_SEARCH_LIST,
+                  arguments: Constants.MOVEMENT_TYPE_ENTRY),
+            ),
           ),
-          Spacer(),
-          MenuCardIconText(
-            "Ausgang",
-            LineIcons.arrowDown,
-            () => Navigator.pushNamed(
-                context, Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST),
+          Flexible(
+            child: MenuCardIconText(
+              "Ausgang",
+              LineIcons.arrowUp,
+              () => Navigator.pushNamed(
+                  context, Constants.ROUTE_MOVEMENT_SEARCH_LIST,
+                  arguments: Constants.MOVEMENT_TYPE_EXIT),
+            ),
           ),
-          Spacer(),
+          Flexible(
+            child: MenuCardIconText(
+              "Geplante Bewegung",
+              Icons.content_paste,
+              () => Navigator.pushNamed(context,
+                  Constants.ROUTE_MOVEMENT_PLANNED_MOVEMENT_SEARCH_LIST),
+            ),
+          ),
         ],
       ),
+      paddingBottom: 16,
     );
   }
 }

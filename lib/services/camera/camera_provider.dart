@@ -7,12 +7,14 @@ import 'package:devtools/models/file_payload.dart';
 import 'package:devtools/storage.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/utils.dart';
+import 'package:easyrent/main.dart';
 import 'package:easyrent/models/camera.dart';
 import 'package:easyrent/models/camera_picture.dart';
 import 'package:easyrent/models/image_history.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 import 'camera_page.dart';
 
@@ -186,25 +188,20 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   }
 
   void closeCamera(BuildContext context) {
-    String bodyText = "";
-    String titleText = "";
-    String actionText = "";
+    String bodyText =
+        "Es wurden nicht alle Pflichtfotos aufgenommen. Möchten Sie den Vorgang abschließen?";
+    String titleText = "Fehlende Fotos";
+    String actionText = "Hochladen";
 
-    if (!allMandatoryImagesTaken()) {
-      titleText = "Fehlende Fotos";
-      bodyText =
-          "Es wurden nicht alle Pflichtfotos aufgenommen. Möchten Sie den Vorgang abschließen?";
-      actionText = "Hochladen";
-    } else {
+    if (allMandatoryImagesTaken()) {
       titleText = "Fotos hochladen";
       bodyText = "Möchten Sie den Vorgang abschließen?";
     }
 
     if (imagesToUpload().length == 0) {
       actionText = "Beenden";
-    } else {
-      actionText = "Hochladen";
     }
+
     switch (camera.type) {
       case CameraType.MOVEMENT:
         Navigator.pop(context, images);
@@ -226,7 +223,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                 ),
                 TextButton(
                   onPressed: () {
-                    uploadImages();
+                    uploadImages(context);
                     Navigator.pushNamedAndRemoveUntil(
                       context,
                       Constants.ROUTE_MENU,
@@ -267,7 +264,8 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     );
   }
 
-  void uploadImages() {
+  void uploadImages(BuildContext context) {
+    int successUploadedImages = 0;
     List<CameraPicture> images = imagesToUpload();
 
     if (images.length > 0) {
@@ -285,23 +283,74 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
       if (history != null) {
         historyInPref = jsonDecode(history);
         historyInPref.add(imageHistory);
-        Storage.saveData(Constants.KEY_IMAGES, jsonEncode(historyInPref));
+        Storage.saveData(
+          Constants.KEY_IMAGES,
+          jsonEncode(
+            historyInPref,
+          ),
+        );
       } else {
-        Storage.saveData(Constants.KEY_IMAGES, jsonEncode([imageHistory]));
+        Storage.saveData(
+          Constants.KEY_IMAGES,
+          jsonEncode(
+            [imageHistory],
+          ),
+        );
       }
     }
 
     switch (camera.type) {
       case CameraType.VEHICLE:
         for (var image in images) {
-          easyRentRepository.uploadImage(
-            camera.vehicle!.id,
-            FilePayload(
-              File(image.image!.path),
-              {
-                "tag": image.tag,
-              },
-            ),
+          easyRentRepository
+              .uploadImage(
+                camera.vehicle!.id,
+                FilePayload(
+                  File(image.image!.path),
+                  {
+                    "tag": image.tag,
+                  },
+                ),
+              )
+              .asStream()
+              .listen(
+            (response) {
+              response.fold(
+                (l) {},
+                (r) {
+                  successUploadedImages++;
+                  if (successUploadedImages == images.length) {
+                    String titleText = camera.vehicle == null
+                        ? "Fahrzeug: " + camera.vin!
+                        : camera.vehicle!.letterNumber +
+                            " - " +
+                            camera.vehicle!.licensePlate;
+                    showSimpleNotification(
+                      Text(
+                        titleText,
+                        style: Theme.of(navigatorKey.currentContext!)
+                            .textTheme
+                            .subtitle1,
+                      ),
+                      subtitle: Text(
+                        "${images.length} Bilder hochgeladen",
+                        style: Theme.of(navigatorKey.currentContext!)
+                            .textTheme
+                            .subtitle2,
+                      ),
+                      background:
+                          Theme.of(navigatorKey.currentContext!).primaryColor,
+                      duration: Duration(seconds: 3),
+                      slideDismissDirection: DismissDirection.vertical,
+                      leading: Icon(
+                        Icons.done,
+                        color: Colors.green,
+                      ),
+                    );
+                  }
+                },
+              );
+            },
           );
         }
         break;

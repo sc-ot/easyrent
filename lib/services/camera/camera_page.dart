@@ -19,6 +19,8 @@ class CameraPage extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (BuildContext context) => CameraProvider(camera),
       builder: (context, child) {
+
+        
         CameraProvider cameraProvider =
             Provider.of<CameraProvider>(context, listen: true);
 

@@ -57,6 +57,7 @@ class Themes {
         ),
       ),
     ),
+
     textTheme: TextTheme(
       headline1: GoogleFonts.roboto(
         fontSize: 96,
@@ -152,9 +153,9 @@ class Themes {
       color: Themes.accentColor,
     ),
     
+    
     cardColor: Themes.primaryColorLight,
     textSelectionTheme: TextSelectionThemeData(
-      cursorColor: Themes.primaryColorLight,
     ),
     scaffoldBackgroundColor: Themes.primaryColor,
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -181,12 +182,12 @@ class Themes {
       ),
       border: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Themes.primaryColorLight,
+          color: Themes.darkPrimaryColorLight.withOpacity(0.5),
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Themes.primaryColorLight,
+         color:Themes.darkPrimaryColorLight.withOpacity(0.5),
         ),
       ),
       focusedBorder: OutlineInputBorder(

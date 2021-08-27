@@ -4,19 +4,17 @@ class MenuPageContainer extends StatelessWidget {
   final String title;
   final String subTitle;
   final Widget child;
-  MenuPageContainer(
-    this.title,
-    this.subTitle,
-    this.child, {
-    Key? key,
-  }) : super(key: key);
+  final double paddingBottom;
+  MenuPageContainer(this.title, this.subTitle, this.child,
+      {Key? key, this.paddingBottom = 4})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, paddingBottom),
         child: Column(
           children: [
             Flexible(

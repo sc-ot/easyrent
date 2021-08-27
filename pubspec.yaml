@@ -38,6 +38,7 @@ dependencies:
   card_swiper: ^1.0.4
   cached_network_image: ^3.1.0
   intl: ^0.17.0
+  overlay_support: ^1.2.1
   devtools:
     git:
       url: git@github.com:sc-ot/devtools.git

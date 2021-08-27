@@ -1,18 +1,27 @@
 import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:dartz/dartz.dart';
+import 'package:devtools/models/failure.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class VehicleProvider extends StateProvider  {
+enum VEHICLELISTTYPE {
+  STANDARD,
+  MOVEMENT_VEHICLES_ENTRY,
+  MOVEMENT_VEHICLES_EXIT,
+}
+
+class VehicleProvider extends StateProvider {
   EasyRentRepository easyRentRepository = EasyRentRepository();
   StreamSubscription? vehicleStreamSubscription;
   StreamSubscription? internetConnectivitySubscription;
   TextEditingController vehicleSearchFieldController = TextEditingController();
   ScrollController scrollController = ScrollController();
+  VEHICLELISTTYPE listType;
   late Vehicle vehicle;
   late Function onPressed;
   final PagingController<int, Vehicle> pagingController =
@@ -20,7 +29,7 @@ class VehicleProvider extends StateProvider  {
 
   String lastSearchedText = "-";
 
-  VehicleProvider(this.onPressed) {
+  VehicleProvider(this.listType, this.onPressed) {
     pagingController.addPageRequestListener(
       (pageKey) {
         fetchVehicle(pageKey, isPaging: true);
@@ -51,37 +60,68 @@ class VehicleProvider extends StateProvider  {
     }
     vehicleStreamSubscription?.cancel();
 
-    vehicleStreamSubscription = easyRentRepository
-        .getVehicles(pageKey, vehicleSearchFieldController.text)
-        .asStream()
-        .listen(
-      (response) {
-        if (isSearch) {
-          pagingController.itemList = [];
-          if (scrollController.hasClients) {
-            scrollController.jumpTo(0);
-          }
-        }
-        response.fold(
-          (l) {
-            pagingController.error = l;
-            setState(state: STATE.ERROR);
-          },
+    switch (listType) {
+      case VEHICLELISTTYPE.STANDARD:
+        vehicleStreamSubscription = easyRentRepository
+            .getVehicles(pageKey, vehicleSearchFieldController.text)
+            .asStream()
+            .listen(
           (response) {
-            setState(state: STATE.SUCCESS);
-            List<Vehicle> newItems = List<Vehicle>.from(response);
-            final isLastPage = newItems.length < 20;
-            if (isLastPage) {
-              pagingController.appendLastPage(newItems);
-            } else {
-              final nextPageKey = pageKey + 1;
-              pagingController.appendPage(newItems, nextPageKey);
-            }
+            handleResponse(response, isSearch, pageKey);
           },
         );
-        notifyListeners();
+        break;
+
+      case VEHICLELISTTYPE.MOVEMENT_VEHICLES_ENTRY:
+        vehicleStreamSubscription = easyRentRepository
+            .getAllVehiclesWithEntry(pageKey, vehicleSearchFieldController.text)
+            .asStream()
+            .listen(
+          (response) {
+            handleResponse(response, isSearch, pageKey);
+          },
+        );
+        break;
+
+      case VEHICLELISTTYPE.MOVEMENT_VEHICLES_EXIT:
+        vehicleStreamSubscription = easyRentRepository
+            .getAllVehiclesWithExit(pageKey, vehicleSearchFieldController.text)
+            .asStream()
+            .listen(
+          (response) {
+            handleResponse(response, isSearch, pageKey);
+          },
+        );
+        break;
+    }
+  }
+
+  void handleResponse(
+      Either<Failure, dynamic> response, bool isSearch, int pageKey) {
+    if (isSearch) {
+      pagingController.itemList = [];
+      if (scrollController.hasClients) {
+        scrollController.jumpTo(0);
+      }
+    }
+    response.fold(
+      (l) {
+        pagingController.error = l;
+        setState(state: STATE.ERROR);
+      },
+      (response) {
+        setState(state: STATE.SUCCESS);
+        List<Vehicle> newItems = List<Vehicle>.from(response);
+        final isLastPage = newItems.length < 20;
+        if (isLastPage) {
+          pagingController.appendLastPage(newItems);
+        } else {
+          final nextPageKey = pageKey + 1;
+          pagingController.appendPage(newItems, nextPageKey);
+        }
       },
     );
+    notifyListeners();
   }
 
   @override

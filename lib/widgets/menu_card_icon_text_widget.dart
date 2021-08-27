@@ -1,5 +1,6 @@
 import 'package:easyrent/core/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 class MenuCardIconText extends StatelessWidget {
   final String title;
@@ -21,6 +22,7 @@ class MenuCardIconText extends StatelessWidget {
         elevation: 7,
         child: InkWell(
           onTap: () async {
+            
             await onPressed.call();
 
             FocusScope.of(context).requestFocus(
@@ -48,10 +50,8 @@ class MenuCardIconText extends StatelessWidget {
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
                           title,
-                          style: Utils.getDevice(context) == Device.PHONE
-                              ? Theme.of(context).textTheme.headline4
-                              : Theme.of(context).textTheme.headline4,
-                          maxLines: 1,
+                          style: Theme.of(context).textTheme.headline4,
+                          maxLines: 2,
                         ),
                       ),
                     )

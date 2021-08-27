@@ -40,6 +40,7 @@ class MenuPage extends StatelessWidget {
         ),
         ChangeNotifierProvider<VehicleProvider>(
           create: (_) => VehicleProvider(
+            VEHICLELISTTYPE.STANDARD,
             () => Navigator.pushNamed(context, Constants.ROUTE_VEHICLE_INFO),
           ),
         ),
@@ -59,7 +60,8 @@ class MenuPage extends StatelessWidget {
             iconActiveColor: Theme.of(context).accentColor,
             text: menu[index].text,
             textColor: Theme.of(context).textTheme.headline5!.color,
-            backgroundColor: Theme.of(context).primaryColor.withOpacity(0.2),
+            backgroundColor:
+                Theme.of(context).primaryColorDark.withOpacity(0.2),
             iconSize: 24,
             padding: EdgeInsets.all(
                 Utils.getDevice(context) == Device.PHONE ? 8 : 16),

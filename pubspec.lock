@@ -188,7 +188,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "02215ef4e4318667d2744b2885043aa81f0e142f"
+      resolved-ref: "559941d071328e652d2e0108484a7c3675acf3ee"
       url: "git@github.com:sc-ot/devtools.git"
     source: git
     version: "0.0.1"
@@ -403,6 +403,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+1"
+  overlay_support:
+    dependency: "direct main"
+    description:
+      name: overlay_support
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
   package_config:
     dependency: transitive
     description:

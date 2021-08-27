@@ -24,6 +24,7 @@ class ClientProvider extends StateProvider {
           },
           (response) {
             clients = List<Client>.from(response);
+            
             ui = STATE.SUCCESS;
           },
         );

@@ -100,7 +100,7 @@ class LoginPage extends StatelessWidget {
                                     ),
                                     Text(
                                       "Anmelden",
-                                      style: Theme.of(context).textTheme.button,
+                                      style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
                                     ),
                                   ],
                                 ),

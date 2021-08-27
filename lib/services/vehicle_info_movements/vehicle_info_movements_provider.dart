@@ -3,15 +3,16 @@ import 'package:easyrent/models/movement.dart';
 import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/network/repository.dart';
 
-class VehicleInfoEquipmentsProvider extends StateProvider {
+class VehicleInfoMovementsProvider extends StateProvider {
   EasyRentRepository easyRentRepository = EasyRentRepository();
 
   List<Movement> movements = [];
   late Vehicle vehicle;
-  VehicleInfoEquipmentsProvider(Vehicle vehicle) {
+  VehicleInfoMovementsProvider(Vehicle vehicle) {
     this.vehicle = vehicle;
     getMovements(vehicle.id);
   }
+
 
   void getMovements(int vehicleId) {
     easyRentRepository.getMovementsForVehicle(vehicleId).asStream().listen(
@@ -28,4 +29,5 @@ class VehicleInfoEquipmentsProvider extends StateProvider {
       },
     );
   }
+
 }

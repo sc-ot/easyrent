@@ -6,6 +6,7 @@ import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/client.dart';
 import 'package:easyrent/models/login.dart';
 import 'package:easyrent/models/movement.dart';
+import 'package:easyrent/models/planned_movement.dart';
 import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/models/vehicle_image.dart';
 
@@ -46,11 +47,52 @@ class EasyRentRepository {
         serializer: (_) => Vehicle.fromJson(_),
         searchQuery: searchQuery,
         paging: paging,
-        searchIn: searchQuery != null
-            ? ["vehicle_number", "license_plate", "vin"]
+        searchIn: searchQuery != null && searchQuery != ""
+            ? [
+                "vehicle_number",
+                "license_plate",
+                "vin",
+              ]
             : null,
         retry: paging == 0 ? true : false,
-        cacheRequest: true,
+      );
+
+  Future<Either<Failure, dynamic>> getAllVehiclesWithExit(
+          int paging, String? searchQuery) =>
+    api.request(
+        Method.GET,
+        "fleet/app/vehicles/incoming",
+        responseType: ResponseType.LIST,
+        serializer: (_) => Vehicle.fromJson(_),
+        searchQuery: searchQuery,
+        paging: paging,
+        searchIn: searchQuery != null && searchQuery != ""
+            ? [
+                "vehicle_number",
+                "license_plate",
+                "vin",
+              ]
+            : null,
+        retry: paging == 0 ? true : false,
+      );
+
+  Future<Either<Failure, dynamic>> getAllVehiclesWithEntry(
+          int paging, String? searchQuery) =>
+      api.request(
+        Method.GET,
+        "fleet/app/vehicles/outgoing",
+        responseType: ResponseType.LIST,
+        serializer: (_) => Vehicle.fromJson(_),
+        searchQuery: searchQuery,
+        paging: paging,
+        searchIn: searchQuery != null && searchQuery != ""
+            ? [
+                "vehicle_number",
+                "license_plate",
+                "vin",
+              ]
+            : null,
+        retry: paging == 0 ? true : false,
       );
 
   Future<Either<Failure, dynamic>> getImageForVehicle(
@@ -89,4 +131,63 @@ class EasyRentRepository {
         file: file,
         cacheRequest: true,
       );
+
+  Future<Either<Failure, dynamic>> getPlannedMovementsForToday(
+          int movementType, String? searchQuery) =>
+      api.request(
+        Method.GET,
+        movementType == Constants.MOVEMENT_TYPE_ENTRY
+            ? "fleet/app/planned-movements/incoming"
+            : "fleet/app/planned-movements/outgoing",
+        responseType: ResponseType.LIST,
+        serializer: (_) => PlannedMovement.fromJson(_),
+        retry: true,
+        searchQuery: searchQuery,
+      );
+
+  Future<Either<Failure, dynamic>> getPlannedMovementsForPast(
+    int movementType,
+    String? searchQuery,
+  ) =>
+      api.request(
+        Method.GET,
+        movementType == Constants.MOVEMENT_TYPE_ENTRY
+            ? "fleet/app/planned-movements/incoming/passed"
+            : "fleet/app/planned-movements/outgoing/passed",
+        responseType: ResponseType.LIST,
+        serializer: (_) => PlannedMovement.fromJson(_),
+        retry: true,
+        searchQuery: searchQuery,
+      );
+
+  Future<Either<Failure, dynamic>> getPlannedMovementsForFuture(
+    int movementType,
+    String? searchQuery,
+  ) =>
+      api.request(
+        Method.GET,
+        movementType == Constants.MOVEMENT_TYPE_ENTRY
+            ? "fleet/app/planned-movements/incoming/future"
+            : "fleet/app/planned-movements/outgoing/future",
+        responseType: ResponseType.LIST,
+        serializer: (_) => PlannedMovement.fromJson(_),
+        retry: true,
+        searchQuery: searchQuery,
+      );
+
+  Future<Either<Failure, dynamic>> generateInspectionReport(
+    int movementTypeId,
+    int vehicleId, {
+    int? contractId,
+    int? plannedMovementId,
+  }) =>
+      api.request(Method.GET, "fleet/inspection-reports/templates/1/generate",
+          serializer: (_) => PlannedMovement.fromJson(_),
+          retry: true,
+          params: {
+            "movement_type_id": movementTypeId.toString(),
+            "vehicle_id": vehicleId.toString(),
+            "contract_id": contractId?.toString(),
+            "planned_movement_id": plannedMovementId?.toString(),
+          });
 }

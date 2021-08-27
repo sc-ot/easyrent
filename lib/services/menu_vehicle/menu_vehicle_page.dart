@@ -14,6 +14,7 @@ class MenuVehiclePage extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) {
         VehicleProvider vehicleProvider = VehicleProvider(
+          VEHICLELISTTYPE.STANDARD,
           () {},
         );
         vehicleProvider.onPressed = () => Navigator.pushNamed(

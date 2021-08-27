@@ -1,4 +1,5 @@
 import 'package:easyrent/core/constants.dart';
+import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/widgets/menu_page_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -48,10 +49,9 @@ class ImagesHistoryPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                               child: ListTile(
-                                leading: Text(
-                                  index.toString(),
-                                  style: Theme.of(context).textTheme.headline6,
-                                ),
+                                leading: Text((index + 1).toString(),
+                                    style:
+                                        Theme.of(context).textTheme.headline6),
                                 title: Text(
                                     imagesHistoryProvider.imageHistory[index]
                                         .vehicle!.licensePlate,
@@ -78,14 +78,38 @@ class ImagesHistoryPage extends StatelessWidget {
                                             .subtitle2!),
                                   ],
                                 ),
-                                trailing: Text(
-                                    imagesHistoryProvider.imageHistory[index]
-                                            .imagePaths.length
-                                            .toString() +
-                                        " " +
-                                        trailingDescription,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1),
+                                trailing:
+                                    Utils.getDevice(context) == Device.TABLET
+                                        ? Text(
+                                            imagesHistoryProvider
+                                                    .imageHistory[index]
+                                                    .imagePaths
+                                                    .length
+                                                    .toString() +
+                                                " " +
+                                                trailingDescription,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1)
+                                        : Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                  imagesHistoryProvider
+                                                      .imageHistory[index]
+                                                      .imagePaths
+                                                      .length
+                                                      .toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle1),
+                                              Text("Bilder",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle2),
+                                            ],
+                                          ),
                               ),
                             ),
                           );

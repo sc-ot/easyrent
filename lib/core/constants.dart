@@ -2,6 +2,9 @@ class Constants {
   static const String BASE_URL =
       "https://easyrentm1backend.works4dev.de/api/v1";
 
+  static const int MOVEMENT_TYPE_ENTRY = 1;
+  static const int MOVEMENT_TYPE_EXIT = 2;
+
   static const String ROUTE_HOME = "/";
   static const String ROUTE_LOGIN = "/login";
   static const String ROUTE_CLIENTS = "/clients";
@@ -16,6 +19,10 @@ class Constants {
   static const String ROUTE_IMAGES_NEW_VEHICLE = "/images_new_vehicle";
   static const String ROUTE_IMAGES_HISTORY = "/images_history";
   static const String ROUTE_IMAGES_HISTORY_GALERY = "/images_history_galery";
+  static const String ROUTE_MOVEMENT_PLANNED_MOVEMENT_SEARCH_LIST =
+      "/movement_planned_movement_search_list";
+  static const String ROUTE_MOVEMENT_SEARCH_LIST = "/movement_search_list";
+  static const String ROUTE_MOVEMENT_OVERVIEW = "/movement_overview";
 
   static const String KEY_IMAGES = "KEY_IMAGES";
   static const String KEY_AUTHORIZATION = "KEY_AUTHORIZATION";

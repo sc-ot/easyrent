@@ -6,13 +6,17 @@ import 'package:easyrent/services/vehicle/vehicle_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ImagesVehicleSearchListPage extends StatelessWidget {
-  const ImagesVehicleSearchListPage({Key? key});
+class MovementSearchListPage extends StatelessWidget {
+  const MovementSearchListPage({Key? key});
 
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;
-    CameraType cameraType = args as CameraType;
+    int movementType = args as int;
+    VEHICLELISTTYPE vehicleListType =
+        movementType == Constants.MOVEMENT_TYPE_ENTRY
+            ? VEHICLELISTTYPE.MOVEMENT_VEHICLES_ENTRY
+            : VEHICLELISTTYPE.MOVEMENT_VEHICLES_EXIT;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -20,31 +24,23 @@ class ImagesVehicleSearchListPage extends StatelessWidget {
       body: ChangeNotifierProvider<VehicleProvider>(
         create: (_) {
           VehicleProvider vehicleProvider = VehicleProvider(
-            VEHICLELISTTYPE.STANDARD,
+            vehicleListType,
             () {},
           );
           vehicleProvider.onPressed = () => Navigator.pushNamed(
                 context,
-                Constants.ROUTE_CAMERA,
-                arguments: Camera(
-                  cameraType,
-                  [
-                    "Frontal",
-                    "Frontal-Links",
-                    "Links",
-                    "Heck-Links",
-                    "Hech-Rechts",
-                    "Rechts",
-                    "Frontal-Rechts"
-                  ],
-                  vehicleProvider.vehicle,
-                  null,
-                ),
+                Constants.ROUTE_MOVEMENT_OVERVIEW,
+                arguments: vehicleProvider.vehicle
               );
           return vehicleProvider;
         },
         builder: (context, child) {
-          return VehiclePage("Fahrzeug", "Bitte wählen Sie ein Fahrzeug aus");
+          return VehiclePage(
+            movementType == Constants.MOVEMENT_TYPE_ENTRY
+                ? "Eingang"
+                : "Ausgang",
+            "Bitte wählen Sie ein Fahrzeug aus",
+          );
         },
       ),
     );

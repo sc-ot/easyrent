@@ -24,9 +24,7 @@ class MenuImagesPage extends StatelessWidget {
       body: MenuPageContainer(
         title,
         subTitle,
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: Column(
+       Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
@@ -56,8 +54,8 @@ class MenuImagesPage extends StatelessWidget {
               ),
             ],
           ),
+          paddingBottom: 16,
         ),
-      ),
     );
   }
 }

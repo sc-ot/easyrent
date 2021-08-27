@@ -1,4 +1,13 @@
 
+import 'package:easyrent/models/status.dart';
+import 'package:easyrent/models/status_def.dart';
+import 'package:easyrent/models/vehicle_category.dart';
+
+import 'engine_type.dart';
+import 'linked_vehicle_equipment.dart';
+import 'location.dart';
+import 'manufacturer.dart';
+
 class Vehicle {
   int id;
   String vehicleNumber;
@@ -143,6 +152,8 @@ class Vehicle {
     };
   }
 
+ 
+
   factory Vehicle.empty() {
     return Vehicle(
       0,
@@ -179,184 +190,17 @@ class Vehicle {
   }
 }
 
-class Manufacturer {
-  int id;
-  String manufacturerName;
 
-  Manufacturer(this.id, this.manufacturerName);
-  factory Manufacturer.fromJson(Map<String, dynamic> json) {
-    return Manufacturer(
-      json["id"] ?? 0,
-      json["manufacturer_name"] ?? "",
-    );
-  }
 
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "manufacturer_name": manufacturerName,
-    };
-  }
-}
 
-class VehicleCategory {
-  int id;
-  String vehicleCategoryName;
 
-  VehicleCategory(this.id, this.vehicleCategoryName);
 
-  factory VehicleCategory.fromJson(Map<String, dynamic> json) {
-    return VehicleCategory(
-      json["id"] ?? 0,
-      json["vehicle_category_name"] ?? "",
-    );
-  }
 
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "vehicle_category_name": vehicleCategoryName,
-    };
-  }
-}
 
-class EngineType {
-  int id;
-  String engineTypeName;
 
-  EngineType(this.id, this.engineTypeName);
 
-  factory EngineType.fromJson(Map<String, dynamic> json) {
-    return EngineType(
-      json["id"] ?? 0,
-      json["engine_type_name"] ?? "",
-    );
-  }
 
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "engine_type_name": engineTypeName,
-    };
-  }
-}
 
-class Status {
-  int id;
-  StatusDef statusDef;
 
-  Status(this.id, this.statusDef);
 
-  factory Status.fromJson(Map<String, dynamic> json) {
-    return Status(
-      json["id"] ?? 0,
-      json["status_def"] != null
-          ? StatusDef.fromJson(json["status_def"])
-          : StatusDef(0, ""),
-    );
-  }
 
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "status_def": statusDef.toJson(),
-    };
-  }
-}
-
-class StatusDef {
-  int id;
-  String statusName;
-
-  StatusDef(this.id, this.statusName);
-
-  factory StatusDef.fromJson(Map<String, dynamic> json) {
-    return StatusDef(
-      json["id"] ?? 0,
-      json["status_name"] ?? "",
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "status_name": statusName,
-    };
-  }
-}
-
-class Location {
-  int id;
-  String locationName;
-
-  Location(this.id, this.locationName);
-
-  factory Location.fromJson(Map<String, dynamic> json) {
-    return Location(
-      json["id"] ?? 0,
-      json["location_name"] ?? "",
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "location_name": locationName,
-    };
-  }
-}
-
-class LinkedVehicleEquipment {
-  int id;
-  FleetVehicleEquipment fleetVehicleEquipment;
-
-  LinkedVehicleEquipment(this.id, this.fleetVehicleEquipment);
-
-  factory LinkedVehicleEquipment.fromJson(Map<String, dynamic> json) {
-    return LinkedVehicleEquipment(
-      json["id"] ?? 0,
-      json["fleet_vehicle_equipment"] != null
-          ? FleetVehicleEquipment.fromJson(
-              json["fleet_vehicle_equipment"],
-            )
-          : FleetVehicleEquipment(0, Manufacturer(0, ""), "", ""),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "fleet_vehicle_equipment": fleetVehicleEquipment.toJson(),
-    };
-  }
-}
-
-class FleetVehicleEquipment {
-  int id;
-  Manufacturer manufacturer;
-  String equipmentName;
-  String equipmentCode;
-
-  FleetVehicleEquipment(
-      this.id, this.manufacturer, this.equipmentName, this.equipmentCode);
-
-  factory FleetVehicleEquipment.fromJson(Map<String, dynamic> json) {
-    return FleetVehicleEquipment(
-      json["id"] ?? 0,
-      json["manufacturer"] != null
-          ? Manufacturer.fromJson(json["manufacturer"])
-          : Manufacturer(0, ""),
-      json["equipment_name"] ?? "",
-      json["equipment_code"] ?? "",
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "manufacturer": manufacturer.toJson(),
-      "equipment_name": equipmentName,
-      "equipment_code": equipmentCode,
-    };
-  }
-}

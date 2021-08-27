@@ -1,5 +1,8 @@
 import 'package:easyrent/models/vehicle.dart';
 
+import 'contact.dart';
+import 'movement_type.dart';
+
 class Movement {
   int id;
   MovementType movementType;
@@ -49,37 +52,6 @@ class Movement {
   }
 }
 
-class MovementType {
-  int id;
-  String typeName;
 
-  MovementType(this.id, this.typeName);
 
-  factory MovementType.fromJson(Map<String, dynamic> json) {
-    return MovementType(
-      json["id"] ?? 0,
-      json["type_name"] ?? "",
-    );
-  }
-}
 
-class Contact {
-  int id;
-  String orgName;
-  bool isPerson;
-  String debitorNumber;
-  String customerNumber;
-
-  Contact(this.id, this.orgName, this.isPerson, this.debitorNumber,
-      this.customerNumber);
-
-  factory Contact.fromJson(Map<String, dynamic> json) {
-    return Contact(
-      json["id"] ?? 0,
-      json["org_name"] ?? "",
-      json["is_person"] ?? false,
-      json["debitor_number"] ?? "",
-      json["customer_number"] ?? "",
-    );
-  }
-}

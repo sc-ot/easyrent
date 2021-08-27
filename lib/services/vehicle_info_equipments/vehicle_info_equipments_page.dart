@@ -1,5 +1,5 @@
 import 'package:easyrent/models/vehicle.dart';
-import 'package:easyrent/services/vehicle_info_movements/vehicle_info_movements_provider.dart';
+import 'package:easyrent/services/vehicle_info_equipments/vehicle_info_equipments_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
