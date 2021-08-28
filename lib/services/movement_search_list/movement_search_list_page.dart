@@ -1,5 +1,6 @@
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/camera.dart';
+import 'package:easyrent/models/movement_overview.dart';
 import 'package:easyrent/services/camera/camera_page.dart';
 import 'package:easyrent/services/vehicle/vehicle_page.dart';
 import 'package:easyrent/services/vehicle/vehicle_provider.dart';
@@ -30,7 +31,8 @@ class MovementSearchListPage extends StatelessWidget {
           vehicleProvider.onPressed = () => Navigator.pushNamed(
                 context,
                 Constants.ROUTE_MOVEMENT_OVERVIEW,
-                arguments: vehicleProvider.vehicle
+                arguments: MovementOverview(
+                    movementType, vehicleProvider.vehicle, null),
               );
           return vehicleProvider;
         },

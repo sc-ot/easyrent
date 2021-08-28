@@ -8,6 +8,7 @@ import 'package:easyrent/services/images_history/images_history_page.dart';
 import 'package:easyrent/services/images_new_vehicle/images_new_vehicle_page.dart';
 import 'package:easyrent/services/images_vehicle_search_list/images_vehicle_search_list_page.dart';
 import 'package:easyrent/services/menu/menu_page.dart';
+import 'package:easyrent/services/movement_miles_and_license_plate/movement_miles_and_license_plate_page.dart';
 import 'package:easyrent/services/movement_overview/movement_overview_page.dart';
 import 'package:easyrent/services/movement_planned_movement_search_list/movement_planned_movement_search_list_page.dart';
 import 'package:easyrent/services/movement_search_list/movement_search_list_page.dart';
@@ -67,6 +68,8 @@ void main() async {
                   MovementSearchListPage(),
               Constants.ROUTE_MOVEMENT_OVERVIEW: (context) =>
                   MovementOverviewPage(),
+              Constants.ROUTE_MOVEMENT_MILES_AND_LICENSE_PLATE: (context) =>
+                  MovementMilesAndLicensePlatePage(),
             },
           ),
         );

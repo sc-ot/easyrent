@@ -204,7 +204,10 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
 
     switch (camera.type) {
       case CameraType.MOVEMENT:
-        Navigator.pop(context, images);
+        Navigator.pop(
+          context,
+          imagesToUpload(),
+        );
         break;
       default:
         showDialog(

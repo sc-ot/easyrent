@@ -4,6 +4,7 @@ import 'package:devtools/models/failure.dart';
 import 'package:devtools/models/file_payload.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/client.dart';
+import 'package:easyrent/models/inspection_report.dart';
 import 'package:easyrent/models/login.dart';
 import 'package:easyrent/models/movement.dart';
 import 'package:easyrent/models/planned_movement.dart';
@@ -59,7 +60,7 @@ class EasyRentRepository {
 
   Future<Either<Failure, dynamic>> getAllVehiclesWithExit(
           int paging, String? searchQuery) =>
-    api.request(
+      api.request(
         Method.GET,
         "fleet/app/vehicles/incoming",
         responseType: ResponseType.LIST,
@@ -176,18 +177,21 @@ class EasyRentRepository {
       );
 
   Future<Either<Failure, dynamic>> generateInspectionReport(
-    int movementTypeId,
+    int reportTypeId,
     int vehicleId, {
     int? contractId,
     int? plannedMovementId,
   }) =>
-      api.request(Method.GET, "fleet/inspection-reports/templates/1/generate",
-          serializer: (_) => PlannedMovement.fromJson(_),
-          retry: true,
-          params: {
-            "movement_type_id": movementTypeId.toString(),
-            "vehicle_id": vehicleId.toString(),
-            "contract_id": contractId?.toString(),
-            "planned_movement_id": plannedMovementId?.toString(),
-          });
+      api.request(
+        Method.GET,
+        "fleet/inspection-reports/templates/1/generate",
+        serializer: (_) => InspectionReport.fromJson(_),
+        retry: true,
+        params: {
+          "report_type_id": reportTypeId.toString(),
+          "vehicle_id": vehicleId.toString(),
+          "contract_id": contractId?.toString(),
+          "planned_movement_id": plannedMovementId?.toString(),
+        },
+      );
 }

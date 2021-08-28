@@ -188,7 +188,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: "559941d071328e652d2e0108484a7c3675acf3ee"
+      resolved-ref: dc1fdad421e29c4a10cc875509bcd04973995f64
       url: "git@github.com:sc-ot/devtools.git"
     source: git
     version: "0.0.1"
@@ -632,6 +632,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.5"
+  smooth_page_indicator:
+    dependency: "direct main"
+    description:
+      name: smooth_page_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0+2"
   source_map_stack_trace:
     dependency: transitive
     description:

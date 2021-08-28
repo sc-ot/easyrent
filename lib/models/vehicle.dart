@@ -1,12 +1,15 @@
+import 'dart:io';
 
 import 'package:easyrent/models/status.dart';
 import 'package:easyrent/models/status_def.dart';
 import 'package:easyrent/models/vehicle_category.dart';
 
+import 'contract.dart';
 import 'engine_type.dart';
 import 'linked_vehicle_equipment.dart';
 import 'location.dart';
 import 'manufacturer.dart';
+import 'movement.dart';
 
 class Vehicle {
   int id;
@@ -37,6 +40,8 @@ class Vehicle {
   String nextUvvInspectionDate;
   String notes;
   List<LinkedVehicleEquipment> linkedVehicleEquipments;
+  Movement? lastMovement;
+  Contract? currentContract;
 
   Vehicle(
     this.id,
@@ -66,6 +71,8 @@ class Vehicle {
     this.nextUvvInspectionDate,
     this.notes,
     this.linkedVehicleEquipments,
+    this.lastMovement,
+    this.currentContract,
   );
   factory Vehicle.fromJson(Map<String, dynamic> json) {
     return Vehicle(
@@ -114,6 +121,12 @@ class Vehicle {
                   (element) => LinkedVehicleEquipment.fromJson(element))
               .toList()
           : [],
+      json["last_movement"] != null
+          ? Movement.fromJson(json["last_movement"])
+          : null,
+      json["current_contract"] != null
+          ? Contract.fromJson(json["current_contract"])
+          : null,
     );
   }
 
@@ -144,15 +157,15 @@ class Vehicle {
       "next_speedometer_inspection_date": nextSpeedoMeterInspectionDate,
       "next_uvv_inspection_date": nextUvvInspectionDate,
       "notes": notes,
-      "linked_vehicle_equipments": List<dynamic>.from(
+      "linked_vehicle_equipments": List<LinkedVehicleEquipment>.from(
         linkedVehicleEquipments.map(
           (x) => x.toJson(),
         ),
       ),
+      "last_movement": lastMovement?.toJson(),
+      "current_contract": currentContract?.toJson(),
     };
   }
-
- 
 
   factory Vehicle.empty() {
     return Vehicle(
@@ -186,21 +199,8 @@ class Vehicle {
       "",
       "",
       [],
+      null,
+      null,
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

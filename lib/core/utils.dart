@@ -15,23 +15,24 @@ class Utils {
     }
   }
 
-  static String formatDateTimestring(String date) {
+  static String formatDateTimestring(String date, {String onError = ""}) {
     try {
       DateTime parseDate = DateTime.parse(date);
       var outputFormat = DateFormat('dd.MM.yyyy');
       return outputFormat.format(parseDate);
     } catch (e) {
-      return "";
+      return onError;
     }
   }
 
-  static String formatDateTimestringWithTime(String date) {
+  static String formatDateTimestringWithTime(String date,
+      {String onError = ""}) {
     try {
       DateTime parseDate = DateTime.parse(date);
       var outputFormat = DateFormat('dd.MM.yyyy - HH:mm');
       return outputFormat.format(parseDate);
     } catch (e) {
-      return "";
+      return onError;
     }
   }
 }

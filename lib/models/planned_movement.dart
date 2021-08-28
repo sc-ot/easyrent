@@ -1,3 +1,4 @@
+import 'package:easyrent/models/contract.dart';
 import 'package:easyrent/models/vehicle.dart';
 
 import 'contact.dart';
@@ -12,6 +13,7 @@ class PlannedMovement {
   Vehicle vehicle;
   int inspectionReportCountAnswered;
   int inspectionReportCountTotal;
+  Contract? contract;
 
   PlannedMovement(
       this.id,
@@ -21,7 +23,8 @@ class PlannedMovement {
       this.contact,
       this.vehicle,
       this.inspectionReportCountAnswered,
-      this.inspectionReportCountTotal);
+      this.inspectionReportCountTotal,
+      this.contract);
 
   factory PlannedMovement.fromJson(Map<String, dynamic> json) {
     return PlannedMovement(
@@ -33,6 +36,7 @@ class PlannedMovement {
       Vehicle.fromJson(json["vehicle"]),
       json["inspection_report_count_answered"],
       json["inspection_report_count_total"],
+      json["contract"] != null ? Contract.fromJson(json["contract"]) : null,
     );
   }
 
@@ -46,6 +50,7 @@ class PlannedMovement {
       "vehicle": vehicle.toJson(),
       "inspection_report_count_answered": inspectionReportCountAnswered,
       "inspection_report_count_total": inspectionReportCountTotal,
+      "contract": contract,
     };
   }
 }

@@ -1,6 +1,7 @@
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/core/utils.dart';
+import 'package:easyrent/models/movement_overview.dart';
 import 'package:easyrent/models/planned_movement.dart';
 import 'package:easyrent/services/images_new_vehicle/images_new_vehicle_provider.dart.dart';
 import 'package:easyrent/services/movement_planned_movement_search_list/movement_planned_movement_search_list_provider.dart';
@@ -196,10 +197,14 @@ class PlannedMovementList extends StatelessWidget {
                       return Divider();
                     },
                     itemBuilder: (context, index) {
-                       vehicleProvider.onPressed = () => Navigator.pushNamed(
+                      vehicleProvider.onPressed = () => Navigator.pushNamed(
                             context,
                             Constants.ROUTE_MOVEMENT_OVERVIEW,
-                            arguments: plannedMovementsForToday[index],
+                            arguments: MovementOverview(
+                              movementType,
+                              null,
+                              plannedMovementsForToday[index],
+                            ),
                           );
                       return VehicleSearchListEntry(
                         plannedMovementsForToday[index].vehicle,
@@ -232,7 +237,8 @@ class PlannedMovementList extends StatelessWidget {
                       vehicleProvider.onPressed = () => Navigator.pushNamed(
                             context,
                             Constants.ROUTE_MOVEMENT_OVERVIEW,
-                            arguments: plannedMovementsForPast[index],
+                            arguments: MovementOverview(movementType, null,
+                                plannedMovementsForPast[index]),
                           );
                       return VehicleSearchListEntry(
                         plannedMovementsForPast[index].vehicle,
@@ -263,10 +269,11 @@ class PlannedMovementList extends StatelessWidget {
                       return Divider();
                     },
                     itemBuilder: (context, index) {
-                       vehicleProvider.onPressed = () => Navigator.pushNamed(
+                      vehicleProvider.onPressed = () => Navigator.pushNamed(
                             context,
                             Constants.ROUTE_MOVEMENT_OVERVIEW,
-                            arguments: plannedMovementsForFuture[index],
+                            arguments: MovementOverview(movementType, null,
+                                plannedMovementsForFuture[index]),
                           );
                       return VehicleSearchListEntry(
                         plannedMovementsForFuture[index].vehicle,

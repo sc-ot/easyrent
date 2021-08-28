@@ -6,5 +6,7 @@ class Camera {
   List<String> tags;
   Vehicle? vehicle;
   String? vin;
-  Camera(this.type, this.tags, this.vehicle, this.vin);
+  bool singleImage;
+  Camera(this.type, this.tags, this.vehicle, this.vin,
+      {this.singleImage = false});
 }
