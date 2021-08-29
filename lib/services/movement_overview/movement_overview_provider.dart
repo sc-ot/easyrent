@@ -12,6 +12,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+enum DATETYPE {
+  REPORT,
+  UVV,
+  SP,
+  SPEEDOMETER,
+  HU,
+}
+
 class MovementOverviewProvider extends StateProvider {
   StreamSubscription? movementProtocolSubscription;
   MovementOverview movementOverview;
@@ -28,9 +36,7 @@ class MovementOverviewProvider extends StateProvider {
   }
 
   PlannedMovement? get plannedMovement {
-    return movementOverview.plannedMovement != null
-        ? movementOverview.plannedMovement
-        : null;
+    return movementOverview.plannedMovement;
   }
 
   Contract? get contract {
@@ -41,7 +47,7 @@ class MovementOverviewProvider extends StateProvider {
         return vehicle.currentContract;
       }
     } else {
-      return movementOverview.plannedMovement?.contract!;
+      return movementOverview.plannedMovement?.contract;
     }
   }
 
@@ -51,50 +57,63 @@ class MovementOverviewProvider extends StateProvider {
   String? errorTextMinute;
   String? errorTextHour;
 
-  Map<String, String> vehicleAppointments = {
-    "Übergabedatum": "",
-    "Hauptuntersuchung": "",
-    "Sicherheitsprüfung": "",
-    "Tachoprüfung": "",
-    "UVV": "",
+  Map<String, Map<String, dynamic>> vehicleAppointments = {
+    "Übergabedatum": {
+      "date_formatted": "",
+      "date_key": DATETYPE.REPORT,
+    },
+    "Hauptuntersuchung": {
+      "date_formatted": "",
+      "date_key": DATETYPE.HU,
+    },
+    "Sicherheitsprüfung": {
+      "date_formatted": "",
+      "date_key": DATETYPE.SP,
+    },
+    "Tachoprüfung": {
+      "date_formatted": "",
+      "date_key": DATETYPE.SPEEDOMETER,
+    },
+    "UVV": {
+      "date_formatted": "",
+      "date_key": DATETYPE.UVV,
+    },
   };
 
   void generateInspectionReport() {
-    if (movementOverview.vehicle != null) {
-      movementProtocolSubscription = easyRentRepository
-          .generateInspectionReport(
-            movementOverview.movementType,
-            vehicle.id,
-            contractId: contract?.id,
-            plannedMovementId: plannedMovement?.id,
-          )
-          .asStream()
-          .listen(
-        (event) {
-          event.fold(
-            (failure) {},
-            (response) {
-              inspectionReport = response as InspectionReport;
-              vehicleAppointments["Übergabedatum"] =
-                  inspectionReport.reportDate;
-              vehicleAppointments["Hauptuntersuchung"] =
-                  inspectionReport.nextGeneralInspectionDate;
+    movementProtocolSubscription = easyRentRepository
+        .generateInspectionReport(
+          movementOverview.movementType,
+          vehicle.id,
+          contractId: contract?.id,
+          plannedMovementId: plannedMovement?.id,
+        )
+        .asStream()
+        .listen(
+      (event) {
+        event.fold(
+          (failure) {},
+          (response) {
+            inspectionReport = response as InspectionReport;
+            vehicleAppointments["Übergabedatum"]!["date_formatted"] =
+                inspectionReport.reportDate;
+            vehicleAppointments["Hauptuntersuchung"]!["date_formatted"] =
+                inspectionReport.nextGeneralInspectionDate;
 
-              vehicleAppointments["Sicherheitsprüfung"] =
-                  inspectionReport.nextSecurityInspectionDate;
+            vehicleAppointments["Sicherheitsprüfung"]!["date_formatted"] =
+                inspectionReport.nextSecurityInspectionDate;
 
-              vehicleAppointments["Tachoprüfung"] =
-                  inspectionReport.nextSpeedoMeterInspectionDate;
+            vehicleAppointments["Tachoprüfung"]!["date_formatted"] =
+                inspectionReport.nextSpeedoMeterInspectionDate;
 
-              vehicleAppointments["UVV"] =
-                  inspectionReport.nextUvvInspectionDate;
+            vehicleAppointments["UVV"]!["date_formatted"] =
+                inspectionReport.nextUvvInspectionDate;
 
-              setState(state: STATE.SUCCESS);
-            },
-          );
-        },
-      );
-    }
+            setState(state: STATE.SUCCESS);
+          },
+        );
+      },
+    );
   }
 
   void changeDate(
@@ -112,7 +131,7 @@ class MovementOverviewProvider extends StateProvider {
 
     focusNode.requestFocus();
 
-    String dateString = vehicleAppointments[key]!;
+    String dateString = vehicleAppointments[key]!["date_formatted"]!;
     if (dateString.isNotEmpty) {
       DateTime date = DateTime.parse(dateString);
       textEditingControllerDay.text = date.day.toString();
@@ -165,6 +184,7 @@ class MovementOverviewProvider extends StateProvider {
                               errorText: errorTextDay),
                         ),
                       ),
+                    
                       SizedBox(
                         width: 8,
                       ),
@@ -232,22 +252,23 @@ class MovementOverviewProvider extends StateProvider {
                               width: 8,
                             ),
                             Expanded(
-                                child: TextField(
-                              controller: textEditingControllerMinute,
-                              keyboardType: TextInputType.number,
-                              maxLength: 2,
-                              onChanged: (value) {
-                                if (value.length == 2) {
-                                  FocusScope.of(context).nextFocus();
-                                }
-                              },
-                              decoration: InputDecoration(
-                                  counterText: "",
-                                  labelText: "Minute",
-                                  labelStyle:
-                                      Theme.of(context).textTheme.subtitle1,
-                                  errorText: errorTextMinute),
-                            )),
+                              child: TextField(
+                                controller: textEditingControllerMinute,
+                                keyboardType: TextInputType.number,
+                                maxLength: 2,
+                                onChanged: (value) {
+                                  if (value.length == 2) {
+                                    FocusScope.of(context).nextFocus();
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                    counterText: "",
+                                    labelText: "Minute",
+                                    labelStyle:
+                                        Theme.of(context).textTheme.subtitle1,
+                                    errorText: errorTextMinute),
+                              ),
+                            ),
                           ],
                         )
                       : Container(),
@@ -257,6 +278,7 @@ class MovementOverviewProvider extends StateProvider {
                         )
                       : Container(),
                   Container(
+                    height: 50,
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
                       onPressed: () {
@@ -286,21 +308,48 @@ class MovementOverviewProvider extends StateProvider {
                         );
                         if (successful) {
                           if (changeTime) {
-                            vehicleAppointments[key] = DateTime(
+                            DateTime date = DateTime(
                               int.parse(textEditingControllerYear.text),
                               int.parse(textEditingControllerMonth.text),
                               int.parse(textEditingControllerDay.text),
                               int.parse(textEditingControllerHour.text),
                               int.parse(textEditingControllerMinute.text),
-                            ).toIso8601String();
+                            );
+                            vehicleAppointments[key]!["date_formatted"] =
+                                date.toIso8601String();
                           } else {
-                            vehicleAppointments[key] = DateTime(
+                            DateTime date = DateTime(
                               int.parse(textEditingControllerYear.text),
                               int.parse(textEditingControllerMonth.text),
                               int.parse(textEditingControllerDay.text),
-                            ).toIso8601String();
+                            );
+                            vehicleAppointments[key]!["date_formatted"] =
+                                date.toIso8601String();
                           }
 
+                          switch (vehicleAppointments[key]!["date_key"]) {
+                            case DATETYPE.REPORT:
+                              inspectionReport.reportDate =
+                                  vehicleAppointments[key]!["date_formatted"];
+                              break;
+                            case DATETYPE.HU:
+                              inspectionReport.nextGeneralInspectionDate =
+                                  vehicleAppointments[key]!["date_formatted"];
+                              break;
+                            case DATETYPE.SP:
+                              inspectionReport.nextSecurityInspectionDate =
+                                  vehicleAppointments[key]!["date_formatted"];
+                              break;
+                            case DATETYPE.SPEEDOMETER:
+                              inspectionReport.nextSpeedoMeterInspectionDate =
+                                  vehicleAppointments[key]!["date_formatted"];
+                              break;
+                            case DATETYPE.UVV:
+                              inspectionReport.nextUvvInspectionDate =
+                                  vehicleAppointments[key]!["date_formatted"];
+                              break;
+                            default:
+                          }
                           Navigator.pop(context);
                         }
                       },
@@ -413,5 +462,11 @@ class MovementOverviewProvider extends StateProvider {
 
     // SUCCESS
     return true;
+  }
+
+  @override
+  void dispose() {
+    movementProtocolSubscription?.cancel();
+    super.dispose();
   }
 }

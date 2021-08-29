@@ -1,45 +1,30 @@
-import 'package:easyrent/models/vehicle.dart';
-import 'package:easyrent/services/vehicle/vehicle_provider.dart';
+import 'package:easyrent/core/utils.dart';
+import 'package:easyrent/models/planned_movement.dart';
+import 'package:easyrent/services/movement_planned_movement_search_list/movement_planned_movement_search_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class VehicleSearchListEntry extends StatelessWidget {
-  final Vehicle vehicle;
-  final String? date;
+class PlannedMovementSearchListEntry extends StatelessWidget {
+  final PlannedMovement plannedMovement;
   final double elevation;
-  final Function? onTap;
-  const VehicleSearchListEntry(this.vehicle, {Key? key, this.date, this.elevation = 3, this.onTap})
-      : super(key: key);
+  const PlannedMovementSearchListEntry(this.plannedMovement,
+      {Key? key, this.elevation = 3});
 
   @override
   Widget build(BuildContext context) {
-    VehicleProvider vehicleProvider = Provider.of(context, listen: false);
+    MovementPlannedMovementSearchListProvider
+        movementPlannedMovementSearchListProvider =
+        Provider.of(context, listen: false);
 
-    List<Widget> dateWidget = [];
-    if (date != null) {
-      dateWidget = [
-        SizedBox(
-          height: 8,
-        ),
-        Text(
-          date!,
-          style: Theme.of(context).textTheme.bodyText2,
-          overflow: TextOverflow.fade,
-        ),
-      ];
-    }
+
     return Card(
       elevation: elevation,
       color: Theme.of(context).primaryColorLight,
       child: InkWell(
         onTap: () async {
-          vehicleProvider.vehicle = vehicle;
-          if(onTap == null){
-             await vehicleProvider.onPressed.call();
-          }
-          else{
-            await onTap!.call();
-          }
+          movementPlannedMovementSearchListProvider.plannedMovement = plannedMovement;
+          
+          await movementPlannedMovementSearchListProvider.onPressed.call();
           FocusScope.of(context).requestFocus(
             FocusNode(),
           );
@@ -54,7 +39,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      vehicle.vin,
+                      plannedMovement.vehicle.vin,
                       style: Theme.of(context).textTheme.bodyText1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -64,7 +49,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          vehicle.manufacturer.manufacturerName,
+                          plannedMovement.vehicle.manufacturer.manufacturerName,
                           style: Theme.of(context).textTheme.bodyText2,
                           overflow: TextOverflow.fade,
                         ),
@@ -73,7 +58,8 @@ class VehicleSearchListEntry extends StatelessWidget {
                         ),
                         Expanded(
                           child: Text(
-                            vehicle.vehicleCategory.vehicleCategoryName,
+                            plannedMovement
+                                .vehicle.vehicleCategory.vehicleCategoryName,
                             style: Theme.of(context).textTheme.bodyText1,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -85,18 +71,25 @@ class VehicleSearchListEntry extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      vehicle.licensePlate,
+                      plannedMovement.vehicle.licensePlate,
                       style: Theme.of(context).textTheme.bodyText2,
                       overflow: TextOverflow.fade,
                     ),
-                    ...dateWidget,
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      Utils.formatDateTimestringWithTime(plannedMovement.movementDate),
+                      style: Theme.of(context).textTheme.bodyText2,
+                      overflow: TextOverflow.fade,
+                    ),
                   ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  vehicle.vehicleNumber,
+                  plannedMovement.vehicle.vehicleNumber,
                   style: Theme.of(context)
                       .textTheme
                       .headline6!

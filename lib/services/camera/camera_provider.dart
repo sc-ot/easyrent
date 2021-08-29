@@ -33,7 +33,8 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   int pointers = 0;
 
   late Future initCameraFuture;
-
+  bool showPreviewImage = false;
+  File? previewImage;
   int mandatoryImages = 0;
   int get mandatoryImagesTaken {
     int imageTakenCounter = 0;
@@ -65,13 +66,13 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
 
     for (var tag in camera.tags) {
       images.add(
-        CameraPicture(null, tag, true, ""),
+        CameraPicture(null, tag, true, "", ""),
       );
     }
 
     if (images.length == 0) {
       images.add(
-        CameraPicture(null, "Optionales Bild 1", true, ""),
+        CameraPicture(null, "Optionales Bild 1", true, "", ""),
       );
     }
     mandatoryImages = camera.tags.length;
@@ -80,7 +81,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
 
   Future<void> initCamera() async {
     cameras = await availableCameras();
-    cameraController = CameraController(cameras[0], ResolutionPreset.max);
+    cameraController = CameraController(cameras[0], ResolutionPreset.medium);
     await cameraController!.initialize();
   }
 
@@ -110,6 +111,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     cameraController!.setExposurePoint(offset);
     cameraController!.setFocusPoint(offset);
   }
+  
 
   @override
   void dispose() {
@@ -147,13 +149,20 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     }
   }
 
-  void takePicture() {
+  void takePicture(BuildContext context)  {
     if (takingPicturefinished) {
       takingPicturefinished = false;
       cameraController!.takePicture().then(
-        (XFile? file) {
+        (XFile? file) async {
           int currentIndex = currentImageIndex;
           images[currentImageIndex].image = file;
+          images[currentImageIndex].base64 = "data:image/jpg;base64," + base64Encode(await file!.readAsBytes());
+
+          // Nur 1 Foto erlaubt
+          if (camera.singleImage) {
+            closeCamera(context);
+            return;
+          }
           if (currentIndex == images.length - 1) {
             images.add(
               CameraPicture(
@@ -161,12 +170,18 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                   "Optionales Bild " +
                       (images.length + 1 - mandatoryImages).toString(),
                   true,
+                  "",
                   ""),
             );
           }
-
+          previewImage = File(file.path);
+          showPreviewImage = true;
           takingPicturefinished = true;
           notifyListeners();
+          Future.delayed(Duration(seconds: 2), () {
+            showPreviewImage = false;
+            notifyListeners();
+          });
         },
       );
     }
@@ -200,6 +215,13 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
 
     if (imagesToUpload().length == 0) {
       actionText = "Beenden";
+      if (camera.singleImage) {
+        Navigator.pop(
+          context,
+          imagesToUpload(),
+        );
+        return;
+      }
     }
 
     switch (camera.type) {
@@ -221,7 +243,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                   },
                   child: Text(
                     "Abbrechen",
-                    style: Theme.of(context).textTheme.button,
+                    style: Theme.of(context).textTheme.subtitle2,
                   ),
                 ),
                 TextButton(
@@ -237,7 +259,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                   },
                   child: Text(
                     actionText,
-                    style: Theme.of(context).textTheme.button,
+                    style: Theme.of(context).textTheme.subtitle2,
                   ),
                 )
               ],

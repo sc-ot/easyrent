@@ -5,6 +5,7 @@ import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/models/planned_movement.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class PlannedMovementViewData {
   StreamSubscription? subscription;
@@ -18,13 +19,14 @@ class PlannedMovementViewData {
   );
 }
 
-class MovementPlannedMovementSearchListProvider extends StateProvider {
+class MovementPlannedMovementSearchListProvider extends StateProvider  {
   EasyRentRepository easyRentRepository = EasyRentRepository();
   TextEditingController plannedMovementSearchFieldTextEditingController =
       TextEditingController();
 
 
   late PlannedMovement plannedMovement;
+  late Function onPressed;
 
   Map<String, PlannedMovementViewData> plannedMovements = {};
 
@@ -73,6 +75,11 @@ class MovementPlannedMovementSearchListProvider extends StateProvider {
 
   String lastSearchedText = "";
   bool initPlannedMovements = true;
+
+
+  int getMovementType(BuildContext context){
+    return DefaultTabController.of(context)!.index;
+  }
 
   void clearPlannedMovements() {
     for (var plannedMovementViewData in plannedMovements.values) {

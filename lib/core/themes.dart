@@ -36,7 +36,7 @@ class Themes {
         fontSize: 16,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.5,
-        color: Themes.darkPrimaryColor,
+        color: Themes.darkAccentColor,
       ),
       hintStyle: TextStyle(
         color: Themes.darkAccentColor,

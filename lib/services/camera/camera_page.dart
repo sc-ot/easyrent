@@ -19,8 +19,6 @@ class CameraPage extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (BuildContext context) => CameraProvider(camera),
       builder: (context, child) {
-
-        
         CameraProvider cameraProvider =
             Provider.of<CameraProvider>(context, listen: true);
 
@@ -143,7 +141,8 @@ class CameraPage extends StatelessWidget {
                                           alignment: Alignment.bottomCenter,
                                           child: RawMaterialButton(
                                             onPressed: () {
-                                              cameraProvider.takePicture();
+                                              cameraProvider
+                                                  .takePicture(context);
                                             },
                                             fillColor:
                                                 Colors.grey.withOpacity(0.05),
@@ -198,6 +197,23 @@ class CameraPage extends StatelessWidget {
                                         ),
                                       ),
                                     ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: FractionallySizedBox(
+                                  widthFactor: 0.2,
+                                  heightFactor: 0.3,
+                                  child: AnimatedOpacity(
+                                    opacity:
+                                        cameraProvider.showPreviewImage ? 1 : 0,
+                                    duration: Duration(milliseconds: 250),
+                                    child:
+                                       cameraProvider.previewImage != null ? Image.file(cameraProvider.previewImage!) : Container(),
                                   ),
                                 ),
                               ),

@@ -5,10 +5,13 @@ class MenuPageContainer extends StatelessWidget {
   final String subTitle;
   final Widget child;
   final double paddingBottom;
-  final bool isMobile;
-  MenuPageContainer(this.title, this.subTitle, this.child,
-      {Key? key, this.paddingBottom = 4, this.isMobile = false})
-      : super(key: key);
+  MenuPageContainer(
+    this.title,
+    this.subTitle,
+    this.child, {
+    Key? key,
+    this.paddingBottom = 4,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +28,11 @@ class MenuPageContainer extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FittedBox(
-                      child: Text(
-                        title,
-                        style: isMobile
-                            ? Theme.of(context)
-                                .textTheme
-                                .headline3!
-                                .copyWith(color: Theme.of(context).accentColor, fontSize: MediaQuery.of(context).size.height * 0.06)
-                            : Theme.of(context)
-                                .textTheme
-                                .headline3!
-                                .copyWith(color: Theme.of(context).accentColor),
-                                overflow: TextOverflow.ellipsis,
-                      ),
+                      child: Text(title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline3!
+                              .copyWith(color: Theme.of(context).accentColor)),
                     ),
                     SizedBox(
                       height: 8,
@@ -45,8 +40,7 @@ class MenuPageContainer extends StatelessWidget {
                     FittedBox(
                       child: Text(
                         subTitle,
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
-                            fontSize: MediaQuery.of(context).size.height * 0.023),
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
                   ],

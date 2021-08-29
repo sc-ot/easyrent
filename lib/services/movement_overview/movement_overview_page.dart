@@ -31,7 +31,7 @@ class MovementOverviewPage extends StatelessWidget {
               getListTile(
                 context,
                 entry.key,
-                entry.value,
+                entry.value["date_formatted"]!,
                 changeTime: true,
               ),
             );
@@ -40,7 +40,7 @@ class MovementOverviewPage extends StatelessWidget {
               getListTile(
                 context,
                 entry.key,
-                entry.value,
+                entry.value["date_formatted"]!,
               ),
             );
           }
@@ -48,7 +48,12 @@ class MovementOverviewPage extends StatelessWidget {
 
         return Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: AppBar(),
+          appBar: AppBar(
+            title: Text(
+              movementOverviewProvider.vehicle.licensePlate,
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
           body: movementOverviewProvider.ui == STATE.SUCCESS
               ? MenuPageContainer(
                   "Prüfungstermine",
@@ -66,31 +71,43 @@ class MovementOverviewPage extends StatelessWidget {
                             },
                             itemCount: tiles.length),
                       ),
+                      SizedBox(
+                        height: 16,
+                      ),
                       Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(0.0),
                           child: Container(
                             width: MediaQuery.of(context).size.width,
                             child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.green),
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(64.0),
+                                  ),
+                                ),
+                              ),
                               child: Text(
                                 "Fortfahren",
-                                style: Theme.of(context).textTheme.headline6,
+                               style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
                               ),
                               onPressed: () {
                                 Navigator.pushNamed(
                                     context,
                                     Constants
-                                        .ROUTE_MOVEMENT_MILES_AND_LICENSE_PLATE);
+                                        .ROUTE_MOVEMENT_DRIVING_LICENSE,
+                                        arguments: movementOverviewProvider.inspectionReport);
                               },
                             ),
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 32,
+                      ),
                     ],
                   ),
-                  isMobile: Utils.getDevice(context) == Device.PHONE,
                 )
               : Center(
                   child: ERLoadingIndicator(),

@@ -23,7 +23,12 @@ class Constants {
       "/movement_planned_movement_search_list";
   static const String ROUTE_MOVEMENT_SEARCH_LIST = "/movement_search_list";
   static const String ROUTE_MOVEMENT_OVERVIEW = "/movement_overview";
-  static const String ROUTE_MOVEMENT_MILES_AND_LICENSE_PLATE = "/movement_miles_and_license_plate";
+  static const String ROUTE_MOVEMENT_LICENSEPLATE_AND_MILES =
+      "/movement_miles_and_license_plate";
+  static const String ROUTE_MOVEMENT_DRIVING_LICENSE =
+      "/movement_driving_license";
+  static const String ROUTE_MOVEMENT_PROTOCOL =
+      "/movement_protocol";
 
   static const String KEY_IMAGES = "KEY_IMAGES";
   static const String KEY_AUTHORIZATION = "KEY_AUTHORIZATION";

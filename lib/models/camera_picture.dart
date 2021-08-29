@@ -5,7 +5,8 @@ class CameraPicture {
   String tag;
   bool showInGalery;
   String assetName;
-  CameraPicture(this.image, this.tag, this.showInGalery, this.assetName);
+  String base64;
+  CameraPicture(this.image, this.tag, this.showInGalery, this.assetName, this.base64);
 
 
 }

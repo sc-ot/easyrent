@@ -3,48 +3,58 @@ import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/models/movement_overview.dart';
 import 'package:easyrent/models/planned_movement.dart';
-import 'package:easyrent/services/images_new_vehicle/images_new_vehicle_provider.dart.dart';
 import 'package:easyrent/services/movement_planned_movement_search_list/movement_planned_movement_search_list_provider.dart';
-import 'package:easyrent/services/vehicle/vehicle_provider.dart';
 import 'package:easyrent/widgets/loading_indicator.dart';
-import 'package:easyrent/widgets/menu_page_container_widget.dart';
+import 'package:easyrent/widgets/planned_movement_search_list_entry.dart';
 import 'package:easyrent/widgets/vehicle_search_list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
 
-class MovementPlannedMovementSearchListPage extends StatelessWidget {
+class MovementPlannedMovementSearchListPage extends StatefulWidget {
   const MovementPlannedMovementSearchListPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<MovementPlannedMovementSearchListProvider>(
-          create: (context) => MovementPlannedMovementSearchListProvider(),
-        ),
-        ChangeNotifierProvider<VehicleProvider>(
-          create: (context) {
-            VehicleProvider vehicleProvider = VehicleProvider(
-              VEHICLELISTTYPE.STANDARD,
-              () {},
-            );
+  _MovementPlannedMovementSearchListPageState createState() =>
+      _MovementPlannedMovementSearchListPageState();
+}
 
-            return vehicleProvider;
-          },
-        ),
-      ],
+class _MovementPlannedMovementSearchListPageState
+    extends State<MovementPlannedMovementSearchListPage>
+    with SingleTickerProviderStateMixin {
+  @override
+  late TabController tabController;
+  void initState() {
+     tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<MovementPlannedMovementSearchListProvider>(
+      create: (context) {
+        MovementPlannedMovementSearchListProvider
+            movementPlannedMovementSearchListProvider =
+            MovementPlannedMovementSearchListProvider();
+        movementPlannedMovementSearchListProvider.onPressed = () =>
+            Navigator.pushNamed(context, Constants.ROUTE_MOVEMENT_OVERVIEW,
+                arguments: MovementOverview(
+                    tabController.index+1,
+                    null,
+                    movementPlannedMovementSearchListProvider.plannedMovement));
+        return movementPlannedMovementSearchListProvider;
+      },
       builder: (context, child) {
         MovementPlannedMovementSearchListProvider
             movementPlannedMovementSearchListProvider =
             Provider.of<MovementPlannedMovementSearchListProvider>(context,
                 listen: true);
-        return DefaultTabController(
-          length: 2,
-          child: Scaffold(
+        return 
+          Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               bottom: TabBar(
+                controller: tabController,
                 tabs: [
                   Tab(
                     icon: Icon(
@@ -96,6 +106,7 @@ class MovementPlannedMovementSearchListPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: TabBarView(
+                      controller: tabController,
                       children: [
                         PlannedMovementList(Constants.MOVEMENT_TYPE_ENTRY),
                         PlannedMovementList(Constants.MOVEMENT_TYPE_EXIT),
@@ -104,7 +115,6 @@ class MovementPlannedMovementSearchListPage extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
           ),
         );
       },
@@ -122,9 +132,6 @@ class PlannedMovementList extends StatelessWidget {
         movementPlannedMovementSearchListProvider =
         Provider.of<MovementPlannedMovementSearchListProvider>(context,
             listen: false);
-
-    VehicleProvider vehicleProvider =
-        Provider.of<VehicleProvider>(context, listen: false);
 
     List<PlannedMovement> plannedMovementsForPast = [];
     List<PlannedMovement> plannedMovementsForToday = [];
@@ -197,20 +204,9 @@ class PlannedMovementList extends StatelessWidget {
                       return Divider();
                     },
                     itemBuilder: (context, index) {
-                      vehicleProvider.onPressed = () => Navigator.pushNamed(
-                            context,
-                            Constants.ROUTE_MOVEMENT_OVERVIEW,
-                            arguments: MovementOverview(
-                              movementType,
-                              null,
-                              plannedMovementsForToday[index],
-                            ),
-                          );
-                      return VehicleSearchListEntry(
-                        plannedMovementsForToday[index].vehicle,
-                        date: Utils.formatDateTimestringWithTime(
-                            plannedMovementsForToday[index].movementDate),
-                        elevation: 0,
+                      return PlannedMovementSearchListEntry(
+                        plannedMovementsForToday[index],
+                        elevation: 3,
                       );
                     },
                     shrinkWrap: true,
@@ -234,17 +230,8 @@ class PlannedMovementList extends StatelessWidget {
                       return Divider();
                     },
                     itemBuilder: (context, index) {
-                      vehicleProvider.onPressed = () => Navigator.pushNamed(
-                            context,
-                            Constants.ROUTE_MOVEMENT_OVERVIEW,
-                            arguments: MovementOverview(movementType, null,
-                                plannedMovementsForPast[index]),
-                          );
-                      return VehicleSearchListEntry(
-                        plannedMovementsForPast[index].vehicle,
-                        date: Utils.formatDateTimestringWithTime(
-                          plannedMovementsForPast[index].movementDate,
-                        ),
+                      return PlannedMovementSearchListEntry(
+                        plannedMovementsForPast[index],
                         elevation: 0,
                       );
                     },
@@ -269,16 +256,8 @@ class PlannedMovementList extends StatelessWidget {
                       return Divider();
                     },
                     itemBuilder: (context, index) {
-                      vehicleProvider.onPressed = () => Navigator.pushNamed(
-                            context,
-                            Constants.ROUTE_MOVEMENT_OVERVIEW,
-                            arguments: MovementOverview(movementType, null,
-                                plannedMovementsForFuture[index]),
-                          );
-                      return VehicleSearchListEntry(
-                        plannedMovementsForFuture[index].vehicle,
-                        date: Utils.formatDateTimestringWithTime(
-                            plannedMovementsForFuture[index].movementDate),
+                       return PlannedMovementSearchListEntry(
+                        plannedMovementsForFuture[index],
                         elevation: 0,
                       );
                     },

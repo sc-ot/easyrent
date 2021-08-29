@@ -1,0 +1,7 @@
+{
+    "report_date": "Übergabedatum",
+    "next_general_inspection_date": "Hauptuntersuchung",
+    "next_security_inspection_date": "Sicherheitsprüfung",
+    "next_speedometer_inspection_date": "Tachoprüfung",
+    "next_uvv_inspection_date": "UVV"
+}
