@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:easyrent/models/status.dart';
@@ -116,10 +117,10 @@ class Vehicle {
       json["next_uvv_inspection_date"] ?? "",
       json["notes"] ?? "",
       json["linked_vehicle_equipments"] != null
-          ? json["linked_vehicle_equipments"]
-              .map<LinkedVehicleEquipment>(
-                  (element) => LinkedVehicleEquipment.fromJson(element))
-              .toList()
+          ? List<LinkedVehicleEquipment>.from(
+              json["linked_vehicle_equipments"]
+                  .map((x) => LinkedVehicleEquipment.fromJson(x)),
+            )
           : [],
       json["last_movement"] != null
           ? Movement.fromJson(json["last_movement"])
@@ -157,11 +158,8 @@ class Vehicle {
       "next_speedometer_inspection_date": nextSpeedoMeterInspectionDate,
       "next_uvv_inspection_date": nextUvvInspectionDate,
       "notes": notes,
-      "linked_vehicle_equipments": List<LinkedVehicleEquipment>.from(
-        linkedVehicleEquipments.map(
-          (x) => x.toJson(),
-        ),
-      ),
+      "linked_vehicle_equipments":
+          List<dynamic>.from(linkedVehicleEquipments.map((x) => x.toJson())),
       "last_movement": lastMovement?.toJson(),
       "current_contract": currentContract?.toJson(),
     };

@@ -15,6 +15,7 @@ import 'package:easyrent/network/repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'camera_page.dart';
 
@@ -111,7 +112,6 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     cameraController!.setExposurePoint(offset);
     cameraController!.setFocusPoint(offset);
   }
-  
 
   @override
   void dispose() {
@@ -149,14 +149,22 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     }
   }
 
-  void takePicture(BuildContext context)  {
+  void takePicture(BuildContext context) {
     if (takingPicturefinished) {
       takingPicturefinished = false;
       cameraController!.takePicture().then(
         (XFile? file) async {
+          Directory appDir = await getApplicationDocumentsDirectory();
+          String dirName =
+              appDir.path + "/" + file.hashCode.toString() + ".jpg";
+
+          file!.saveTo(dirName);
+
+          XFile xfile = XFile(dirName);
           int currentIndex = currentImageIndex;
-          images[currentImageIndex].image = file;
-          images[currentImageIndex].base64 = "data:image/jpg;base64," + base64Encode(await file!.readAsBytes());
+          images[currentImageIndex].image = xfile;
+          images[currentImageIndex].base64 =
+              "data:image/jpg;base64," + base64Encode(await file.readAsBytes());
 
           // Nur 1 Foto erlaubt
           if (camera.singleImage) {

@@ -7,6 +7,10 @@ class Themes {
   static Color darkPrimaryColorDark = Color(0xFF000000);
   static Color darkAccentColor = Color(0xFFff9800);
   static ThemeData darkTheme = ThemeData(
+    appBarTheme: AppBarTheme(
+      elevation: 0,
+      brightness: Brightness.light,
+    ),
     primaryColor: Themes.darkPrimaryColor,
     primaryColorLight: Themes.darkPrimaryColorLight,
     primaryColorDark: Themes.darkPrimaryColorDark,
@@ -57,7 +61,6 @@ class Themes {
         ),
       ),
     ),
-
     textTheme: TextTheme(
       headline1: GoogleFonts.roboto(
         fontSize: 96,
@@ -136,7 +139,6 @@ class Themes {
         color: Colors.white,
       ),
     ),
-    
   );
 
   static Color primaryColor = Color(0xFFfafafa);
@@ -145,6 +147,10 @@ class Themes {
   static Color accentColor = Color(0xFFff9800);
 
   static ThemeData lightTheme = ThemeData(
+    appBarTheme: AppBarTheme(
+      brightness: Brightness.light,
+      elevation: 0,
+    ),
     primaryColor: Themes.primaryColor,
     primaryColorLight: Themes.primaryColorLight,
     primaryColorDark: Themes.primaryColorDark,
@@ -152,11 +158,8 @@ class Themes {
     iconTheme: IconThemeData(
       color: Themes.accentColor,
     ),
-    
-    
     cardColor: Themes.primaryColorLight,
-    textSelectionTheme: TextSelectionThemeData(
-    ),
+    textSelectionTheme: TextSelectionThemeData(),
     scaffoldBackgroundColor: Themes.primaryColor,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
@@ -187,7 +190,7 @@ class Themes {
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-         color:Themes.darkPrimaryColorLight.withOpacity(0.5),
+          color: Themes.darkPrimaryColorLight.withOpacity(0.5),
         ),
       ),
       focusedBorder: OutlineInputBorder(
@@ -249,7 +252,7 @@ class Themes {
         fontSize: 14,
         fontWeight: FontWeight.w500,
         letterSpacing: 1.25,
-           color: Colors.white,
+        color: Colors.white,
       ),
       caption: GoogleFonts.roboto(
         fontSize: 12,
