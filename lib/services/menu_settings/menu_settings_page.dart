@@ -1,4 +1,5 @@
 import 'package:easyrent/core/authenticator.dart';
+import 'package:easyrent/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,22 +20,50 @@ class MenuSettingsPage extends StatelessWidget {
         MenuSettingsProvider menuSettingsProvider =
             Provider.of<MenuSettingsProvider>(context, listen: true);
         return Scaffold(
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              Authenticator.logout(context);
-            },
-            backgroundColor: Colors.red,
-            icon: Icon(
-              Icons.exit_to_app,
-              color: Colors.white,
-            ),
-            label: Text(
-              "Abmelden",
-              style: Theme.of(context)
-                  .textTheme
-                  .button!
-                  .copyWith(color: Colors.white),
-            ),
+          floatingActionButton: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton.extended(
+                onPressed: () {
+                  Navigator.popAndPushNamed(
+                    context,
+                    Constants.ROUTE_CLIENTS,
+                  );
+                },
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                icon: Icon(
+                  Icons.exit_to_app,
+                  color: Colors.white,
+                ),
+                label: Text(
+                  "Mandanten wechseln",
+                  style: Theme.of(context)
+                      .textTheme
+                      .button!
+                      .copyWith(color: Colors.white),
+                ),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              FloatingActionButton.extended(
+                onPressed: () {
+                 Authenticator.logout(context);
+                },
+                backgroundColor: Colors.red,
+                icon: Icon(
+                  Icons.exit_to_app,
+                  color: Colors.white,
+                ),
+                label: Text(
+                  "Abmelden",
+                  style: Theme.of(context)
+                      .textTheme
+                      .button!
+                      .copyWith(color: Colors.white),
+                ),
+              ),
+            ],
           ),
           body: MenuPageContainer(
             title,

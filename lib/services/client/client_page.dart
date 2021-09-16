@@ -41,52 +41,58 @@ class ClientPage extends StatelessWidget {
                 Expanded(
                   flex: 7,
                   child: clientProvider.ui == STATE.SUCCESS
-                      ? Container(
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: clientProvider.clients.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(3.0),
-                                  ),
-                                  color: Theme.of(context).primaryColorLight,
-                                  child: InkWell(
-                                    borderRadius: BorderRadius.circular(3.0),
-                                    onTap: () {
-                                      clientProvider.selectClient(
-                                          context, index);
-                                    },
-                                    child: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(24.0),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              height: 30,
-                                              width: 1,
-                                              color: Colors.orange,
-                                            ),
-                                            SizedBox(
-                                              width: 16,
-                                            ),
-                                            Text(
-                                                clientProvider
-                                                    .clients[index].name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline5!),
-                                          ],
+                      ? Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Container(
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              itemCount: clientProvider.clients.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(3.0),
+                                    ),
+                                    color: Theme.of(context).primaryColorLight,
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(3.0),
+                                      onTap: () {
+                                        clientProvider.selectClient(
+                                            context, index);
+                                      },
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(24.0),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                height: 30,
+                                                width: 1,
+                                                color: Colors.orange,
+                                              ),
+                                              SizedBox(
+                                                width: 16,
+                                              ),
+                                              Text(
+                                                  clientProvider
+                                                      .clients[index].name,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline5!),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                              separatorBuilder: (context, index){
+                                return SizedBox(height: 8,);
+                              },
+                            ),
                           ),
-                        )
+                      )
                       : Center(
                           child: ERLoadingIndicator(),
                         ),
