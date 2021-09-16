@@ -6,7 +6,7 @@ class ERLinearProgressIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LinearProgressIndicator(
-      color: Theme.of(context).accentColor,
+      color: Theme.of(context).colorScheme.secondary,
       backgroundColor: Theme.of(context).primaryColor,
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Themes {
@@ -7,14 +8,22 @@ class Themes {
   static Color darkPrimaryColorDark = Color(0xFF000000);
   static Color darkAccentColor = Color(0xFFff9800);
   static ThemeData darkTheme = ThemeData(
+    colorScheme: ColorScheme.dark(
+      secondary: Themes.darkAccentColor,
+      primary: Themes.darkPrimaryColor,
+    ),
     appBarTheme: AppBarTheme(
       elevation: 0,
-      brightness: Brightness.light,
+      actionsIconTheme: IconThemeData(
+        color: Colors.white,
+      ),
+      iconTheme: IconThemeData(
+        color: Colors.white,
+      ),
     ),
     primaryColor: Themes.darkPrimaryColor,
     primaryColorLight: Themes.darkPrimaryColorLight,
     primaryColorDark: Themes.darkPrimaryColorDark,
-    accentColor: Themes.darkAccentColor,
     iconTheme: IconThemeData(
       color: Themes.darkAccentColor,
     ),
@@ -148,13 +157,22 @@ class Themes {
 
   static ThemeData lightTheme = ThemeData(
     appBarTheme: AppBarTheme(
-      brightness: Brightness.light,
+      backgroundColor: Themes.primaryColor,
       elevation: 0,
+      actionsIconTheme: IconThemeData(
+        color: Colors.black,
+      ),
+      iconTheme: IconThemeData(
+        color: Colors.black,
+      ),
+    ),
+    colorScheme: ColorScheme.dark(
+      secondary: Themes.accentColor,
+      primary: Themes.primaryColor,
     ),
     primaryColor: Themes.primaryColor,
     primaryColorLight: Themes.primaryColorLight,
     primaryColorDark: Themes.primaryColorDark,
-    accentColor: Themes.accentColor,
     iconTheme: IconThemeData(
       color: Themes.accentColor,
     ),
@@ -204,49 +222,59 @@ class Themes {
         fontSize: 96,
         fontWeight: FontWeight.w300,
         letterSpacing: -1.5,
+        color: Colors.black,
       ),
       headline2: GoogleFonts.roboto(
         fontSize: 60,
         fontWeight: FontWeight.w300,
         letterSpacing: -0.5,
+        color: Colors.black,
       ),
       headline3: GoogleFonts.roboto(
         fontSize: 48,
         fontWeight: FontWeight.w400,
+        color: Colors.black,
       ),
       headline4: GoogleFonts.roboto(
         fontSize: 34,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.25,
+        color: Colors.black,
       ),
       headline5: GoogleFonts.roboto(
         fontSize: 24,
         fontWeight: FontWeight.w400,
+        color: Colors.black,
       ),
       headline6: GoogleFonts.roboto(
         fontSize: 20,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.15,
+        color: Colors.black,
       ),
       subtitle1: GoogleFonts.roboto(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.15,
+        color: Colors.black,
       ),
       subtitle2: GoogleFonts.roboto(
         fontSize: 14,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.1,
+        color: Colors.black,
       ),
       bodyText1: GoogleFonts.roboto(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.5,
+        color: Colors.black,
       ),
       bodyText2: GoogleFonts.roboto(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.25,
+        color: Colors.black,
       ),
       button: GoogleFonts.roboto(
         fontSize: 14,
@@ -258,11 +286,13 @@ class Themes {
         fontSize: 12,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.4,
+        color: Colors.black,
       ),
       overline: GoogleFonts.roboto(
         fontSize: 10,
         fontWeight: FontWeight.w400,
         letterSpacing: 1.5,
+        color: Colors.black,
       ),
     ),
   );

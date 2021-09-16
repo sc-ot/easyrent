@@ -56,8 +56,8 @@ class MenuPage extends StatelessWidget {
             },
             gap: 12,
             icon: menu[index].icon,
-            iconColor: Theme.of(context).accentColor,
-            iconActiveColor: Theme.of(context).accentColor,
+            iconColor: Theme.of(context).colorScheme.secondary,
+            iconActiveColor: Theme.of(context).colorScheme.secondary,
             text: menu[index].text,
             textColor: Theme.of(context).textTheme.headline5!.color,
             backgroundColor:

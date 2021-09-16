@@ -277,7 +277,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                 style: Theme.of(context)
                     .textTheme
                     .subtitle1!
-                    .copyWith(color: Theme.of(context).accentColor),
+                    .copyWith(color: Theme.of(context).colorScheme.secondary),
               ),
               content: Text(
                 bodyText,

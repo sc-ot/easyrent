@@ -23,7 +23,7 @@ class ImagesNewVehiclePage extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             backgroundColor: imagesNewVehicleProvider.ui == STATE.IDLE
                 ? Colors.grey
-                : Theme.of(context).accentColor,
+                : Theme.of(context).colorScheme.secondary,
             child: Icon(Icons.camera_alt),
             onPressed: imagesNewVehicleProvider.ui == STATE.IDLE
                 ? null
@@ -57,7 +57,7 @@ class ImagesNewVehiclePage extends StatelessWidget {
                     labelText: "Fahrgestellnummer",
                     labelStyle: Theme.of(context).textTheme.bodyText1,
                     counterStyle:
-                        TextStyle(color: Theme.of(context).accentColor),
+                        TextStyle(color: Theme.of(context).colorScheme.secondary),
                   ),
                   maxLength: 16,
                 ),

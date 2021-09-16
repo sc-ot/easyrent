@@ -50,7 +50,7 @@ class MovementLicensPlateAndMilesPage extends StatelessWidget {
                           labelStyle: Theme.of(context)
                               .textTheme
                               .headline5!
-                              .copyWith(color: Theme.of(context).accentColor),
+                              .copyWith(color: Theme.of(context).colorScheme.secondary),
                         ),
                         style: Theme.of(context).textTheme.headline5,
                       ),
@@ -70,7 +70,7 @@ class MovementLicensPlateAndMilesPage extends StatelessWidget {
                           labelStyle: Theme.of(context)
                               .textTheme
                               .headline5!
-                              .copyWith(color: Theme.of(context).accentColor),
+                              .copyWith(color: Theme.of(context).colorScheme.secondary),
                         ),
                         style: Theme.of(context).textTheme.headline5,
                       ),
@@ -86,7 +86,7 @@ class MovementLicensPlateAndMilesPage extends StatelessWidget {
                             movementLicensPlateAndMilesProvider.ui ==
                                     STATE.SUCCESS
                                 ? MaterialStateProperty.all<Color>(
-                                    Theme.of(context).accentColor)
+                                    Theme.of(context).colorScheme.secondary)
                                 : MaterialStateProperty.all<Color>(Colors.grey),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(

@@ -100,7 +100,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .headline6!
-                      .copyWith(color: Theme.of(context).accentColor),
+                      .copyWith(color: Theme.of(context).colorScheme.secondary),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

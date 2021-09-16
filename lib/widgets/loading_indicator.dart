@@ -14,7 +14,7 @@ class ERLoadingIndicator extends StatelessWidget {
         child: LoadingIndicator(
           indicatorType: Indicator.circleStrokeSpin,
           colors: [
-            Theme.of(context).accentColor,
+            Theme.of(context).colorScheme.secondary,
           ],
         ),
       ),

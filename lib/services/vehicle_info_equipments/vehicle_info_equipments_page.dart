@@ -61,7 +61,7 @@ class VehicleInfoEquipmentsPage extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .caption!
-                        .copyWith(color: Theme.of(context).accentColor),
+                        .copyWith(color: Theme.of(context).colorScheme.secondary),
                   ),
                 );
               },

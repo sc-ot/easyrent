@@ -134,7 +134,7 @@ class MovementOverviewPage extends StatelessWidget {
             trailing: IconButton(
               icon: Icon(
                 Icons.edit,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               onPressed: () {
                 movementOverviewProvider.changeDate(title, context,
@@ -144,7 +144,7 @@ class MovementOverviewPage extends StatelessWidget {
             title: Text(
               title,
               style: Theme.of(context).textTheme.headline5!.copyWith(
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
             ),
             subtitle: Padding(

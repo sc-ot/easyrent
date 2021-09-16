@@ -44,7 +44,7 @@ class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClient
                       padding: const EdgeInsets.only(top: 16.0),
                       child: RefreshIndicator(
                         color: Theme.of(context).primaryColorLight,
-                        backgroundColor: Theme.of(context).accentColor,
+                        backgroundColor: Theme.of(context).colorScheme.secondary,
                         onRefresh: () => Future.sync(
                             () => vehicleProvider.pagingController.refresh()),
                         child: PagedListView<int, Vehicle>(
@@ -141,7 +141,7 @@ class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClient
                                             indicatorType:
                                                 Indicator.circleStrokeSpin,
                                             colors: [
-                                              Theme.of(context).accentColor,
+                                              Theme.of(context).colorScheme.secondary,
                                             ],
                                           ),
                                         ),
@@ -170,7 +170,7 @@ class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClient
                                       child: LoadingIndicator(
                                         indicatorType: Indicator.circleStrokeSpin,
                                         colors: [
-                                          Theme.of(context).accentColor,
+                                          Theme.of(context).colorScheme.secondary,
                                         ],
                                       ),
                                     ),

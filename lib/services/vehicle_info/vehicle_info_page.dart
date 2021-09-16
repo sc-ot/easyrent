@@ -35,7 +35,7 @@ class VehicleInfoPage extends StatelessWidget {
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
                   title: Text("Fahrzeug Nr. ${vehicle.vehicleNumber}",
-                      style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).accentColor)),
+                      style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.secondary)),
                   background: vehicleInfoProvider.ui == STATE.LOADING ||
                           vehicleInfoProvider.ui == STATE.IDLE
                       ? Center(
@@ -362,7 +362,7 @@ class VehicleInfoCardEntry extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .subtitle2!
-              .copyWith(color: Theme.of(context).accentColor),
+              .copyWith(color: Theme.of(context).colorScheme.secondary),
         ),
         SizedBox(
           height: 4,

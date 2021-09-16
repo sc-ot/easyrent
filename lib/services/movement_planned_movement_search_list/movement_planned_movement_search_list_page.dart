@@ -97,7 +97,7 @@ class _MovementPlannedMovementSearchListPageState
                         labelText: "Suchen",
                         labelStyle: Theme.of(context).textTheme.bodyText1,
                         counterStyle:
-                            TextStyle(color: Theme.of(context).accentColor),
+                            TextStyle(color: Theme.of(context).colorScheme.secondary),
                       ),
                     ),
                   ),

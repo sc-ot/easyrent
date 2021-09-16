@@ -32,7 +32,7 @@ class MenuPageContainer extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .headline3!
-                              .copyWith(color: Theme.of(context).accentColor)),
+                              .copyWith(color: Theme.of(context).colorScheme.secondary)),
                     ),
                     SizedBox(
                       height: 8,

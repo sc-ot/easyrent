@@ -189,7 +189,7 @@ class MovementDrivingLicensePage extends StatelessWidget {
                         activeIndex: movementDrivingLicenseProvider.currentPage,
                         count: 2,
                         effect: WormEffect(
-                          activeDotColor: Theme.of(context).accentColor,
+                          activeDotColor: Theme.of(context).colorScheme.secondary,
                           dotColor: Theme.of(context).primaryColorDark,
                         ),
                       ),

@@ -35,7 +35,7 @@ class LoginPage extends StatelessWidget {
                                     .textTheme
                                     .headline4!
                                     .copyWith(
-                                        color: Theme.of(context).accentColor),
+                                        color: Theme.of(context).colorScheme.secondary),
                               ),
                               Padding(
                                 padding:
@@ -61,7 +61,7 @@ class LoginPage extends StatelessWidget {
                                       Theme.of(context).textTheme.bodyText1,
                                   prefixIcon: Icon(
                                     Icons.person_add_alt_1_outlined,
-                                    color: Theme.of(context).accentColor,
+                                    color: Theme.of(context).colorScheme.secondary,
                                   ),
                                 ),
                                 controller: loginProvider.usernameController,
@@ -78,7 +78,7 @@ class LoginPage extends StatelessWidget {
                                       Theme.of(context).textTheme.bodyText1,
                                   prefixIcon: Icon(
                                     Icons.lock_outline_rounded,
-                                    color: Theme.of(context).accentColor,
+                                    color: Theme.of(context).colorScheme.secondary,
                                   ),
                                 ),
                               ),
