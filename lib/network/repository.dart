@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:devtools/api.dart';
 import 'package:devtools/models/failure.dart';
 import 'package:devtools/models/file_payload.dart';
+import 'package:devtools/sc_network_api.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/client.dart';
 import 'package:easyrent/models/inspection_report.dart';
@@ -12,12 +12,12 @@ import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/models/vehicle_image.dart';
 
 class EasyRentRepository {
-  Api api = Api();
+  SCNetworkApi api = SCNetworkApi();
 
   static final EasyRentRepository _instance = EasyRentRepository._internal();
   factory EasyRentRepository() {
     _instance.api.baseUrl = Constants.BASE_URL;
-    _instance.api.enableLog = true;
+    _instance.api.enableLog();
     return _instance;
   }
 
@@ -28,7 +28,6 @@ class EasyRentRepository {
         "system/login",
         body: body,
         serializer: (_) => Login.fromJson(_),
-        retry: true,
       );
 
   Future<Either<Failure, dynamic>> getClients() => api.request<Client>(
@@ -47,7 +46,7 @@ class EasyRentRepository {
         responseType: ResponseType.LIST,
         serializer: (_) => Vehicle.fromJson(_),
         searchQuery: searchQuery,
-        paging: paging,
+        page: paging,
         searchIn: searchQuery != null && searchQuery != ""
             ? [
                 "vehicle_number",
@@ -66,7 +65,7 @@ class EasyRentRepository {
         responseType: ResponseType.LIST,
         serializer: (_) => Vehicle.fromJson(_),
         searchQuery: searchQuery,
-        paging: paging,
+        page: paging,
         searchIn: searchQuery != null && searchQuery != ""
             ? [
                 "vehicle_number",
@@ -85,7 +84,7 @@ class EasyRentRepository {
         responseType: ResponseType.LIST,
         serializer: (_) => Vehicle.fromJson(_),
         searchQuery: searchQuery,
-        paging: paging,
+        page: paging,
         searchIn: searchQuery != null && searchQuery != ""
             ? [
                 "vehicle_number",

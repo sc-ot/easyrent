@@ -49,9 +49,18 @@ class ImagesHistoryPage extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                               child: ListTile(
-                                leading: Text((index + 1).toString(),
+                                leading: FittedBox(
+                                  child: Text(
+                                    imagesHistoryProvider
+                                            .imageHistory[index].client
+                                            .contains("Easy")
+                                        ? "ER"
+                                        : imagesHistoryProvider
+                                            .imageHistory[index].client,
                                     style:
-                                        Theme.of(context).textTheme.headline6),
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                ),
                                 title: Text(
                                     imagesHistoryProvider.imageHistory[index]
                                         .vehicle!.licensePlate,
@@ -68,7 +77,7 @@ class ImagesHistoryPage extends StatelessWidget {
                                           .subtitle2!
                                           .copyWith(
                                               color: Theme.of(context)
-                                                  .accentColor),
+                                                  .colorScheme.secondary),
                                     ),
                                     Text(
                                         imagesHistoryProvider

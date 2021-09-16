@@ -1,4 +1,4 @@
-import 'package:devtools/storage.dart';
+import 'package:devtools/sc_shared_prefs_storage.dart';
 import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
@@ -13,9 +13,9 @@ class MenuSettingsProvider extends StateProvider {
     settings.add(
       SettingsEntry(
         "Vorlage bei Fahrzeugfotos anzeigen",
-        Storage.readBool(Constants.KEY_SHOW_CAMERA_OVERLAY) ?? false,
+        SCSharedPrefStorage.readBool(Constants.KEY_SHOW_CAMERA_OVERLAY) ?? false,
         (value) {
-          Storage.saveData(Constants.KEY_SHOW_CAMERA_OVERLAY, value);
+          SCSharedPrefStorage.saveData(Constants.KEY_SHOW_CAMERA_OVERLAY, value);
         },
       ),
     );

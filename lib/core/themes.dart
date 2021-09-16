@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Themes {
@@ -8,12 +7,14 @@ class Themes {
   static Color darkPrimaryColorDark = Color(0xFF000000);
   static Color darkAccentColor = Color(0xFFff9800);
   static ThemeData darkTheme = ThemeData(
+   
     colorScheme: ColorScheme.dark(
       secondary: Themes.darkAccentColor,
       primary: Themes.darkPrimaryColor,
     ),
     appBarTheme: AppBarTheme(
       elevation: 0,
+      backgroundColor: Themes.darkPrimaryColor,
       actionsIconTheme: IconThemeData(
         color: Colors.white,
       ),
@@ -156,6 +157,7 @@ class Themes {
   static Color accentColor = Color(0xFFff9800);
 
   static ThemeData lightTheme = ThemeData(
+   
     appBarTheme: AppBarTheme(
       backgroundColor: Themes.primaryColor,
       elevation: 0,

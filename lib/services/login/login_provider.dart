@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:devtools/storage.dart';
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
@@ -15,11 +13,10 @@ class LoginProvider extends StateProvider {
   TextEditingController passwordController = TextEditingController();
   StreamSubscription? loginUserSubscription;
   int selectedClient = 0;
-  Storage storage = Storage();
 
   LoginProvider() {
-    usernameController.text = "devm1";
-    passwordController.text = "Start01";
+  // usernameController.text = "devm1";
+  //  passwordController.text = "Start01";
     notifyListeners();
   }
   void loginUser(BuildContext context) async {

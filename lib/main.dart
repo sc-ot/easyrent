@@ -1,4 +1,4 @@
-import 'package:devtools/storage.dart';
+import 'package:devtools/sc_shared_prefs_storage.dart';
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/themes.dart';
@@ -33,7 +33,7 @@ final navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Storage().init();
+  await SCSharedPrefStorage().init();
   Authenticator.initAuthentication();
 
   runApp(

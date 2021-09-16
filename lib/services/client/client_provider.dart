@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:easyrent/models/client.dart';
+import 'package:provider/provider.dart';
 
 class ClientProvider extends StateProvider {
   EasyRentRepository easyRentRepository = EasyRentRepository();
@@ -34,6 +36,9 @@ class ClientProvider extends StateProvider {
   }
 
   void selectClient(BuildContext context, int clientIndex) {
+    Constants.BASE_URL = clients[clientIndex].backendUrl;
+    Provider.of<Application>(context, listen: false).client = clients[clientIndex];
+
     Navigator.popAndPushNamed(context, Constants.ROUTE_MENU);
   }
 

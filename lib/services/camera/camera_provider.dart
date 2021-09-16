@@ -4,7 +4,8 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:devtools/models/file_payload.dart';
-import 'package:devtools/storage.dart';
+import 'package:devtools/sc_shared_prefs_storage.dart';
+import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/main.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'camera_page.dart';
 
@@ -304,26 +306,28 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     if (images.length > 0) {
       List<String> imagePaths = images.map((e) => e.image!.path).toList();
       ImageHistory imageHistory = ImageHistory(
-          imagePaths,
-          Utils.formatDateTimestringWithTime(DateTime.now().toIso8601String()),
-          camera.vehicle,
-          camera.vin);
+        Provider.of<Application>(context, listen: false).client.name,
+        imagePaths,
+        Utils.formatDateTimestringWithTime(DateTime.now().toIso8601String()),
+        camera.vehicle,
+        camera.vin,
+      );
 
       dynamic historyInPref;
 
-      String? history = Storage.readString(Constants.KEY_IMAGES);
+      String? history = SCSharedPrefStorage.readString(Constants.KEY_IMAGES);
 
       if (history != null) {
         historyInPref = jsonDecode(history);
         historyInPref.add(imageHistory);
-        Storage.saveData(
+        SCSharedPrefStorage.saveData(
           Constants.KEY_IMAGES,
           jsonEncode(
             historyInPref,
           ),
         );
       } else {
-        Storage.saveData(
+        SCSharedPrefStorage.saveData(
           Constants.KEY_IMAGES,
           jsonEncode(
             [imageHistory],

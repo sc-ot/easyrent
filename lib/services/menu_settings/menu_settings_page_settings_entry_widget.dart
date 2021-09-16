@@ -39,6 +39,10 @@ class _SettingsEntryState extends State<SettingsEntry> {
               ),
             ),
             Switch(
+              activeColor: Theme.of(context).colorScheme.secondary,
+              inactiveThumbColor: Theme.of(context).colorScheme.secondary,
+              inactiveTrackColor: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+              activeTrackColor: Theme.of(context).colorScheme.secondary,
               onChanged: (bool value) {
                 setState(
                   () {
