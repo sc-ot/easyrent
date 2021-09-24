@@ -22,20 +22,18 @@ class MenuMovementPage extends StatelessWidget {
             child: MenuCardIconText(
               "Eingang",
               LineIcons.arrowDown,
-              () => null,
-             /* () => Navigator.pushNamed(
+              () => Navigator.pushNamed(
                   context, Constants.ROUTE_MOVEMENT_SEARCH_LIST,
-                  arguments: Constants.MOVEMENT_TYPE_ENTRY),*/
+                  arguments: Constants.MOVEMENT_TYPE_ENTRY),
             ),
           ),
           Flexible(
             child: MenuCardIconText(
               "Ausgang",
               LineIcons.arrowUp,
-               () => null,
-             /* () => Navigator.pushNamed(
+              () => Navigator.pushNamed(
                   context, Constants.ROUTE_MOVEMENT_SEARCH_LIST,
-                  arguments: Constants.MOVEMENT_TYPE_EXIT),*/
+                  arguments: Constants.MOVEMENT_TYPE_EXIT),
             ),
           ),
           Flexible(

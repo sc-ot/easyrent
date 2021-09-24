@@ -4,6 +4,7 @@ import 'package:devtools/models/file_payload.dart';
 import 'package:devtools/sc_network_api.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/client.dart';
+import 'package:easyrent/models/fleet_vehicle_image_upload_process.dart';
 import 'package:easyrent/models/inspection_report.dart';
 import 'package:easyrent/models/login.dart';
 import 'package:easyrent/models/movement.dart';
@@ -35,7 +36,7 @@ class EasyRentRepository {
         "system/mandanten",
         responseType: ResponseType.LIST,
         serializer: (_) => Client.fromJson(_),
-        retry: true,
+        retry: false,
       );
 
   Future<Either<Failure, dynamic>> getVehicles(
@@ -173,6 +174,14 @@ class EasyRentRepository {
         serializer: (_) => PlannedMovement.fromJson(_),
         retry: true,
         searchQuery: searchQuery,
+      );
+
+  Future<Either<Failure, dynamic>> getImageUploadProcess() => api.request(
+        Method.GET,
+        "fleet/vehicles/images/uploadprocess",
+        responseType: ResponseType.SINGLE,
+        serializer: (_) => FleetVehicleImageUploadProccess.fromJson(_),
+        retry: true,
       );
 
   Future<Either<Failure, dynamic>> generateInspectionReport(

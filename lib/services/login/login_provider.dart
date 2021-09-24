@@ -15,9 +15,8 @@ class LoginProvider extends StateProvider {
   int selectedClient = 0;
 
   LoginProvider() {
-  // usernameController.text = "devm1";
-  //  passwordController.text = "Start01";
-    notifyListeners();
+    // usernameController.text = "devm1";
+    //  passwordController.text = "Start01";
   }
   void loginUser(BuildContext context) async {
     Map<String, dynamic> loginData = {

@@ -1,5 +1,5 @@
 class Constants {
-  static String BASE_URL = "https://erbackend.works4dev.de/api/v1";
+  static String BASE_URL = "http://192.168.2.27:9001/api/v1";
 
   static const int MOVEMENT_TYPE_ENTRY = 1;
   static const int MOVEMENT_TYPE_EXIT = 2;
@@ -33,4 +33,6 @@ class Constants {
   static const String KEY_USERNAME = "KEY_USERNAME";
   static const String KEY_THEME = "KEY_THEME";
   static const String KEY_SHOW_CAMERA_OVERLAY = "KEY_SHOW_CAMERA_OVERLAY";
+
+  static const int VIN_MAX_LENGTH = 17;
 }

@@ -26,7 +26,7 @@ class ClientProvider extends StateProvider {
           },
           (response) {
             clients = List<Client>.from(response);
-            
+
             ui = STATE.SUCCESS;
           },
         );
@@ -36,8 +36,9 @@ class ClientProvider extends StateProvider {
   }
 
   void selectClient(BuildContext context, int clientIndex) {
-    Constants.BASE_URL = clients[clientIndex].backendUrl;
-    Provider.of<Application>(context, listen: false).client = clients[clientIndex];
+    //  Constants.BASE_URL = clients[clientIndex].backendUrl;
+    Provider.of<Application>(context, listen: false).client =
+        clients[clientIndex];
 
     Navigator.popAndPushNamed(context, Constants.ROUTE_MENU);
   }

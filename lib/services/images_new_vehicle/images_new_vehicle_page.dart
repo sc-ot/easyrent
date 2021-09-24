@@ -56,10 +56,10 @@ class ImagesNewVehiclePage extends StatelessWidget {
                   decoration: InputDecoration(
                     labelText: "Fahrgestellnummer",
                     labelStyle: Theme.of(context).textTheme.bodyText1,
-                    counterStyle:
-                        TextStyle(color: Theme.of(context).colorScheme.secondary),
+                    counterStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary),
                   ),
-                  maxLength: 16,
+                  maxLength: Constants.VIN_MAX_LENGTH,
                 ),
               ),
             ),

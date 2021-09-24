@@ -11,6 +11,7 @@ import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/main.dart';
 import 'package:easyrent/models/camera.dart';
 import 'package:easyrent/models/camera_picture.dart';
+import 'package:easyrent/models/fleet_vehicle_image_upload_process.dart';
 import 'package:easyrent/models/image_history.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -173,6 +174,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
             closeCamera(context);
             return;
           }
+
           if (currentIndex == images.length - 1) {
             images.add(
               CameraPicture(
@@ -299,7 +301,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     );
   }
 
-  void uploadImages(BuildContext context) {
+  void uploadImages(BuildContext context) async {
     int successUploadedImages = 0;
     List<CameraPicture> images = imagesToUpload();
 
@@ -336,76 +338,88 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
       }
     }
 
-    switch (camera.type) {
-      case CameraType.VEHICLE:
-        for (var image in images) {
-          easyRentRepository
-              .uploadImage(
-                camera.vehicle!.id,
-                FilePayload(
-                  File(image.image!.path),
-                  {
-                    "tag": image.tag,
-                  },
-                ),
-              )
-              .asStream()
-              .listen(
-            (response) {
-              response.fold(
-                (l) {},
-                (r) {
-                  successUploadedImages++;
-                  if (successUploadedImages == images.length) {
-                    String titleText = camera.vehicle == null
-                        ? "Fahrzeug: " + camera.vin!
-                        : camera.vehicle!.letterNumber +
-                            " - " +
-                            camera.vehicle!.licensePlate;
-                    showSimpleNotification(
-                      Text(
-                        titleText,
-                        style: Theme.of(navigatorKey.currentContext!)
-                            .textTheme
-                            .subtitle1,
-                      ),
-                      subtitle: Text(
-                        "${images.length} Bilder hochgeladen",
-                        style: Theme.of(navigatorKey.currentContext!)
-                            .textTheme
-                            .subtitle2,
-                      ),
-                      background:
-                          Theme.of(navigatorKey.currentContext!).primaryColor,
-                      duration: Duration(seconds: 3),
-                      slideDismissDirection: DismissDirection.vertical,
-                      leading: Icon(
-                        Icons.done,
-                        color: Colors.green,
-                      ),
-                    );
-                  }
-                },
-              );
-            },
-          );
-        }
-        break;
-      case CameraType.NEW_VEHICLE:
-        for (var image in images) {
-          easyRentRepository.uploadImage(
-            0,
-            FilePayload(
-              File(image.image!.path),
-              {
-                "tag": image.tag,
-                "vin": camera.vin!,
-              },
-            ),
-          );
-          break;
-        }
-    }
+    easyRentRepository.getImageUploadProcess().asStream().listen(
+      (response) {
+        response.fold(
+          (failure) => null,
+          (response) {
+            FleetVehicleImageUploadProccess uploadProccess =
+                response as FleetVehicleImageUploadProccess;
+            switch (camera.type) {
+              case CameraType.VEHICLE:
+                for (var image in images) {
+                  easyRentRepository
+                      .uploadImage(
+                        camera.vehicle!.id,
+                        FilePayload(
+                          File(image.image!.path),
+                          {
+                            "tag": image.tag,
+                            "upload_process": uploadProccess.id.toString(),
+                          },
+                        ),
+                      )
+                      .asStream()
+                      .listen(
+                    (response) {
+                      response.fold(
+                        (l) {},
+                        (r) {
+                          successUploadedImages++;
+                          if (successUploadedImages == images.length) {
+                            String titleText = camera.vehicle == null
+                                ? "Fahrzeug: " + camera.vin!
+                                : camera.vehicle!.letterNumber +
+                                    " - " +
+                                    camera.vehicle!.licensePlate;
+                            showSimpleNotification(
+                              Text(
+                                titleText,
+                                style: Theme.of(navigatorKey.currentContext!)
+                                    .textTheme
+                                    .subtitle1,
+                              ),
+                              subtitle: Text(
+                                "${images.length} Bilder hochgeladen",
+                                style: Theme.of(navigatorKey.currentContext!)
+                                    .textTheme
+                                    .subtitle2,
+                              ),
+                              background: Theme.of(navigatorKey.currentContext!)
+                                  .primaryColor,
+                              duration: Duration(seconds: 3),
+                              slideDismissDirection: DismissDirection.vertical,
+                              leading: Icon(
+                                Icons.done,
+                                color: Colors.green,
+                              ),
+                            );
+                          }
+                        },
+                      );
+                    },
+                  );
+                }
+                break;
+              case CameraType.NEW_VEHICLE:
+                for (var image in images) {
+                  easyRentRepository.uploadImage(
+                    0,
+                    FilePayload(
+                      File(image.image!.path),
+                      {
+                        "tag": image.tag,
+                        "vin": camera.vin!,
+                      },
+                    ),
+                  );
+                  break;
+                }
+            }
+          },
+        );
+      },
+    );
   }
 
   bool allMandatoryImagesTaken() => mandatoryImagesTaken == mandatoryImages;

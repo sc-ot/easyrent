@@ -26,7 +26,7 @@ import 'core/application.dart';
 import 'services/client/client_page.dart';
 import 'services/login/login_page.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+//import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -45,7 +45,7 @@ void main() async {
         return OverlaySupport.global(
           child: MaterialApp(
             localizationsDelegates: [
-              AppLocalizations.delegate,
+              //  AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
@@ -86,7 +86,7 @@ void main() async {
                   MovementDrivingLicensePage(),
               Constants.ROUTE_MOVEMENT_LICENSEPLATE_AND_MILES: (context) =>
                   MovementLicensPlateAndMilesPage(),
-                Constants.ROUTE_MOVEMENT_PROTOCOL: (context) =>
+              Constants.ROUTE_MOVEMENT_PROTOCOL: (context) =>
                   MovementProtocolPage(),
             },
           ),

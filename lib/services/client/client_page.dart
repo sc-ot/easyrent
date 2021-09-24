@@ -42,8 +42,8 @@ class ClientPage extends StatelessWidget {
                   flex: 7,
                   child: clientProvider.ui == STATE.SUCCESS
                       ? Padding(
-                        padding: const EdgeInsets.all(32.0),
-                        child: Container(
+                          padding: const EdgeInsets.all(32.0),
+                          child: Container(
                             child: ListView.separated(
                               shrinkWrap: true,
                               itemCount: clientProvider.clients.length,
@@ -73,12 +73,14 @@ class ClientPage extends StatelessWidget {
                                               SizedBox(
                                                 width: 16,
                                               ),
-                                              Text(
-                                                  clientProvider
-                                                      .clients[index].name,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline5!),
+                                              Expanded(
+                                                child: Text(
+                                                    clientProvider
+                                                        .clients[index].name,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .headline5!),
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -87,12 +89,14 @@ class ClientPage extends StatelessWidget {
                                   ),
                                 );
                               },
-                              separatorBuilder: (context, index){
-                                return SizedBox(height: 8,);
+                              separatorBuilder: (context, index) {
+                                return SizedBox(
+                                  height: 8,
+                                );
                               },
                             ),
                           ),
-                      )
+                        )
                       : Center(
                           child: ERLoadingIndicator(),
                         ),

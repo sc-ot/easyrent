@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/models/inspection_report.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,76 +33,8 @@ class MovementProtocolPage extends StatelessWidget {
             },
           ),
           resizeToAvoidBottomInset: false,
-          body: CustomScrollView(
-            controller: scrollController,
-            slivers: <Widget>[
-              SliverAppBar(
-                actions: [],
-                leading: Container(),
-                elevation: 0,
-                flexibleSpace: Container(
-                  height:300,
-                  color: Colors.red,
-                ),
-                pinned: true,
-                collapsedHeight: 300,
-              ),
-              SliverToBoxAdapter(
-                child: Container(
-                  height: MediaQuery.of(context).size.height / 2,
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          height: 100,
-                          width: 100,
-                          color: Colors.blue,
-                          child: Text("OK"),
-                        ),
-                        Container(
-                          height: 100,
-                          width: 100,
-                          color: Colors.blue,
-                          child: Text("Nicht OK"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SliverList(
-                delegate: SliverChildListDelegate([
-                  ListTile(
-                    title: Text("HALLO"),
-                  ),
-                  ListTile(
-                    title: Text("HALLO"),
-                  ),
-                  ListTile(
-                    title: Text("HALLO"),
-                  ),
-                  ListTile(
-                    title: Text("HALLO"),
-                  ),
-                  ListTile(
-                    title: Text("HALLO"),
-                  ),
-                  ListTile(
-                    title: Text("HALLO"),
-                  ),
-                  ListTile(
-                    title: Text("HALLO"),
-                  ),
-                  ListTile(
-                    title: Text("HALLO"),
-                  ),
-                  ListTile(
-                    title: Text("HALLO"),
-                  ),
-                ]),
-              ),
-            ],
+          body: Stack(
+            children: [],
           ),
         );
       },
