@@ -13,6 +13,7 @@ class Authenticator {
     );
     Authenticator.saveToken("Bearer " + login.sessionToken);
     Authenticator.saveUser(login.firstName);
+    Authenticator.saveUserId(login.id);
   }
 
   static void initAuthentication() {
@@ -24,7 +25,8 @@ class Authenticator {
   }
 
   static bool userLoggedIn() {
-    String? authentication = SCSharedPrefStorage.readString(Constants.KEY_AUTHORIZATION);
+    String? authentication =
+        SCSharedPrefStorage.readString(Constants.KEY_AUTHORIZATION);
     return authentication != null ? true : false;
   }
 
@@ -45,6 +47,14 @@ class Authenticator {
 
   static String getUsername() {
     return SCSharedPrefStorage.readString(Constants.KEY_USERNAME) ?? "";
+  }
+
+  static void saveUserId(int id) {
+    return SCSharedPrefStorage.saveData(Constants.KEY_USER_ID, id);
+  }
+
+  static int getUserId() {
+    return SCSharedPrefStorage.readInt(Constants.KEY_USER_ID) ?? -1;
   }
 
   static void logout(BuildContext context) async {

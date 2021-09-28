@@ -4,6 +4,7 @@ import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/themes.dart';
 import 'package:easyrent/services/camera/camera_page.dart';
 import 'package:easyrent/services/image_history_galery/images_history_galery_page.dart';
+import 'package:easyrent/services/image_log/images_log_page.dart';
 import 'package:easyrent/services/images_history/images_history_page.dart';
 import 'package:easyrent/services/images_new_vehicle/images_new_vehicle_page.dart';
 import 'package:easyrent/services/images_vehicle_search_list/images_vehicle_search_list_page.dart';
@@ -18,6 +19,7 @@ import 'package:easyrent/services/vehicle_info/vehicle_info_page.dart';
 import 'package:easyrent/services/vehicle_info_equipments/vehicle_info_equipments_page.dart';
 import 'package:easyrent/services/vehicle_info_movements/vehicle_info_movements_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +36,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await SCSharedPrefStorage().init();
+
   Authenticator.initAuthentication();
 
   runApp(
@@ -88,6 +91,7 @@ void main() async {
                   MovementLicensPlateAndMilesPage(),
               Constants.ROUTE_MOVEMENT_PROTOCOL: (context) =>
                   MovementProtocolPage(),
+              Constants.ROUTE_IMAGES_LOG_PAGE: (context) => ImagesLogPage(),
             },
           ),
         );

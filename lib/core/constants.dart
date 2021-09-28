@@ -1,5 +1,6 @@
 class Constants {
-  static String BASE_URL = "http://192.168.2.27:9001/api/v1";
+  // "http://192.168.2.27:9001/api/v1"; local example
+  static String BASE_URL = "https://erbackend.works4dev.de/api/v1";
 
   static const int MOVEMENT_TYPE_ENTRY = 1;
   static const int MOVEMENT_TYPE_EXIT = 2;
@@ -27,10 +28,12 @@ class Constants {
   static const String ROUTE_MOVEMENT_DRIVING_LICENSE =
       "/movement_driving_license";
   static const String ROUTE_MOVEMENT_PROTOCOL = "/movement_protocol";
+  static const String ROUTE_IMAGES_LOG_PAGE = "/images_log_page";
 
   static const String KEY_IMAGES = "KEY_IMAGES";
   static const String KEY_AUTHORIZATION = "KEY_AUTHORIZATION";
   static const String KEY_USERNAME = "KEY_USERNAME";
+  static const String KEY_USER_ID = "KEY_USER_ID";
   static const String KEY_THEME = "KEY_THEME";
   static const String KEY_SHOW_CAMERA_OVERLAY = "KEY_SHOW_CAMERA_OVERLAY";
 

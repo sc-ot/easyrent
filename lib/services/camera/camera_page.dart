@@ -212,8 +212,10 @@ class CameraPage extends StatelessWidget {
                                     opacity:
                                         cameraProvider.showPreviewImage ? 1 : 0,
                                     duration: Duration(milliseconds: 250),
-                                    child:
-                                       cameraProvider.previewImage != null ? Image.file(cameraProvider.previewImage!) : Container(),
+                                    child: cameraProvider.previewImage != null
+                                        ? Image.file(
+                                            cameraProvider.previewImage!)
+                                        : Container(),
                                   ),
                                 ),
                               ),

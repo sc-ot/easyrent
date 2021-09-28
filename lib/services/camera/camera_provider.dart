@@ -6,6 +6,7 @@ import 'package:camera/camera.dart';
 import 'package:devtools/models/file_payload.dart';
 import 'package:devtools/sc_shared_prefs_storage.dart';
 import 'package:easyrent/core/application.dart';
+import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/main.dart';
@@ -16,6 +17,7 @@ import 'package:easyrent/models/image_history.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -79,6 +81,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
         CameraPicture(null, "Optionales Bild 1", true, "", ""),
       );
     }
+
     mandatoryImages = camera.tags.length;
     initCameraFuture = initCamera();
   }

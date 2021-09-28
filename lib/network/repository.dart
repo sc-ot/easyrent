@@ -2,9 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:devtools/models/failure.dart';
 import 'package:devtools/models/file_payload.dart';
 import 'package:devtools/sc_network_api.dart';
+import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/client.dart';
 import 'package:easyrent/models/fleet_vehicle_image_upload_process.dart';
+import 'package:easyrent/models/image_upload_group.dart';
 import 'package:easyrent/models/inspection_report.dart';
 import 'package:easyrent/models/login.dart';
 import 'package:easyrent/models/movement.dart';
@@ -107,6 +109,14 @@ class EasyRentRepository {
         retry: true,
       );
 
+  Future<Either<Failure, dynamic>> getImageLog() => api.request(
+        Method.GET,
+        "/fleet/vehicles/images/upload-process-groups",
+        responseType: ResponseType.LIST,
+        serializer: (_) => ImageUploadGroup.fromJson(_),
+        retry: true,
+      );
+
   Future<Either<Failure, dynamic>> getMovementsForVehicle(
     int vehicleId,
   ) =>
@@ -178,7 +188,7 @@ class EasyRentRepository {
 
   Future<Either<Failure, dynamic>> getImageUploadProcess() => api.request(
         Method.GET,
-        "fleet/vehicles/images/uploadprocess",
+        "fleet/vehicles/images/upload-process-groups/next",
         responseType: ResponseType.SINGLE,
         serializer: (_) => FleetVehicleImageUploadProccess.fromJson(_),
         retry: true,
