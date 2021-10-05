@@ -21,7 +21,6 @@ class MenuCardIconText extends StatelessWidget {
         elevation: 7,
         child: InkWell(
           onTap: () async {
-            
             await onPressed.call();
 
             FocusScope.of(context).requestFocus(
@@ -61,7 +60,7 @@ class MenuCardIconText extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   height: 3,
-                  color: Colors.orange,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               )
             ],

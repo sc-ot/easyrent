@@ -68,7 +68,11 @@ class ClientPage extends StatelessWidget {
                                               Container(
                                                 height: 30,
                                                 width: 1,
-                                                color: Colors.orange,
+                                                color: clientProvider
+                                                    .getColorForTheme(
+                                                        clientProvider
+                                                            .clients[index]
+                                                            .theme),
                                               ),
                                               SizedBox(
                                                 width: 16,

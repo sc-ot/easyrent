@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:devtools/sc_shared_prefs_storage.dart';
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
@@ -34,11 +35,10 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await SCSharedPrefStorage().init();
 
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   Authenticator.initAuthentication();
-
   runApp(
     ChangeNotifierProvider<Application>(
       create: (BuildContext context) => Application(),
@@ -56,8 +56,8 @@ void main() async {
             supportedLocales: [
               Locale('de', ''), // English, no country code
             ],
-            theme: Themes.lightTheme,
-            darkTheme: Themes.darkTheme,
+            theme: Themes.getLightTheme(),
+            darkTheme: Themes.getDarkTheme(),
             themeMode: application.themeMode,
             home: BaseApplication(),
             initialRoute: Constants.ROUTE_HOME,

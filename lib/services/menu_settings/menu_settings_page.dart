@@ -49,6 +49,20 @@ class MenuSettingsPage extends StatelessWidget {
         );
 
         settings.add(
+          SettingsEntry(
+            "Bilder lokal speichern",
+            SCSharedPrefStorage.readBool(Constants.KEY_SAVE_IMAGES_ON_DEVICE) !=
+                    null
+                ? true
+                : false,
+            (value) {
+              SCSharedPrefStorage.saveData(
+                  Constants.KEY_SAVE_IMAGES_ON_DEVICE, value);
+            },
+          ),
+        );
+
+        settings.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: FloatingActionButton.extended(

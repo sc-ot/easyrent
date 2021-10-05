@@ -21,7 +21,7 @@ class Application with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeAppAccentColor(Color color){
+  void changeAppAccentColor(Color color) {
     Themes.accentColor = color;
     Themes.darkAccentColor = color;
     notifyListeners();

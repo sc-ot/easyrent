@@ -6,7 +6,6 @@ import 'package:camera/camera.dart';
 import 'package:devtools/models/file_payload.dart';
 import 'package:devtools/sc_shared_prefs_storage.dart';
 import 'package:easyrent/core/application.dart';
-import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/main.dart';
@@ -15,12 +14,14 @@ import 'package:easyrent/models/camera_picture.dart';
 import 'package:easyrent/models/fleet_vehicle_image_upload_process.dart';
 import 'package:easyrent/models/image_history.dart';
 import 'package:easyrent/network/repository.dart';
+import 'package:exif/exif.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:native_device_orientation/native_device_orientation.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:image/image.dart' as img;
 
 import 'camera_page.dart';
 
@@ -31,6 +32,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   List<CameraDescription> cameras = [];
   List<CameraPicture> images = [];
   late Camera camera;
+  late NativeDeviceOrientation currentOrientation;
 
   double _currentScale = 1.0;
   double _baseScale = 1.0;
@@ -86,10 +88,19 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     initCameraFuture = initCamera();
   }
 
+  void setOrientation(NativeDeviceOrientation orientation) {
+    currentOrientation = orientation;
+  }
+
   Future<void> initCamera() async {
     cameras = await availableCameras();
-    cameraController = CameraController(cameras[0], ResolutionPreset.medium);
+    cameraController = CameraController(
+      cameras[0],
+      ResolutionPreset.max,
+    );
     await cameraController!.initialize();
+    await cameraController!
+        .lockCaptureOrientation(DeviceOrientation.portraitUp);
   }
 
   void handleScaleStart(ScaleStartDetails details) {
@@ -135,6 +146,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
       cameraDescription,
       ResolutionPreset.medium,
     );
+
     await cameraController!.initialize();
     initialising = false;
     notifyListeners();
@@ -155,50 +167,154 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     }
   }
 
-  void takePicture(BuildContext context) {
+  Future<File> fixExifRotation(String imagePath) async {
+    final originalFile = File(imagePath);
+    List<int> imageBytes = await originalFile.readAsBytes();
+
+    final originalImage = img.decodeImage(imageBytes);
+
+    final height = originalImage!.height;
+    final width = originalImage.width;
+
+    // Let's check for the image size
+    if (height >= width) {
+      // I'm interested in portrait photos so
+      // I'll just return here
+      return originalFile;
+    }
+
+    // We'll use the exif package to read exif data
+    // This is map of several exif properties
+    // Let's check 'Image Orientation'
+    final exifData = await readExifFromBytes(imageBytes);
+
+    img.Image? fixedImage;
+
+    if (height < width) {
+      print('Rotating image necessary');
+      // rotate
+      if (exifData['Image Orientation']!.printable.contains('Horizontal')) {
+        fixedImage = img.copyRotate(originalImage, 90);
+      } else if (exifData['Image Orientation']!.printable.contains('180')) {
+        fixedImage = img.copyRotate(originalImage, -90);
+      } else {
+        fixedImage = img.copyRotate(originalImage, 0);
+      }
+    }
+
+    // Here you can select whether you'd like to save it as png
+    // or jpg with some compression
+    // I choose jpg with 100% quality
+    final fixedFile =
+        await originalFile.writeAsBytes(img.encodeJpg(fixedImage!));
+
+    return fixedFile;
+  }
+
+  void takePicture(BuildContext context) async {
     if (takingPicturefinished) {
       takingPicturefinished = false;
-      cameraController!.takePicture().then(
-        (XFile? file) async {
-          Directory appDir = await getApplicationDocumentsDirectory();
-          String dirName =
-              appDir.path + "/" + file.hashCode.toString() + ".jpg";
+      notifyListeners();
+      if (Platform.isIOS) {
+        switch (currentOrientation) {
+          case NativeDeviceOrientation.portraitUp:
+            await cameraController!
+                .lockCaptureOrientation(DeviceOrientation.portraitUp);
+            break;
+          case NativeDeviceOrientation.portraitDown:
+            await cameraController!
+                .lockCaptureOrientation(DeviceOrientation.portraitDown);
 
-          file!.saveTo(dirName);
+            break;
+          case NativeDeviceOrientation.landscapeLeft:
+            await cameraController!
+                .lockCaptureOrientation(DeviceOrientation.landscapeRight);
+            break;
+          case NativeDeviceOrientation.landscapeRight:
+            await cameraController!
+                .lockCaptureOrientation(DeviceOrientation.landscapeLeft);
 
-          XFile xfile = XFile(dirName);
-          int currentIndex = currentImageIndex;
-          images[currentImageIndex].image = xfile;
-          images[currentImageIndex].base64 =
-              "data:image/jpg;base64," + base64Encode(await file.readAsBytes());
+            break;
+          case NativeDeviceOrientation.unknown:
+            await cameraController!
+                .lockCaptureOrientation(DeviceOrientation.portraitUp);
 
-          // Nur 1 Foto erlaubt
-          if (camera.singleImage) {
-            closeCamera(context);
-            return;
-          }
+            break;
+        }
+      } else {
+        switch (currentOrientation) {
+          case NativeDeviceOrientation.portraitUp:
+            await cameraController!
+                .lockCaptureOrientation(DeviceOrientation.portraitUp);
+            break;
+          case NativeDeviceOrientation.portraitDown:
+            await cameraController!
+                .lockCaptureOrientation(DeviceOrientation.portraitDown);
 
-          if (currentIndex == images.length - 1) {
-            images.add(
-              CameraPicture(
-                  null,
-                  "Optionales Bild " +
-                      (images.length + 1 - mandatoryImages).toString(),
-                  true,
-                  "",
-                  ""),
-            );
-          }
-          previewImage = File(file.path);
-          showPreviewImage = true;
-          takingPicturefinished = true;
-          notifyListeners();
-          Future.delayed(Duration(seconds: 2), () {
-            showPreviewImage = false;
+            break;
+          case NativeDeviceOrientation.landscapeRight:
+            await cameraController!
+                .lockCaptureOrientation(DeviceOrientation.landscapeRight);
+            break;
+          case NativeDeviceOrientation.landscapeLeft:
+            await cameraController!
+                .lockCaptureOrientation(DeviceOrientation.landscapeLeft);
+
+            break;
+          case NativeDeviceOrientation.unknown:
+            await cameraController!
+                .lockCaptureOrientation(DeviceOrientation.portraitUp);
+
+            break;
+        }
+      }
+
+      try {
+        cameraController!.takePicture().then(
+          (XFile? file) async {
+            int currentIndex = currentImageIndex;
+            images[currentImageIndex].image = file;
+            images[currentImageIndex].base64 = "data:image/jpg;base64," +
+                base64Encode(await file!.readAsBytes());
+
+            // Nur 1 Foto erlaubt
+            if (camera.singleImage) {
+              closeCamera(context);
+              return;
+            }
+
+            if (currentIndex == images.length - 1) {
+              images.add(
+                CameraPicture(
+                    null,
+                    "Optionales Bild " +
+                        (images.length + 1 - mandatoryImages).toString(),
+                    true,
+                    "",
+                    ""),
+              );
+            }
+            previewImage = File(file.path);
+            showPreviewImage = true;
+            takingPicturefinished = true;
+            await cameraController!
+                .lockCaptureOrientation(DeviceOrientation.portraitUp);
             notifyListeners();
-          });
-        },
-      );
+            Future.delayed(
+              Duration(seconds: 2),
+              () {
+                showPreviewImage = false;
+                notifyListeners();
+              },
+            );
+          },
+        );
+      } catch (e) {
+        await cameraController!
+            .lockCaptureOrientation(DeviceOrientation.portraitUp);
+        takingPicturefinished = true;
+        notifyListeners();
+      }
     }
   }
 
@@ -348,6 +464,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
           (response) {
             FleetVehicleImageUploadProccess uploadProccess =
                 response as FleetVehicleImageUploadProccess;
+
             switch (camera.type) {
               case CameraType.VEHICLE:
                 for (var image in images) {
@@ -359,6 +476,10 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                           {
                             "tag": image.tag,
                             "upload_process": uploadProccess.id.toString(),
+                            "is_favorite": image.tag == "Frontal-Links" ||
+                                    image.tag == "Heck-Rechts"
+                                ? "1"
+                                : "0",
                           },
                         ),
                       )

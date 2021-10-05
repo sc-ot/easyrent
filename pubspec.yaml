@@ -33,7 +33,7 @@ dependencies:
   infinite_scroll_pagination: ^3.1.0
   loading_indicator: ^3.0.1
   connectivity: ^3.0.6
-  camera: ^0.8.1+7
+  camera: ^0.9.4+1
   full_screen_image_null_safe: ^2.0.0
   preload_page_view: ^0.1.6
   flutter_svg: ^0.21.0
@@ -43,6 +43,9 @@ dependencies:
   overlay_support: ^1.2.1
   smooth_page_indicator: ^1.0.0+2
   path_provider: ^2.0.2
+  exif: ^3.0.0
+  image: ^3.0.7
+  native_device_orientation: ^1.0.0
   devtools:
     git:
       url: git@github.com:sc-ot/devtools.git

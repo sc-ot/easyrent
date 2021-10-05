@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:exif/exif.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
@@ -33,6 +36,29 @@ class Utils {
       return outputFormat.format(parseDate);
     } catch (e) {
       return onError;
+    }
+  }
+
+  static printExifOf(String path) async {
+    Map<String, IfdTag> data =
+        await readExifFromBytes(await File(path).readAsBytes());
+
+    if (data.isEmpty) {
+      print("No EXIF information found\n");
+      return;
+    }
+
+    if (data.containsKey('JPEGThumbnail')) {
+      print('File has JPEG thumbnail');
+      data.remove('JPEGThumbnail');
+    }
+    if (data.containsKey('TIFFThumbnail')) {
+      print('File has TIFF thumbnail');
+      data.remove('TIFFThumbnail');
+    }
+
+    for (String key in data.keys) {
+      print("$key (${data[key]?.tagType}): ${data[key]}");
     }
   }
 }

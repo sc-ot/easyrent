@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
+import 'package:easyrent/core/themes.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:easyrent/models/client.dart';
@@ -36,11 +37,29 @@ class ClientProvider extends StateProvider {
   }
 
   void selectClient(BuildContext context, int clientIndex) {
-    //  Constants.BASE_URL = clients[clientIndex].backendUrl;
-    Provider.of<Application>(context, listen: false).client =
-        clients[clientIndex];
+    Constants.BASE_URL = clients[clientIndex].backendUrl;
 
+    Application application = Provider.of<Application>(context, listen: false);
+
+    application.client = clients[clientIndex];
+
+    application.changeAppAccentColor(
+      getColorForTheme(application.client.theme),
+    );
     Navigator.popAndPushNamed(context, Constants.ROUTE_MENU);
+  }
+
+  Color getColorForTheme(String theme) {
+    switch (theme) {
+      case Constants.THEME_1:
+        return Color(0xFFff9800);
+      case Constants.THEME_2:
+        return Color(0xFF2196f3);
+      case Constants.THEME_MARGARITIS:
+        return Color(0xFFff9800);
+      default:
+        return Color(0xFFff9800);
+    }
   }
 
   @override
