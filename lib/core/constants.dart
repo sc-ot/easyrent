@@ -2,7 +2,8 @@ class Constants {
   // "http://192.168.2.27:9001/api/v1"; local example
   // "https://erbackend.works4dev.de/api/v1" prod example
   // "https://easyrentm1backend.works4dev.de/api/v1" test example
-  static String BASE_URL = "https://easyrentm1backend.works4dev.de/api/v1";
+
+  static String BASE_URL = "https://erbackend.works4dev.de/api/v1";
 
   static const int MOVEMENT_TYPE_ENTRY = 1;
   static const int MOVEMENT_TYPE_EXIT = 2;
@@ -10,7 +11,6 @@ class Constants {
   static const String THEME_1 = "theme-1";
   static const String THEME_2 = "theme-2";
   static const String THEME_MARGARITIS = "theme-margaritis";
-
   static const String ROUTE_HOME = "/";
   static const String ROUTE_LOGIN = "/login";
   static const String ROUTE_CLIENTS = "/clients";
@@ -35,7 +35,6 @@ class Constants {
       "/movement_driving_license";
   static const String ROUTE_MOVEMENT_PROTOCOL = "/movement_protocol";
   static const String ROUTE_IMAGES_LOG_PAGE = "/images_log_page";
-
   static const String KEY_FIRST_BOOT = "KEY_FIRST_BOOT";
   static const String KEY_IMAGES = "KEY_IMAGES";
   static const String KEY_AUTHORIZATION = "KEY_AUTHORIZATION";

@@ -38,7 +38,7 @@ class EasyRentRepository {
         "system/mandanten",
         responseType: ResponseType.LIST,
         serializer: (_) => Client.fromJson(_),
-        retry: false,
+        retry: true,
       );
 
   Future<Either<Failure, dynamic>> getVehicles(

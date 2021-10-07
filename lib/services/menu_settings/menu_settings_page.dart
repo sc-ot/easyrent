@@ -48,63 +48,59 @@ class MenuSettingsPage extends StatelessWidget {
           ),
         );
 
-        settings.add(
-          SettingsEntry(
-            "Bilder lokal speichern",
-            SCSharedPrefStorage.readBool(Constants.KEY_SAVE_IMAGES_ON_DEVICE) !=
-                    null
-                ? true
-                : false,
-            (value) {
-              SCSharedPrefStorage.saveData(
-                  Constants.KEY_SAVE_IMAGES_ON_DEVICE, value);
-            },
-          ),
-        );
+        settings.add(Spacer());
 
         settings.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: FloatingActionButton.extended(
-              onPressed: () {
-                Navigator.popAndPushNamed(
-                  context,
-                  Constants.ROUTE_CLIENTS,
-                );
-              },
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-              icon: Icon(
-                Icons.exit_to_app,
-                color: Colors.white,
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: FloatingActionButton.extended(
+                    onPressed: () {
+                      Navigator.popAndPushNamed(
+                        context,
+                        Constants.ROUTE_CLIENTS,
+                      );
+                    },
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    icon: Icon(
+                      Icons.exit_to_app,
+                      color: Colors.white,
+                    ),
+                    label: Text(
+                      "Mandanten wechseln",
+                      style: Theme.of(context)
+                          .textTheme
+                          .button!
+                          .copyWith(color: Colors.white),
+                    ),
+                  ),
+                ),
               ),
-              label: Text(
-                "Mandanten wechseln",
-                style: Theme.of(context)
-                    .textTheme
-                    .button!
-                    .copyWith(color: Colors.white),
+              SizedBox(
+                width: 32,
               ),
-            ),
-          ),
-        );
-
-        settings.add(
-          FloatingActionButton.extended(
-            onPressed: () {
-              Authenticator.logout(context);
-            },
-            backgroundColor: Colors.red,
-            icon: Icon(
-              Icons.exit_to_app,
-              color: Colors.white,
-            ),
-            label: Text(
-              "Abmelden",
-              style: Theme.of(context)
-                  .textTheme
-                  .button!
-                  .copyWith(color: Colors.white),
-            ),
+              Expanded(
+                child: FloatingActionButton.extended(
+                  onPressed: () {
+                    Authenticator.logout(context);
+                  },
+                  backgroundColor: Colors.red,
+                  icon: Icon(
+                    Icons.exit_to_app,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    "Abmelden",
+                    style: Theme.of(context)
+                        .textTheme
+                        .button!
+                        .copyWith(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
           ),
         );
 
@@ -114,11 +110,8 @@ class MenuSettingsPage extends StatelessWidget {
           body: MenuPageContainer(
             title,
             subTitle,
-            ListView.builder(
-              itemBuilder: (context, index) {
-                return settings[index];
-              },
-              itemCount: settings.length,
+            Column(
+              children: settings,
             ),
           ),
         );
