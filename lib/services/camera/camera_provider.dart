@@ -527,17 +527,58 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                 break;
               case CameraType.NEW_VEHICLE:
                 for (var image in images) {
-                  easyRentRepository.uploadImage(
-                    0,
-                    FilePayload(
-                      File(image.image!.path),
-                      {
-                        "tag": image.tag,
-                        "vin": camera.vin!,
-                      },
-                    ),
+                  easyRentRepository
+                      .uploadImage(
+                        0,
+                        FilePayload(
+                          File(image.image!.path),
+                          {
+                            "tag": image.tag,
+                            "vin": camera.vin!,
+                            "upload_process": uploadProccess.id.toString(),
+                          },
+                        ),
+                      )
+                      .asStream()
+                      .listen(
+                    (response) {
+                      response.fold(
+                        (l) {},
+                        (r) {
+                          successUploadedImages++;
+                          if (successUploadedImages == images.length) {
+                            String titleText = camera.vehicle == null
+                                ? "Fahrzeug: " + camera.vin!
+                                : camera.vehicle!.letterNumber +
+                                    " - " +
+                                    camera.vehicle!.licensePlate;
+                            showSimpleNotification(
+                              Text(
+                                titleText,
+                                style: Theme.of(navigatorKey.currentContext!)
+                                    .textTheme
+                                    .subtitle1,
+                              ),
+                              subtitle: Text(
+                                "${images.length} Bilder hochgeladen",
+                                style: Theme.of(navigatorKey.currentContext!)
+                                    .textTheme
+                                    .subtitle2,
+                              ),
+                              background: Theme.of(navigatorKey.currentContext!)
+                                  .primaryColor,
+                              duration: Duration(seconds: 3),
+                              slideDismissDirection: DismissDirection.vertical,
+                              leading: Icon(
+                                Icons.done,
+                                color: Colors.green,
+                              ),
+                            );
+                          }
+                        },
+                      );
+                    },
                   );
-                  break;
                 }
             }
           },

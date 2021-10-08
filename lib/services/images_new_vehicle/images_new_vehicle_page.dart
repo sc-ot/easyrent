@@ -33,7 +33,15 @@ class ImagesNewVehiclePage extends StatelessWidget {
                       Constants.ROUTE_CAMERA,
                       arguments: Camera(
                         CameraType.NEW_VEHICLE,
-                        [],
+                        [
+                          "Frontal",
+                          "Frontal-Links",
+                          "Links",
+                          "Heck-Links",
+                          "Heck-Rechts",
+                          "Rechts",
+                          "Frontal-Rechts"
+                        ],
                         null,
                         imagesNewVehicleProvider.vinTextEditingController.text,
                       ),
