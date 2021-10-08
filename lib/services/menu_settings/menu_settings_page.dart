@@ -48,6 +48,18 @@ class MenuSettingsPage extends StatelessWidget {
           ),
         );
 
+        settings.add(
+          SettingsEntry(
+            "Bilder im Menü anzeigen",
+            SCSharedPrefStorage.readBool(Constants.KEY_SHOW_IMAGES_IN_MENU) ??
+                false,
+            (value) {
+              SCSharedPrefStorage.saveData(
+                  Constants.KEY_SHOW_IMAGES_IN_MENU, value);
+            },
+          ),
+        );
+
         /*settings.add(
           SettingsEntry(
             "Bilder lokal speichern",

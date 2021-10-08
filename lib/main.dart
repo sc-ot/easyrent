@@ -39,6 +39,7 @@ void main() async {
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   Authenticator.initAuthentication();
+
   runApp(
     ChangeNotifierProvider<Application>(
       create: (BuildContext context) => Application(),
@@ -103,6 +104,9 @@ void main() async {
 class BaseApplication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    precacheImage(AssetImage("assets/menu_entrance.jpeg"), context);
+    precacheImage(AssetImage("assets/menu_exit.jpeg"), context);
+    precacheImage(AssetImage("assets/menu_planned_movement.png"), context);
     return Authenticator.userLoggedIn() ? ClientPage() : LoginPage();
   }
 }

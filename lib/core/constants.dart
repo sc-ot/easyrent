@@ -43,6 +43,7 @@ class Constants {
   static const String KEY_THEME = "KEY_THEME";
   static const String KEY_SHOW_CAMERA_OVERLAY = "KEY_SHOW_CAMERA_OVERLAY";
   static const String KEY_SAVE_IMAGES_ON_DEVICE = "KEY_SAVE_IMAGES_ON_DEVICE";
+  static const String KEY_SHOW_IMAGES_IN_MENU = "KEY_SHOW_IMAGES_IN_MENU";
 
   static const int VIN_MAX_LENGTH = 17;
 }

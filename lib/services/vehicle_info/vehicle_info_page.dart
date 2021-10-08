@@ -5,6 +5,7 @@ import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/services/vehicle_info/vehicle_info_provider.dart';
+import 'package:easyrent/widgets/custom_grid_view.dart';
 import 'package:easyrent/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
@@ -186,23 +187,14 @@ class VehicleInfoPage extends StatelessWidget {
                                     "Status",
                                     vehicle.status.statusDef.statusName,
                                     LineIcons.info),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Vertrag",
                                     "Mietvertrag noch hinzufügen!",
                                     LineIcons.fileContract),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Standort",
                                     vehicle.location.locationName,
                                     LineIcons.mapMarker),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry("Notizen", vehicle.notes,
                                     LineIcons.stickyNote),
                               ],
@@ -215,17 +207,11 @@ class VehicleInfoPage extends StatelessWidget {
                                     Utils.formatDateTimestring(
                                         vehicle.nextGeneralInspectionDate),
                                     LineIcons.calendar),
-                                SizedBox(
-                                  height: 16,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Nächster SP",
                                     Utils.formatDateTimestring(
                                         vehicle.nextSecurityInspectionDate),
                                     LineIcons.calendar),
-                                SizedBox(
-                                  height: 16,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Nächster UVV",
                                     Utils.formatDateTimestring(
@@ -240,41 +226,23 @@ class VehicleInfoPage extends StatelessWidget {
                                     "Hersteller",
                                     vehicle.manufacturer.manufacturerName,
                                     LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "VIN", vehicle.vin, LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Kategorie",
                                     vehicle.vehicleCategory.vehicleCategoryName,
                                     LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Baujahr",
                                     vehicle.constructionYear.toString(),
                                     LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Erstzulassung",
                                     Utils.formatDateTimestring(
                                         vehicle.firstRegistrationDate),
                                     LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry("Briefnummer",
                                     vehicle.letterNumber, LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                               ],
                             ),
                             VehicleInfoCard(
@@ -285,23 +253,14 @@ class VehicleInfoPage extends StatelessWidget {
                                     vehicle.kilowatt.toString() +
                                         " kW (${vehicle.horsePower} PS)",
                                     LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Antrieb",
                                     vehicle.engineType.engineTypeName,
                                     LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Achsen",
                                     vehicle.countAxis.toString(),
                                     LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Höhe/Breite/Länge (cm)",
                                     vehicle.totalHeight.toString() +
@@ -310,26 +269,17 @@ class VehicleInfoPage extends StatelessWidget {
                                         "/" +
                                         vehicle.totalLength.toString(),
                                     LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Leergewicht",
                                     vehicle.emptyWeight.toStringAsFixed(0) +
                                         " kg",
                                     LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Maximalgewicht",
                                     vehicle.allowedTotalWeight
                                             .toStringAsFixed(0) +
                                         " kg",
                                     LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Zulässige Ladung",
                                     vehicle.payloadWeight.toStringAsFixed(0) +
@@ -342,9 +292,6 @@ class VehicleInfoPage extends StatelessWidget {
                               [
                                 VehicleInfoCardEntry(
                                     "Nummer", "A-1182", LineIcons.angleRight),
-                                SizedBox(
-                                  height: 8,
-                                ),
                                 VehicleInfoCardEntry(
                                     "Typ", "-", LineIcons.angleRight),
                               ],
@@ -374,6 +321,7 @@ class VehicleInfoCardEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -397,6 +345,7 @@ class VehicleInfoCardEntry extends StatelessWidget {
 
 class VehicleInfoCard extends StatelessWidget {
   List<Widget> cardData;
+
   String title;
   VehicleInfoCard(this.title, this.cardData, {Key? key}) : super(key: key);
 
@@ -423,10 +372,16 @@ class VehicleInfoCard extends StatelessWidget {
                 onTap: () {},
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: cardData,
+                  child: CustomGridView(
+                    builder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: cardData[index],
+                      );
+                    },
+                    mainAxisCount:
+                        Utils.getDevice(context) == Device.PHONE ? 1 : 2,
+                    list: cardData,
                   ),
                 ),
               ),

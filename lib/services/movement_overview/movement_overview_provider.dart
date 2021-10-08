@@ -51,6 +51,10 @@ class MovementOverviewProvider extends StateProvider {
     }
   }
 
+  TextEditingController textEditingControllerLicensePlate =
+      TextEditingController();
+  TextEditingController textEditingControllerMiles = TextEditingController();
+
   String? errorTextDay;
   String? errorTextMonth;
   String? errorTextYear;
@@ -184,7 +188,6 @@ class MovementOverviewProvider extends StateProvider {
                               errorText: errorTextDay),
                         ),
                       ),
-                    
                       SizedBox(
                         width: 8,
                       ),

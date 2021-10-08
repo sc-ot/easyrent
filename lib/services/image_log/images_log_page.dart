@@ -31,64 +31,113 @@ class ImagesLogPage extends StatelessWidget {
                 : ListView.separated(
                     itemCount: imageLogProvider.imageUploadGroups.length,
                     itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                        child: ListTile(
-                          trailing: Text(
-                            imageLogProvider
-                                .imageUploadGroups[index].vehicleNumber,
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle1!
-                                .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .secondary),
-                          ),
-                          leading: FittedBox(
-                            child: Column(
+                      return Card(
+                        elevation: 3,
+                        color: Theme.of(context).primaryColorLight,
+                        child: InkWell(
+                          onTap: () async {},
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
+                            child: Row(
                               children: [
-                                Text(
-                                  imageLogProvider
-                                      .imageUploadGroups[index].takenPictures
-                                      .toString(),
-                                  style: Theme.of(context).textTheme.subtitle1,
+                                Expanded(
+                                  flex: 10,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        imageLogProvider
+                                            .imageUploadGroups[index].firstName,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        imageLogProvider
+                                                .imageUploadGroups[index]
+                                                .vin
+                                                .isEmpty
+                                            ? "Neues Fahrzeug"
+                                            : imageLogProvider
+                                                .imageUploadGroups[index].vin,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        Utils.formatDateTimestringWithTime(
+                                          imageLogProvider
+                                              .imageUploadGroups[index]
+                                              .createdAt,
+                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                Text("Bilder"),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        imageLogProvider
+                                            .imageUploadGroups[index]
+                                            .vehicleNumber,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary),
+                                      ),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                          imageLogProvider
+                                                      .imageUploadGroups[index]
+                                                      .takenPictures ==
+                                                  1
+                                              ? "1 Bild"
+                                              : imageLogProvider
+                                                      .imageUploadGroups[index]
+                                                      .takenPictures
+                                                      .toString() +
+                                                  " Bilder",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!),
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                          title: Text(
-                              imageLogProvider.imageUploadGroups[index].vin,
-                              style: Theme.of(context).textTheme.subtitle1),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                imageLogProvider
-                                    .imageUploadGroups[index].firstName,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2!
-                                    .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
-                              ),
-                              Text(
-                                Utils.formatDateTimestringWithTime(
-                                  imageLogProvider
-                                      .imageUploadGroups[index].createdAt,
-                                ),
-                                style: Theme.of(context).textTheme.subtitle2!,
-                              ),
-                            ],
                           ),
                         ),
                       );
                     },
                     separatorBuilder: (context, index) {
-                      return Divider();
+                      return Container();
                     },
                   ),
           ),
