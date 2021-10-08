@@ -1,3 +1,4 @@
+import 'package:easyrent/core/utils.dart';
 import 'package:flutter/material.dart';
 
 class MenuPageContainer extends StatelessWidget {
@@ -50,7 +51,7 @@ class MenuPageContainer extends StatelessWidget {
               ),
             ),
             Flexible(
-              flex: 4,
+              flex: Utils.getDevice(context) == Device.PHONE ? 4 : 7,
               child: child,
             ),
           ],
