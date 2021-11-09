@@ -19,16 +19,16 @@ class VehiclePage extends StatefulWidget {
   _VehiclePageState createState() => _VehiclePageState();
 }
 
-class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClientMixin<VehiclePage> {
+class _VehiclePageState extends State<VehiclePage>
+    with AutomaticKeepAliveClientMixin<VehiclePage> {
   @override
   Widget build(BuildContext context) {
     VehicleProvider vehicleProvider = Provider.of(context, listen: true);
-    return Scaffold(
-     resizeToAvoidBottomInset: false,
-      body: MenuPageContainer(
-        widget.text,
-        widget.subTitle,
-        Column(
+    return MenuPageContainer(
+      widget.text,
+      widget.subTitle,
+      Expanded(
+        child: Column(
           children: [
             TextField(
               controller: vehicleProvider.vehicleSearchFieldController,
@@ -39,12 +39,15 @@ class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClient
                 hintText: "Suchen",
               ),
             ),
-           vehicleProvider.ui == STATE.LOADING ? ERLoadingIndicator() : Expanded(
+            vehicleProvider.ui == STATE.LOADING
+                ? ERLoadingIndicator()
+                : Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 16.0),
                       child: RefreshIndicator(
                         color: Theme.of(context).primaryColorLight,
-                        backgroundColor: Theme.of(context).colorScheme.secondary,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondary,
                         onRefresh: () => Future.sync(
                             () => vehicleProvider.pagingController.refresh()),
                         child: PagedListView<int, Vehicle>(
@@ -55,7 +58,6 @@ class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClient
                               itemBuilder: (context, item, index) =>
                                   VehicleSearchListEntry(
                                     item,
-                                   
                                   ),
                               firstPageErrorIndicatorBuilder: (context) {
                                 return Column(
@@ -65,8 +67,9 @@ class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClient
                                           top: 16.0, bottom: 12),
                                       child: Text(
                                         "Es konnten keine Fahrzeuge geladen werden",
-                                        style:
-                                            Theme.of(context).textTheme.bodyText1,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
@@ -87,8 +90,9 @@ class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClient
                                           top: 16.0, bottom: 12),
                                       child: Text(
                                         "Es konnten keine Fahrzeuge geladen werden",
-                                        style:
-                                            Theme.of(context).textTheme.bodyText1,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
@@ -109,8 +113,9 @@ class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClient
                                           top: 16.0, bottom: 12),
                                       child: Text(
                                         "Es wurden keine passenden Fahrzeuge für „${vehicleProvider.vehicleSearchFieldController.text}“ gefunden",
-                                        style:
-                                            Theme.of(context).textTheme.bodyText1,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
@@ -130,7 +135,8 @@ class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClient
                                       MediaQuery.of(context).size.height * 0.25,
                                   child: Center(
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
@@ -141,7 +147,9 @@ class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClient
                                             indicatorType:
                                                 Indicator.circleStrokeSpin,
                                             colors: [
-                                              Theme.of(context).colorScheme.secondary,
+                                              Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
                                             ],
                                           ),
                                         ),
@@ -168,9 +176,12 @@ class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClient
                                       width: 50,
                                       height: 50,
                                       child: LoadingIndicator(
-                                        indicatorType: Indicator.circleStrokeSpin,
+                                        indicatorType:
+                                            Indicator.circleStrokeSpin,
                                         colors: [
-                                          Theme.of(context).colorScheme.secondary,
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
                                         ],
                                       ),
                                     ),
@@ -184,6 +195,7 @@ class _VehiclePageState extends State<VehiclePage> with AutomaticKeepAliveClient
           ],
         ),
       ),
+      resizeToAvoidBottomInset: false,
     );
   }
 

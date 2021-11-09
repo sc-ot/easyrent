@@ -67,9 +67,9 @@ class MenuPage extends StatelessWidget {
                 Utils.getDevice(context) == Device.PHONE ? 8 : 16),
           ),
         );
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: SafeArea(
+        return SafeArea(
+          child: Container(
+            color: Theme.of(context).primaryColor,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
               child: Column(
@@ -77,6 +77,8 @@ class MenuPage extends StatelessWidget {
                   Expanded(
                     flex: Utils.getDevice(context) == Device.PHONE ? 9 : 13,
                     child: PageView(
+                      allowImplicitScrolling: true,
+                      physics: AlwaysScrollableScrollPhysics(),
                       controller: menuProvider.pageController,
                       onPageChanged: (index) {
                         menuProvider.swipe(index);

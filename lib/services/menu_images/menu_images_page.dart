@@ -15,20 +15,11 @@ class MenuImagesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.list,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          Navigator.pushNamed(context, Constants.ROUTE_IMAGES_LOG_PAGE);
-        },
-      ),
-      body: MenuPageContainer(
-        title,
-        subTitle,
-        Column(
+    return MenuPageContainer(
+      title,
+      subTitle,
+      Expanded(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
@@ -79,7 +70,17 @@ class MenuImagesPage extends StatelessWidget {
             ),
           ],
         ),
-        paddingBottom: 16,
+      ),
+      paddingBottom: 16,
+      floatingActionButton: FloatingActionButton(
+        heroTag: "logImageFab",
+        child: Icon(
+          Icons.list,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.pushNamed(context, Constants.ROUTE_IMAGES_LOG_PAGE);
+        },
       ),
     );
   }

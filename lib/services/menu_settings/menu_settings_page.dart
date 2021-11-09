@@ -78,6 +78,7 @@ class MenuSettingsPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: FloatingActionButton.extended(
+              heroTag: "mandantSettingsFab",
               onPressed: () {
                 Navigator.popAndPushNamed(
                   context,
@@ -102,6 +103,7 @@ class MenuSettingsPage extends StatelessWidget {
 
         settings.add(
           FloatingActionButton.extended(
+            heroTag: "exitFab",
             onPressed: () {
               Authenticator.logout(context);
             },
@@ -122,11 +124,11 @@ class MenuSettingsPage extends StatelessWidget {
 
         MenuSettingsProvider menuSettingsProvider =
             Provider.of<MenuSettingsProvider>(context, listen: true);
-        return Scaffold(
-          body: MenuPageContainer(
-            title,
-            subTitle,
-            ListView.builder(
+        return MenuPageContainer(
+          title,
+          subTitle,
+          Expanded(
+            child: ListView.builder(
               itemBuilder: (context, index) {
                 return settings[index];
               },

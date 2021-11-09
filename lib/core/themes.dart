@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class Themes {
   static Color darkPrimaryColor = Color(0xFF1d1c21);
@@ -48,7 +49,7 @@ class Themes {
       ),
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: GoogleFonts.roboto(
-          fontSize: 16,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.5,
           color: Themes.darkAccentColor,
@@ -74,77 +75,77 @@ class Themes {
       ),
       textTheme: TextTheme(
         headline1: GoogleFonts.roboto(
-          fontSize: 96,
+          fontSize: 30.sp,
           fontWeight: FontWeight.w300,
           letterSpacing: -1.5,
           color: Colors.white,
         ),
         headline2: GoogleFonts.roboto(
-          fontSize: 60,
+          fontSize: 28.sp,
           fontWeight: FontWeight.w300,
           letterSpacing: -0.5,
           color: Colors.white,
         ),
         headline3: GoogleFonts.roboto(
-          fontSize: 48,
+          fontSize: 26.sp,
           fontWeight: FontWeight.w400,
           color: Colors.white,
         ),
         headline4: GoogleFonts.roboto(
-          fontSize: 34,
+          fontSize: 24.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.25,
           color: Colors.white,
         ),
         headline5: GoogleFonts.roboto(
-          fontSize: 24,
+          fontSize: 22.sp,
           fontWeight: FontWeight.w400,
           color: Colors.white,
         ),
         headline6: GoogleFonts.roboto(
-          fontSize: 20,
+          fontSize: 20.sp,
           fontWeight: FontWeight.w500,
           letterSpacing: 0.15,
           color: Colors.white,
         ),
         subtitle1: GoogleFonts.roboto(
-          fontSize: 16,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.15,
           color: Colors.white,
         ),
         subtitle2: GoogleFonts.roboto(
-          fontSize: 14,
+          fontSize: 14.sp,
           fontWeight: FontWeight.w500,
           letterSpacing: 0.1,
           color: Colors.white,
         ),
         bodyText1: GoogleFonts.roboto(
-          fontSize: 16,
+          fontSize: 18.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.5,
           color: Colors.white,
         ),
         bodyText2: GoogleFonts.roboto(
-          fontSize: 14,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.25,
           color: Colors.white,
         ),
         button: GoogleFonts.roboto(
-          fontSize: 14,
+          fontSize: 14.sp,
           fontWeight: FontWeight.w500,
           letterSpacing: 1.25,
           color: Colors.white,
         ),
         caption: GoogleFonts.roboto(
-          fontSize: 12,
+          fontSize: 12.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.4,
           color: Colors.white,
         ),
         overline: GoogleFonts.roboto(
-          fontSize: 10,
+          fontSize: 10.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 1.5,
           color: Colors.white,
@@ -197,7 +198,7 @@ class Themes {
       ),
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: GoogleFonts.roboto(
-          fontSize: 16,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.5,
           color: Themes.primaryColor,
@@ -223,77 +224,77 @@ class Themes {
       ),
       textTheme: TextTheme(
         headline1: GoogleFonts.roboto(
-          fontSize: 96,
+          fontSize: 30.sp,
           fontWeight: FontWeight.w300,
           letterSpacing: -1.5,
           color: Colors.black,
         ),
         headline2: GoogleFonts.roboto(
-          fontSize: 60,
+          fontSize: 28.sp,
           fontWeight: FontWeight.w300,
           letterSpacing: -0.5,
           color: Colors.black,
         ),
         headline3: GoogleFonts.roboto(
-          fontSize: 48,
+          fontSize: 26.sp,
           fontWeight: FontWeight.w400,
           color: Colors.black,
         ),
         headline4: GoogleFonts.roboto(
-          fontSize: 34,
+          fontSize: 24.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.25,
           color: Colors.black,
         ),
         headline5: GoogleFonts.roboto(
-          fontSize: 24,
+          fontSize: 22.sp,
           fontWeight: FontWeight.w400,
           color: Colors.black,
         ),
         headline6: GoogleFonts.roboto(
-          fontSize: 20,
+          fontSize: 20.sp,
           fontWeight: FontWeight.w500,
           letterSpacing: 0.15,
           color: Colors.black,
         ),
         subtitle1: GoogleFonts.roboto(
-          fontSize: 16,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.15,
           color: Colors.black,
         ),
         subtitle2: GoogleFonts.roboto(
-          fontSize: 14,
+          fontSize: 14.sp,
           fontWeight: FontWeight.w500,
           letterSpacing: 0.1,
           color: Colors.black,
         ),
         bodyText1: GoogleFonts.roboto(
-          fontSize: 16,
+          fontSize: 18.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.5,
           color: Colors.black,
         ),
         bodyText2: GoogleFonts.roboto(
-          fontSize: 14,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.25,
           color: Colors.black,
         ),
         button: GoogleFonts.roboto(
-          fontSize: 14,
+          fontSize: 14.sp,
           fontWeight: FontWeight.w500,
           letterSpacing: 1.25,
           color: Colors.white,
         ),
         caption: GoogleFonts.roboto(
-          fontSize: 12,
+          fontSize: 12.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.4,
           color: Colors.black,
         ),
         overline: GoogleFonts.roboto(
-          fontSize: 10,
+          fontSize: 10.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 1.5,
           color: Colors.black,

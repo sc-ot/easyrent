@@ -21,6 +21,7 @@ class ImagesNewVehiclePage extends StatelessWidget {
           resizeToAvoidBottomInset: false,
           appBar: AppBar(),
           floatingActionButton: FloatingActionButton(
+            heroTag: "newVehicleFab",
             backgroundColor: imagesNewVehicleProvider.ui == STATE.IDLE
                 ? Colors.grey
                 : Theme.of(context).colorScheme.secondary,
@@ -38,6 +39,7 @@ class ImagesNewVehiclePage extends StatelessWidget {
                           "Frontal-Links",
                           "Links",
                           "Heck-Links",
+                          "Heck",
                           "Heck-Rechts",
                           "Rechts",
                           "Frontal-Rechts"

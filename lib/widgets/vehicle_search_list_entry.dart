@@ -8,7 +8,8 @@ class VehicleSearchListEntry extends StatelessWidget {
   final String? date;
   final double elevation;
   final Function? onTap;
-  const VehicleSearchListEntry(this.vehicle, {Key? key, this.date, this.elevation = 3, this.onTap})
+  const VehicleSearchListEntry(this.vehicle,
+      {Key? key, this.date, this.elevation = 3, this.onTap})
       : super(key: key);
 
   @override
@@ -34,10 +35,9 @@ class VehicleSearchListEntry extends StatelessWidget {
       child: InkWell(
         onTap: () async {
           vehicleProvider.vehicle = vehicle;
-          if(onTap == null){
-             await vehicleProvider.onPressed.call();
-          }
-          else{
+          if (onTap == null) {
+            await vehicleProvider.onPressed.call();
+          } else {
             await onTap!.call();
           }
           FocusScope.of(context).requestFocus(
@@ -55,7 +55,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                   children: [
                     Text(
                       vehicle.vin,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.subtitle1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(
@@ -65,7 +65,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                       children: [
                         Text(
                           vehicle.manufacturer.manufacturerName,
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style: Theme.of(context).textTheme.subtitle1,
                           overflow: TextOverflow.fade,
                         ),
                         SizedBox(
@@ -74,7 +74,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                         Expanded(
                           child: Text(
                             vehicle.vehicleCategory.vehicleCategoryName,
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.subtitle1,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
@@ -86,7 +86,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                     ),
                     Text(
                       vehicle.licensePlate,
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.subtitle1,
                       overflow: TextOverflow.fade,
                     ),
                     ...dateWidget,
@@ -99,7 +99,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                   vehicle.vehicleNumber,
                   style: Theme.of(context)
                       .textTheme
-                      .headline6!
+                      .bodyText1!
                       .copyWith(color: Theme.of(context).colorScheme.secondary),
                   overflow: TextOverflow.ellipsis,
                 ),

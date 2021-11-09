@@ -18,17 +18,18 @@ class ImagesLogPage extends StatelessWidget {
         ImageLogProvider imageLogProvider =
             Provider.of<ImageLogProvider>(context, listen: true);
 
-        return Scaffold(
-          appBar: AppBar(),
-          body: MenuPageContainer(
-            "Bilderhistorie",
-            "Verlauf aufgenommener Bilder",
-            imageLogProvider.ui == STATE.LOADING ||
-                    imageLogProvider.ui == STATE.IDLE
-                ? Center(
+        return MenuPageContainer(
+          "Bilderhistorie",
+          "Verlauf aufgenommener Bilder",
+          imageLogProvider.ui == STATE.LOADING ||
+                  imageLogProvider.ui == STATE.IDLE
+              ? Expanded(
+                  child: Center(
                     child: ERLoadingIndicator(),
-                  )
-                : ListView.separated(
+                  ),
+                )
+              : Expanded(
+                  child: ListView.separated(
                     itemCount: imageLogProvider.imageUploadGroups.length,
                     itemBuilder: (context, index) {
                       return Card(
@@ -51,7 +52,7 @@ class ImagesLogPage extends StatelessWidget {
                                             .imageUploadGroups[index].firstName,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1!
+                                            .subtitle1!
                                             .copyWith(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -71,7 +72,7 @@ class ImagesLogPage extends StatelessWidget {
                                                 .imageUploadGroups[index].vin,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1,
+                                            .subtitle1,
                                         overflow: TextOverflow.fade,
                                       ),
                                       SizedBox(
@@ -88,7 +89,7 @@ class ImagesLogPage extends StatelessWidget {
                                         ),
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText1,
+                                            .subtitle1,
                                         overflow: TextOverflow.fade,
                                       ),
                                     ],
@@ -104,7 +105,7 @@ class ImagesLogPage extends StatelessWidget {
                                             .vehicleNumber,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline6!
+                                            .bodyText1!
                                             .copyWith(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -126,7 +127,7 @@ class ImagesLogPage extends StatelessWidget {
                                                   " Bilder",
                                           style: Theme.of(context)
                                               .textTheme
-                                              .bodyText1!),
+                                              .subtitle1!),
                                     ],
                                   ),
                                 ),
@@ -140,7 +141,8 @@ class ImagesLogPage extends StatelessWidget {
                       return Container();
                     },
                   ),
-          ),
+                ),
+          appBar: AppBar(),
         );
       },
     );

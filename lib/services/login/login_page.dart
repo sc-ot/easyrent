@@ -20,7 +20,9 @@ class LoginPage extends StatelessWidget {
                   children: [
                     Align(
                       alignment: Alignment.topCenter,
-                      child: loginProvider.ui == STATE.LOADING ? ERLinearProgressIndicator() : Container(),
+                      child: loginProvider.ui == STATE.LOADING
+                          ? ERLinearProgressIndicator()
+                          : Container(),
                     ),
                     Center(
                       child: SingleChildScrollView(
@@ -35,11 +37,13 @@ class LoginPage extends StatelessWidget {
                                     .textTheme
                                     .headline4!
                                     .copyWith(
-                                        color: Theme.of(context).colorScheme.secondary),
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 16.0, bottom: 16),
+                                padding: const EdgeInsets.only(
+                                    top: 16.0, bottom: 16),
                                 child: AnimatedOpacity(
                                   opacity:
                                       loginProvider.ui == STATE.ERROR ? 1 : 0,
@@ -61,7 +65,8 @@ class LoginPage extends StatelessWidget {
                                       Theme.of(context).textTheme.bodyText1,
                                   prefixIcon: Icon(
                                     Icons.person_add_alt_1_outlined,
-                                    color: Theme.of(context).colorScheme.secondary,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
                                   ),
                                 ),
                                 controller: loginProvider.usernameController,
@@ -78,7 +83,8 @@ class LoginPage extends StatelessWidget {
                                       Theme.of(context).textTheme.bodyText1,
                                   prefixIcon: Icon(
                                     Icons.lock_outline_rounded,
-                                    color: Theme.of(context).colorScheme.secondary,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
                                   ),
                                 ),
                               ),
@@ -86,6 +92,7 @@ class LoginPage extends StatelessWidget {
                                 height: 32,
                               ),
                               FloatingActionButton.extended(
+                                heroTag: "loginFab",
                                 onPressed: () {
                                   loginProvider.loginUser(context);
                                 },
@@ -100,7 +107,10 @@ class LoginPage extends StatelessWidget {
                                     ),
                                     Text(
                                       "Anmelden",
-                                      style: Theme.of(context).textTheme.button!.copyWith(color: Colors.white),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .button!
+                                          .copyWith(color: Colors.white),
                                     ),
                                   ],
                                 ),

@@ -25,16 +25,11 @@ class MovementDrivingLicensePage extends StatelessWidget {
 
         movementDrivingLicenseProvider.inspectionReport = inspectionReport;
 
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            title: Text(movementDrivingLicenseProvider
-                .inspectionReport.vehicle!.licensePlate),
-          ),
-          body: MenuPageContainer(
-            "Fotos",
-            "Nehmen Sie Bilder für das Übergabeprotokoll auf",
-            Column(
+        return MenuPageContainer(
+          "Fotos",
+          "Nehmen Sie Bilder für das Übergabeprotokoll auf",
+          Expanded(
+            child: Column(
               children: [
                 Expanded(
                   flex: 4,
@@ -48,13 +43,12 @@ class MovementDrivingLicensePage extends StatelessWidget {
                         elevation: 8,
                         child: movementDrivingLicenseProvider.drivingLicense ==
                                 null
-                            ?  Center(
-                                  child: Text(
-                                    "Führerschein",
-                                    textAlign: TextAlign.center,
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  ),
+                            ? Center(
+                                child: Text(
+                                  "Führerschein",
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.headline4,
+                                ),
                               )
                             : Stack(
                                 fit: StackFit.expand,
@@ -189,7 +183,8 @@ class MovementDrivingLicensePage extends StatelessWidget {
                         activeIndex: movementDrivingLicenseProvider.currentPage,
                         count: 2,
                         effect: WormEffect(
-                          activeDotColor: Theme.of(context).colorScheme.secondary,
+                          activeDotColor:
+                              Theme.of(context).colorScheme.secondary,
                           dotColor: Theme.of(context).primaryColorDark,
                         ),
                       ),
@@ -213,12 +208,16 @@ class MovementDrivingLicensePage extends StatelessWidget {
                       ),
                       child: Text(
                         "Fortfahren",
-                        style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.white),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline6!
+                            .copyWith(color: Colors.white),
                       ),
                       onPressed: () {
                         Navigator.pushNamed(context,
                             Constants.ROUTE_MOVEMENT_LICENSEPLATE_AND_MILES,
-                            arguments: movementDrivingLicenseProvider.inspectionReport);
+                            arguments: movementDrivingLicenseProvider
+                                .inspectionReport);
                       },
                     ),
                   ),
@@ -228,6 +227,10 @@ class MovementDrivingLicensePage extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          appBar: AppBar(
+            title: Text(movementDrivingLicenseProvider
+                .inspectionReport.vehicle!.licensePlate),
           ),
         );
       },

@@ -61,10 +61,10 @@ class MovementOverviewPage extends StatelessWidget {
                 labelText: "Kilometerstand",
                 labelStyle: Theme.of(context)
                     .textTheme
-                    .headline5!
+                    .bodyText1!
                     .copyWith(color: Theme.of(context).colorScheme.secondary),
               ),
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
         );
@@ -79,98 +79,85 @@ class MovementOverviewPage extends StatelessWidget {
                 labelText: "Kennzeichen",
                 labelStyle: Theme.of(context)
                     .textTheme
-                    .headline5!
+                    .bodyText1!
                     .copyWith(color: Theme.of(context).colorScheme.secondary),
               ),
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
         );
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              movementOverviewProvider.vehicle.licensePlate,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ),
-          body: movementOverviewProvider.ui == STATE.SUCCESS
+        return MenuPageContainer(
+          "Prüfungstermine",
+          "Überprüfen Sie die Daten",
+          movementOverviewProvider.ui == STATE.SUCCESS
               ? Container(
-                  child: MenuPageContainer(
-                    "Prüfungstermine",
-                    "Überprüfen Sie die Daten",
-                    SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            fit: FlexFit.loose,
-                            child: CustomGridView(
-                              fillEmptySpace: false,
-                              mainAxisCount:
-                                  Utils.getDevice(context) == Device.PHONE
-                                      ? 1
-                                      : 2,
-                              builder: (context, index) {
-                                return tiles[index];
-                              },
-                              list: tiles,
-                            ),
-                          ),
-                          Flexible(
-                            fit: FlexFit.loose,
-                            child: CustomGridView(
-                              fillEmptySpace: false,
-                              mainAxisCount:
-                                  Utils.getDevice(context) == Device.PHONE
-                                      ? 1
-                                      : 2,
-                              builder: (context, index) {
-                                return textFields[index];
-                              },
-                              list: textFields,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(64.0),
-                                    ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        CustomGridView(
+                          fillEmptySpace: false,
+                          mainAxisCount:
+                              Utils.getDevice(context) == Device.PHONE ? 1 : 2,
+                          builder: (context, index) {
+                            return tiles[index];
+                          },
+                          list: tiles,
+                        ),
+                        CustomGridView(
+                          fillEmptySpace: false,
+                          mainAxisCount:
+                              Utils.getDevice(context) == Device.PHONE ? 1 : 2,
+                          builder: (context, index) {
+                            return textFields[index];
+                          },
+                          list: textFields,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(64.0),
                                   ),
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    "Fortfahren",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.pushNamed(context,
-                                      Constants.ROUTE_MOVEMENT_DRIVING_LICENSE,
-                                      arguments: movementOverviewProvider
-                                          .inspectionReport);
-                                },
                               ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                  "Fortfahren",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .copyWith(color: Colors.white),
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.pushNamed(context,
+                                    Constants.ROUTE_MOVEMENT_DRIVING_LICENSE,
+                                    arguments: movementOverviewProvider
+                                        .inspectionReport);
+                              },
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 )
               : Center(
                   child: ERLoadingIndicator(),
                 ),
+          appBar: AppBar(
+            title: Text(
+              movementOverviewProvider.vehicle.licensePlate,
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
         );
       },
     );
@@ -201,8 +188,10 @@ class MovementOverviewPage extends StatelessWidget {
           ),
           title: Text(
             title,
-            style: Theme.of(context).textTheme.headline5!.copyWith(
+            textAlign: TextAlign.start,
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   color: Theme.of(context).colorScheme.secondary,
+                  overflow: TextOverflow.ellipsis,
                 ),
           ),
           subtitle: Padding(
@@ -213,7 +202,8 @@ class MovementOverviewPage extends StatelessWidget {
                       onError: "Nicht hinterlegt")
                   : Utils.formatDateTimestring(value,
                       onError: "Nicht hinterlegt"),
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.bodyText1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ),

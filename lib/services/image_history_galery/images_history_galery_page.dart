@@ -20,32 +20,29 @@ class ImagesHistoryGaleryPage extends StatelessWidget {
         ImagesHistoryGaleryProvider imagesHistoryGaleryProvider =
             Provider.of<ImagesHistoryGaleryProvider>(context, listen: true);
 
-
-        return Scaffold(
-          appBar: AppBar(),
-          body: MenuPageContainer(
-            "Galerie",
-            "Aufgenommene Bilder",
-            GridView.count(
-              shrinkWrap: true,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              crossAxisCount: 2,
-              children: List.generate(
-                imagePaths.length,
-                (index) => FullScreenWidget(
-                  disposeLevel: DisposeLevel.Low,
-                  child: Hero(
-                      tag: "fullScreenImage" + index.toString(),
-                      child: Image.file(
-                        File(imagePaths[index]),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+        return MenuPageContainer(
+          "Galerie",
+          "Aufgenommene Bilder",
+          GridView.count(
+            shrinkWrap: true,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            crossAxisCount: 2,
+            children: List.generate(
+              imagePaths.length,
+              (index) => FullScreenWidget(
+                disposeLevel: DisposeLevel.Low,
+                child: Hero(
+                  tag: "fullScreenImage" + index.toString(),
+                  child: Image.file(
+                    File(imagePaths[index]),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
+          ),
+          appBar: AppBar(),
         );
       },
     );

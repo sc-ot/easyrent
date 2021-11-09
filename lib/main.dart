@@ -24,6 +24,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'core/application.dart';
 import 'services/client/client_page.dart';
@@ -47,52 +48,57 @@ void main() async {
         Application application =
             Provider.of<Application>(context, listen: true);
         return OverlaySupport.global(
-          child: MaterialApp(
-            localizationsDelegates: [
-              //  AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: [
-              Locale('de', ''), // English, no country code
-            ],
-            theme: Themes.getLightTheme(),
-            darkTheme: Themes.getDarkTheme(),
-            themeMode: application.themeMode,
-            home: BaseApplication(),
-            initialRoute: Constants.ROUTE_HOME,
-            navigatorKey: navigatorKey,
-            routes: {
-              Constants.ROUTE_LOGIN: (context) => LoginPage(),
-              Constants.ROUTE_CLIENTS: (context) => ClientPage(),
-              Constants.ROUTE_MENU: (context) => MenuPage(),
-              Constants.ROUTE_CAMERA: (context) => CameraPage(),
-              Constants.ROUTE_VEHICLE_INFO: (context) => VehicleInfoPage(),
-              Constants.ROUTE_VEHICLE_INFO_MOVEMENTS: (context) =>
-                  VehicleInfoMovementsPage(),
-              Constants.ROUTE_VEHICLE_INFO_EQUIPMENTS: (context) =>
-                  VehicleInfoEquipmentsPage(),
-              Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST: (context) =>
-                  ImagesVehicleSearchListPage(),
-              Constants.ROUTE_IMAGES_NEW_VEHICLE: (context) =>
-                  ImagesNewVehiclePage(),
-              Constants.ROUTE_IMAGES_HISTORY: (context) => ImagesHistoryPage(),
-              Constants.ROUTE_IMAGES_HISTORY_GALERY: (context) =>
-                  ImagesHistoryGaleryPage(),
-              Constants.ROUTE_MOVEMENT_PLANNED_MOVEMENT_SEARCH_LIST:
-                  (context) => MovementPlannedMovementSearchListPage(),
-              Constants.ROUTE_MOVEMENT_SEARCH_LIST: (context) =>
-                  MovementSearchListPage(),
-              Constants.ROUTE_MOVEMENT_OVERVIEW: (context) =>
-                  MovementOverviewPage(),
-              Constants.ROUTE_MOVEMENT_DRIVING_LICENSE: (context) =>
-                  MovementDrivingLicensePage(),
-              Constants.ROUTE_MOVEMENT_LICENSEPLATE_AND_MILES: (context) =>
-                  MovementLicensPlateAndMilesPage(),
-              Constants.ROUTE_MOVEMENT_PROTOCOL: (context) =>
-                  MovementProtocolPage(),
-              Constants.ROUTE_IMAGES_LOG_PAGE: (context) => ImagesLogPage(),
+          child: ResponsiveSizer(
+            builder: (a, b, c) {
+              return MaterialApp(
+                localizationsDelegates: [
+                  //  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  Locale('de', ''), // English, no country code
+                ],
+                theme: Themes.getLightTheme(),
+                darkTheme: Themes.getDarkTheme(),
+                themeMode: application.themeMode,
+                home: BaseApplication(),
+                initialRoute: Constants.ROUTE_HOME,
+                navigatorKey: navigatorKey,
+                routes: {
+                  Constants.ROUTE_LOGIN: (context) => LoginPage(),
+                  Constants.ROUTE_CLIENTS: (context) => ClientPage(),
+                  Constants.ROUTE_MENU: (context) => MenuPage(),
+                  Constants.ROUTE_CAMERA: (context) => CameraPage(),
+                  Constants.ROUTE_VEHICLE_INFO: (context) => VehicleInfoPage(),
+                  Constants.ROUTE_VEHICLE_INFO_MOVEMENTS: (context) =>
+                      VehicleInfoMovementsPage(),
+                  Constants.ROUTE_VEHICLE_INFO_EQUIPMENTS: (context) =>
+                      VehicleInfoEquipmentsPage(),
+                  Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST: (context) =>
+                      ImagesVehicleSearchListPage(),
+                  Constants.ROUTE_IMAGES_NEW_VEHICLE: (context) =>
+                      ImagesNewVehiclePage(),
+                  Constants.ROUTE_IMAGES_HISTORY: (context) =>
+                      ImagesHistoryPage(),
+                  Constants.ROUTE_IMAGES_HISTORY_GALERY: (context) =>
+                      ImagesHistoryGaleryPage(),
+                  Constants.ROUTE_MOVEMENT_PLANNED_MOVEMENT_SEARCH_LIST:
+                      (context) => MovementPlannedMovementSearchListPage(),
+                  Constants.ROUTE_MOVEMENT_SEARCH_LIST: (context) =>
+                      MovementSearchListPage(),
+                  Constants.ROUTE_MOVEMENT_OVERVIEW: (context) =>
+                      MovementOverviewPage(),
+                  Constants.ROUTE_MOVEMENT_DRIVING_LICENSE: (context) =>
+                      MovementDrivingLicensePage(),
+                  Constants.ROUTE_MOVEMENT_LICENSEPLATE_AND_MILES: (context) =>
+                      MovementLicensPlateAndMilesPage(),
+                  Constants.ROUTE_MOVEMENT_PROTOCOL: (context) =>
+                      MovementProtocolPage(),
+                  Constants.ROUTE_IMAGES_LOG_PAGE: (context) => ImagesLogPage(),
+                },
+              );
             },
           ),
         );

@@ -33,6 +33,7 @@ class ImagesVehicleSearchListPage extends StatelessWidget {
                     "Frontal-Links",
                     "Links",
                     "Heck-Links",
+                    "Heck",
                     "Heck-Rechts",
                     "Rechts",
                     "Frontal-Rechts"

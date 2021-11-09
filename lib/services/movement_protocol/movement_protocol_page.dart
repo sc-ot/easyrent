@@ -27,6 +27,7 @@ class MovementProtocolPage extends StatelessWidget {
             ),
           ),
           floatingActionButton: FloatingActionButton(
+            heroTag: "movementProtocolFab",
             onPressed: () {
               scrollController.animateTo(200,
                   duration: Duration(milliseconds: 500), curve: Curves.easeIn);

@@ -16,57 +16,59 @@ class MenuMovementPage extends StatelessWidget {
     return MenuPageContainer(
       title,
       subTitle,
-      Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(
-            child: MenuCardIconText(
-              "Eingang",
-              LineIcons.arrowDown,
-              () => Navigator.pushNamed(
-                  context, Constants.ROUTE_MOVEMENT_SEARCH_LIST,
-                  arguments: Constants.MOVEMENT_TYPE_ENTRY),
-              backgroundImage: SCSharedPrefStorage.readBool(
-                              Constants.KEY_SHOW_IMAGES_IN_MENU) !=
-                          null &&
-                      SCSharedPrefStorage.readBool(
-                          Constants.KEY_SHOW_IMAGES_IN_MENU)
-                  ? "assets/menu_entrance.jpeg"
-                  : null,
+      Expanded(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: MenuCardIconText(
+                "Eingang",
+                LineIcons.arrowDown,
+                () => Navigator.pushNamed(
+                    context, Constants.ROUTE_MOVEMENT_SEARCH_LIST,
+                    arguments: Constants.MOVEMENT_TYPE_ENTRY),
+                backgroundImage: SCSharedPrefStorage.readBool(
+                                Constants.KEY_SHOW_IMAGES_IN_MENU) !=
+                            null &&
+                        SCSharedPrefStorage.readBool(
+                            Constants.KEY_SHOW_IMAGES_IN_MENU)
+                    ? "assets/menu_entrance.jpeg"
+                    : null,
+              ),
             ),
-          ),
-          Flexible(
-            child: MenuCardIconText(
-              "Ausgang",
-              LineIcons.arrowUp,
-              () => Navigator.pushNamed(
-                  context, Constants.ROUTE_MOVEMENT_SEARCH_LIST,
-                  arguments: Constants.MOVEMENT_TYPE_EXIT),
-              backgroundImage: SCSharedPrefStorage.readBool(
-                              Constants.KEY_SHOW_IMAGES_IN_MENU) !=
-                          null &&
-                      SCSharedPrefStorage.readBool(
-                          Constants.KEY_SHOW_IMAGES_IN_MENU)
-                  ? "assets/menu_exit.jpeg"
-                  : null,
+            Flexible(
+              child: MenuCardIconText(
+                "Ausgang",
+                LineIcons.arrowUp,
+                () => Navigator.pushNamed(
+                    context, Constants.ROUTE_MOVEMENT_SEARCH_LIST,
+                    arguments: Constants.MOVEMENT_TYPE_EXIT),
+                backgroundImage: SCSharedPrefStorage.readBool(
+                                Constants.KEY_SHOW_IMAGES_IN_MENU) !=
+                            null &&
+                        SCSharedPrefStorage.readBool(
+                            Constants.KEY_SHOW_IMAGES_IN_MENU)
+                    ? "assets/menu_exit.jpeg"
+                    : null,
+              ),
             ),
-          ),
-          Flexible(
-            child: MenuCardIconText(
-              "Geplante Bewegung",
-              Icons.content_paste,
-              () => Navigator.pushNamed(context,
-                  Constants.ROUTE_MOVEMENT_PLANNED_MOVEMENT_SEARCH_LIST),
-              backgroundImage: SCSharedPrefStorage.readBool(
-                              Constants.KEY_SHOW_IMAGES_IN_MENU) !=
-                          null &&
-                      SCSharedPrefStorage.readBool(
-                          Constants.KEY_SHOW_IMAGES_IN_MENU)
-                  ? "assets/menu_planned_movement.png"
-                  : null,
+            Flexible(
+              child: MenuCardIconText(
+                "Geplante Bewegung",
+                Icons.content_paste,
+                () => Navigator.pushNamed(context,
+                    Constants.ROUTE_MOVEMENT_PLANNED_MOVEMENT_SEARCH_LIST),
+                backgroundImage: SCSharedPrefStorage.readBool(
+                                Constants.KEY_SHOW_IMAGES_IN_MENU) !=
+                            null &&
+                        SCSharedPrefStorage.readBool(
+                            Constants.KEY_SHOW_IMAGES_IN_MENU)
+                    ? "assets/menu_planned_movement.png"
+                    : null,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       paddingBottom: 16,
     );

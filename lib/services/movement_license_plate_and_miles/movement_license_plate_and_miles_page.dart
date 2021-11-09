@@ -27,16 +27,11 @@ class MovementLicensPlateAndMilesPage extends StatelessWidget {
             Provider.of<MovementLicensPlateAndMilesProvider>(context,
                 listen: true);
 
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            title: Text(movementLicensPlateAndMilesProvider
-                .inspectionReport.vehicle!.licensePlate),
-          ),
-          body: MenuPageContainer(
-            "Kennzeichen und Kilometerstand",
-            "Bitte überprüfen Sie die Daten",
-            Column(
+        return MenuPageContainer(
+          "Kennzeichen und Kilometerstand",
+          "Bitte überprüfen Sie die Daten",
+          Expanded(
+            child: Column(
               children: [
                 Expanded(
                   flex: 6,
@@ -50,7 +45,9 @@ class MovementLicensPlateAndMilesPage extends StatelessWidget {
                           labelStyle: Theme.of(context)
                               .textTheme
                               .headline5!
-                              .copyWith(color: Theme.of(context).colorScheme.secondary),
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary),
                         ),
                         style: Theme.of(context).textTheme.headline5,
                       ),
@@ -70,7 +67,9 @@ class MovementLicensPlateAndMilesPage extends StatelessWidget {
                           labelStyle: Theme.of(context)
                               .textTheme
                               .headline5!
-                              .copyWith(color: Theme.of(context).colorScheme.secondary),
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary),
                         ),
                         style: Theme.of(context).textTheme.headline5,
                       ),
@@ -119,6 +118,10 @@ class MovementLicensPlateAndMilesPage extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          appBar: AppBar(
+            title: Text(movementLicensPlateAndMilesProvider
+                .inspectionReport.vehicle!.licensePlate),
           ),
         );
       },

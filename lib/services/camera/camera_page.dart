@@ -220,27 +220,8 @@ class _CameraPageState extends State<CameraPage> {
                               "Aufgenommene Fotos",
                               cameraProvider.images.length == 0
                                   ? Container()
-                                  : Scaffold(
-                                      floatingActionButton:
-                                          FloatingActionButton.extended(
-                                        label: Text(
-                                          "Kamera",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1!
-                                              .copyWith(color: Colors.white),
-                                        ),
-                                        icon: Icon(Icons.camera_alt_outlined,
-                                            color: Colors.white),
-                                        onPressed: () {
-                                          cameraProvider.pageController
-                                              .previousPage(
-                                                  duration: Duration(
-                                                      milliseconds: 500),
-                                                  curve: Curves.easeIn);
-                                        },
-                                      ),
-                                      body: GridView.count(
+                                  : Expanded(
+                                      child: GridView.count(
                                         cacheExtent: 250,
                                         shrinkWrap: true,
                                         crossAxisCount: 2,
@@ -384,6 +365,24 @@ class _CameraPageState extends State<CameraPage> {
                                         ),
                                       ),
                                     ),
+                              floatingActionButton:
+                                  FloatingActionButton.extended(
+                                heroTag: "kameraFAB",
+                                label: Text(
+                                  "Kamera",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1!
+                                      .copyWith(color: Colors.white),
+                                ),
+                                icon: Icon(Icons.camera_alt_outlined,
+                                    color: Colors.white),
+                                onPressed: () {
+                                  cameraProvider.pageController.previousPage(
+                                      duration: Duration(milliseconds: 500),
+                                      curve: Curves.easeIn);
+                                },
+                              ),
                             ),
                           ),
                         ],

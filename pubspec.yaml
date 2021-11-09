@@ -26,7 +26,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter   
   provider: ^5.0.0
-  dartz: ^0.10.0-nullsafety.2
   google_fonts: ^2.1.0
   google_nav_bar: ^5.0.5
   line_icons: ^2.0.1
@@ -46,6 +45,7 @@ dependencies:
   exif: ^3.0.0
   image: ^3.0.7
   native_device_orientation: ^1.0.0
+  responsive_sizer: ^3.0.4+4
   devtools:
     git:
       url: git@github.com:sc-ot/devtools.git
