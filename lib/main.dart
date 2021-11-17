@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:devtools/sc_shared_prefs_storage.dart';
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/themes.dart';
@@ -18,6 +17,7 @@ import 'package:easyrent/services/movement_protocol/movement_protocol_page.dart'
 import 'package:easyrent/services/movement_search_list/movement_search_list_page.dart';
 import 'package:easyrent/services/vehicle_info/vehicle_info_page.dart';
 import 'package:easyrent/services/vehicle_info_equipments/vehicle_info_equipments_page.dart';
+import 'package:easyrent/services/vehicle_info_location/vehicle_info_location_page.dart';
 import 'package:easyrent/services/vehicle_info_movements/vehicle_info_movements_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +25,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 import 'core/application.dart';
 import 'services/client/client_page.dart';
@@ -78,6 +79,8 @@ void main() async {
                       VehicleInfoEquipmentsPage(),
                   Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST: (context) =>
                       ImagesVehicleSearchListPage(),
+                  Constants.ROUTE_VEHICLE_INFO_LOCATION: (context) =>
+                      VehicleInfoLocationPage(),
                   Constants.ROUTE_IMAGES_NEW_VEHICLE: (context) =>
                       ImagesNewVehiclePage(),
                   Constants.ROUTE_IMAGES_HISTORY: (context) =>

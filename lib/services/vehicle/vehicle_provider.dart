@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:dartz/dartz.dart';
-import 'package:devtools/models/failure.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:sc_appframework/models/failure.dart';
 
 enum VEHICLELISTTYPE {
   STANDARD,

@@ -3,7 +3,7 @@ class Constants {
   // "https://erbackend.works4dev.de/api/v1" prod example
   // "https://easyrentm1backend.works4dev.de/api/v1" test example
 
-  static String BASE_URL = "https://erbackend.works4dev.de/api/v1";
+  static String BASE_URL = "https://easyrentm1backend.works4dev.de/api/v1";
 
   static const int MOVEMENT_TYPE_ENTRY = 1;
   static const int MOVEMENT_TYPE_EXIT = 2;
@@ -20,6 +20,7 @@ class Constants {
   static const String ROUTE_VEHICLE_INFO_MOVEMENTS = "/vehicle_info_movements";
   static const String ROUTE_VEHICLE_INFO_EQUIPMENTS =
       "/vehicle_info_equipments";
+  static const String ROUTE_VEHICLE_INFO_LOCATION = "/vehicle_info_location";
   static const String ROUTE_CAMERA_VEHICLE_SEARCH_LIST =
       "/image_vehicle_search_list";
   static const String ROUTE_IMAGES_NEW_VEHICLE = "/images_new_vehicle";

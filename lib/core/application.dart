@@ -1,10 +1,10 @@
-import 'package:devtools/sc_shared_prefs_storage.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/themes.dart';
 import 'package:easyrent/models/client.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 class Application with ChangeNotifier {
   ThemeMode themeMode = ThemeMode.light;

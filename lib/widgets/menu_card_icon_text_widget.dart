@@ -1,9 +1,9 @@
-import 'package:devtools/sc_shared_prefs_storage.dart';
 import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 class MenuCardIconText extends StatelessWidget {
   final String title;

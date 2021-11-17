@@ -1,9 +1,9 @@
-import 'package:devtools/sc_shared_prefs_storage.dart';
 import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 import '../../../widgets/menu_page_container_widget.dart';
 import 'menu_settings_page_settings_entry_widget.dart';

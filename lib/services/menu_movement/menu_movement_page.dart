@@ -1,9 +1,9 @@
-import 'package:devtools/sc_shared_prefs_storage.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/widgets/menu_card_icon_text_widget.dart';
 import 'package:easyrent/widgets/menu_page_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 class MenuMovementPage extends StatelessWidget {
   final String title;

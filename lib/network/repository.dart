@@ -1,7 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:devtools/models/failure.dart';
-import 'package:devtools/models/file_payload.dart';
-import 'package:devtools/sc_network_api.dart';
+
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/client.dart';
@@ -13,6 +11,9 @@ import 'package:easyrent/models/movement.dart';
 import 'package:easyrent/models/planned_movement.dart';
 import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/models/vehicle_image.dart';
+import 'package:sc_appframework/models/failure.dart';
+import 'package:sc_appframework/models/file_payload.dart';
+import 'package:sc_appframework/network/sc_network_api.dart';
 
 class EasyRentRepository {
   SCNetworkApi api = SCNetworkApi();

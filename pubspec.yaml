@@ -46,10 +46,12 @@ dependencies:
   image: ^3.0.7
   native_device_orientation: ^1.0.0
   responsive_sizer: ^3.0.4+4
-  devtools:
+  google_maps_flutter: ^2.1.0
+  geolocator: ^7.7.1
+  sc_appframework:
     git:
-      url: git@github.com:sc-ot/devtools.git
-      ref: master
+      url: https://github.com/symblCrowd/sc_appframework.git
+      ref: main
   
   
   

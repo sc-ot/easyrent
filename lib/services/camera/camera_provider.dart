@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:devtools/models/file_payload.dart';
-import 'package:devtools/sc_shared_prefs_storage.dart';
 import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/utils.dart';
@@ -22,6 +20,8 @@ import 'package:native_device_orientation/native_device_orientation.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:image/image.dart' as img;
+import 'package:sc_appframework/models/file_payload.dart';
+import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 import 'camera_page.dart';
 
@@ -492,7 +492,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                           (r) {
                             successUploadedImages++;
                             if (successUploadedImages == images.length) {
-                              showSuccessNotification();
+                              showSuccessNotification(images);
                             }
                           },
                         );
@@ -522,7 +522,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                           (r) {
                             successUploadedImages++;
                             if (successUploadedImages == images.length) {
-                              showSuccessNotification();
+                              showSuccessNotification(images);
                             }
                           },
                         );
@@ -537,7 +537,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     }
   }
 
-  void showSuccessNotification() {
+  void showSuccessNotification(List<CameraPicture> images) {
     String titleText = camera.vehicle == null
         ? "Fahrzeug: " + camera.vin!
         : camera.vehicle!.letterNumber + " - " + camera.vehicle!.licensePlate;

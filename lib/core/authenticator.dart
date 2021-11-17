@@ -1,8 +1,8 @@
-import 'package:devtools/sc_network_api.dart';
-import 'package:devtools/sc_shared_prefs_storage.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/login.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:sc_appframework/network/sc_network_api.dart';
+import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 class Authenticator {
   static void saveAuthentication(Login login) {

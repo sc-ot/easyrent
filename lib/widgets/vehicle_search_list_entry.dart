@@ -55,7 +55,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                   children: [
                     Text(
                       vehicle.vin,
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.bodyText2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(
@@ -65,7 +65,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                       children: [
                         Text(
                           vehicle.manufacturer.manufacturerName,
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context).textTheme.bodyText2,
                           overflow: TextOverflow.fade,
                         ),
                         SizedBox(
@@ -74,7 +74,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                         Expanded(
                           child: Text(
                             vehicle.vehicleCategory.vehicleCategoryName,
-                            style: Theme.of(context).textTheme.subtitle1,
+                            style: Theme.of(context).textTheme.bodyText2,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
@@ -86,7 +86,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                     ),
                     Text(
                       vehicle.licensePlate,
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.bodyText2,
                       overflow: TextOverflow.fade,
                     ),
                     ...dateWidget,
@@ -99,7 +99,7 @@ class VehicleSearchListEntry extends StatelessWidget {
                   vehicle.vehicleNumber,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText1!
+                      .subtitle1!
                       .copyWith(color: Theme.of(context).colorScheme.secondary),
                   overflow: TextOverflow.ellipsis,
                 ),

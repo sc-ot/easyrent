@@ -44,11 +44,13 @@ class VehicleInfoPage extends StatelessWidget {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("Fahrzeug Nr. ${vehicle.vehicleNumber}",
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(color: Colors.white)),
+                        child: FittedBox(
+                          child: Text("Fahrzeug Nr. ${vehicle.vehicleNumber}",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .copyWith(color: Colors.white)),
+                        ),
                       ),
                     ),
                     background: vehicleInfoProvider.ui == STATE.LOADING ||
@@ -159,6 +161,42 @@ class VehicleInfoPage extends StatelessWidget {
                                               0, 12, 0, 12),
                                           child: Text(
                                             "Ausstattungen",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(color: Colors.white),
+                                          ),
+                                        ),
+                                        style: ButtonStyle(
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(32.0),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 16,
+                                    ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                              context,
+                                              Constants
+                                                  .ROUTE_VEHICLE_INFO_LOCATION,
+                                              arguments: vehicle);
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 12, 0, 12),
+                                          child: Text(
+                                            "Standort",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline6!
