@@ -276,7 +276,6 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
             images[currentImageIndex].image = file;
             images[currentImageIndex].base64 = "data:image/jpg;base64," +
                 base64Encode(await file!.readAsBytes());
-
             // Nur 1 Foto erlaubt
             if (camera.singleImage) {
               closeCamera(context);
@@ -425,10 +424,12 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     List<CameraPicture> images = imagesToUpload();
 
     if (images.length > 0) {
+      // Maybe overflow in SharedPrefStorage on iOS?
       // Get image paths
-      List<String> imagePaths = images.map((e) => e.image!.path).toList();
+      /*   List<String> imagePaths = images.map((e) => e.image!.path).toList();
 
-      ImageHistory imageHistory = ImageHistory(
+   
+     ImageHistory imageHistory = ImageHistory(
         Provider.of<Application>(context, listen: false).client.name,
         imagePaths,
         Utils.formatDateTimestringWithTime(DateTime.now().toIso8601String()),
@@ -436,11 +437,12 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
         camera.vin,
       );
 
+
+      
       dynamic historyInPref;
 
       String? history = SCSharedPrefStorage.readString(Constants.KEY_IMAGES);
-
-      if (history != null) {
+     if (history != null) {
         historyInPref = jsonDecode(history);
         historyInPref.add(imageHistory);
         SCSharedPrefStorage.saveData(
@@ -456,7 +458,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
             [imageHistory],
           ),
         );
-      }
+      }*/
 
       easyRentRepository.getImageUploadProcess().asStream().listen(
         (response) {

@@ -109,7 +109,7 @@ class Themes {
           color: Colors.white,
         ),
         subtitle1: GoogleFonts.roboto(
-          fontSize: 15.sp,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.15,
           color: Colors.white,
@@ -127,7 +127,7 @@ class Themes {
           color: Colors.white,
         ),
         bodyText2: GoogleFonts.roboto(
-          fontSize: 14.sp,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.25,
           color: Colors.white,
@@ -258,7 +258,7 @@ class Themes {
           color: Colors.black,
         ),
         subtitle1: GoogleFonts.roboto(
-          fontSize: 15.sp,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.15,
           color: Colors.black,
@@ -276,7 +276,7 @@ class Themes {
           color: Colors.black,
         ),
         bodyText2: GoogleFonts.roboto(
-          fontSize: 14.sp,
+          fontSize: 16.sp,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.25,
           color: Colors.black,

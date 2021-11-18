@@ -1,4 +1,3 @@
-
 import 'package:camera/camera.dart';
 
 class CameraPicture {
@@ -7,7 +6,6 @@ class CameraPicture {
   bool showInGalery;
   String assetName;
   String base64;
-  CameraPicture(this.image, this.tag, this.showInGalery, this.assetName, this.base64);
-
-
+  CameraPicture(
+      this.image, this.tag, this.showInGalery, this.assetName, this.base64);
 }

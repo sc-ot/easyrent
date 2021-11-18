@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:isolate';
+
 import 'package:dartz/dartz.dart';
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
@@ -19,6 +22,8 @@ import 'package:easyrent/services/vehicle_info/vehicle_info_page.dart';
 import 'package:easyrent/services/vehicle_info_equipments/vehicle_info_equipments_page.dart';
 import 'package:easyrent/services/vehicle_info_location/vehicle_info_location_page.dart';
 import 'package:easyrent/services/vehicle_info_movements/vehicle_info_movements_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -36,78 +41,92 @@ import 'services/login/login_page.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await SCSharedPrefStorage().init();
+  Isolate.current.addErrorListener(RawReceivePort((pair) async {
+    final List<dynamic> errorAndStacktrace = pair;
+    await FirebaseCrashlytics.instance.recordError(
+      errorAndStacktrace.first,
+      errorAndStacktrace.last,
+    );
+  }).sendPort);
 
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  Authenticator.initAuthentication();
+  runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await SCSharedPrefStorage().init();
+    await Firebase.initializeApp();
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-  runApp(
-    ChangeNotifierProvider<Application>(
-      create: (BuildContext context) => Application(),
-      builder: (context, child) {
-        Application application =
-            Provider.of<Application>(context, listen: true);
-        return OverlaySupport.global(
-          child: ResponsiveSizer(
-            builder: (a, b, c) {
-              return MaterialApp(
-                localizationsDelegates: [
-                  //  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: [
-                  Locale('de', ''), // English, no country code
-                ],
-                theme: Themes.getLightTheme(),
-                darkTheme: Themes.getDarkTheme(),
-                themeMode: application.themeMode,
-                home: BaseApplication(),
-                initialRoute: Constants.ROUTE_HOME,
-                navigatorKey: navigatorKey,
-                routes: {
-                  Constants.ROUTE_LOGIN: (context) => LoginPage(),
-                  Constants.ROUTE_CLIENTS: (context) => ClientPage(),
-                  Constants.ROUTE_MENU: (context) => MenuPage(),
-                  Constants.ROUTE_CAMERA: (context) => CameraPage(),
-                  Constants.ROUTE_VEHICLE_INFO: (context) => VehicleInfoPage(),
-                  Constants.ROUTE_VEHICLE_INFO_MOVEMENTS: (context) =>
-                      VehicleInfoMovementsPage(),
-                  Constants.ROUTE_VEHICLE_INFO_EQUIPMENTS: (context) =>
-                      VehicleInfoEquipmentsPage(),
-                  Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST: (context) =>
-                      ImagesVehicleSearchListPage(),
-                  Constants.ROUTE_VEHICLE_INFO_LOCATION: (context) =>
-                      VehicleInfoLocationPage(),
-                  Constants.ROUTE_IMAGES_NEW_VEHICLE: (context) =>
-                      ImagesNewVehiclePage(),
-                  Constants.ROUTE_IMAGES_HISTORY: (context) =>
-                      ImagesHistoryPage(),
-                  Constants.ROUTE_IMAGES_HISTORY_GALERY: (context) =>
-                      ImagesHistoryGaleryPage(),
-                  Constants.ROUTE_MOVEMENT_PLANNED_MOVEMENT_SEARCH_LIST:
-                      (context) => MovementPlannedMovementSearchListPage(),
-                  Constants.ROUTE_MOVEMENT_SEARCH_LIST: (context) =>
-                      MovementSearchListPage(),
-                  Constants.ROUTE_MOVEMENT_OVERVIEW: (context) =>
-                      MovementOverviewPage(),
-                  Constants.ROUTE_MOVEMENT_DRIVING_LICENSE: (context) =>
-                      MovementDrivingLicensePage(),
-                  Constants.ROUTE_MOVEMENT_LICENSEPLATE_AND_MILES: (context) =>
-                      MovementLicensPlateAndMilesPage(),
-                  Constants.ROUTE_MOVEMENT_PROTOCOL: (context) =>
-                      MovementProtocolPage(),
-                  Constants.ROUTE_IMAGES_LOG_PAGE: (context) => ImagesLogPage(),
-                },
-              );
-            },
-          ),
-        );
-      },
-    ),
-  );
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    Authenticator.initAuthentication();
+
+    runApp(
+      ChangeNotifierProvider<Application>(
+        create: (BuildContext context) => Application(),
+        builder: (context, child) {
+          Application application =
+              Provider.of<Application>(context, listen: true);
+          return OverlaySupport.global(
+            child: ResponsiveSizer(
+              builder: (a, b, c) {
+                return MaterialApp(
+                  localizationsDelegates: [
+                    //  AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: [
+                    Locale('de', ''), // English, no country code
+                  ],
+                  theme: Themes.getLightTheme(),
+                  darkTheme: Themes.getDarkTheme(),
+                  themeMode: application.themeMode,
+                  home: BaseApplication(),
+                  initialRoute: Constants.ROUTE_HOME,
+                  navigatorKey: navigatorKey,
+                  routes: {
+                    Constants.ROUTE_LOGIN: (context) => LoginPage(),
+                    Constants.ROUTE_CLIENTS: (context) => ClientPage(),
+                    Constants.ROUTE_MENU: (context) => MenuPage(),
+                    Constants.ROUTE_CAMERA: (context) => CameraPage(),
+                    Constants.ROUTE_VEHICLE_INFO: (context) =>
+                        VehicleInfoPage(),
+                    Constants.ROUTE_VEHICLE_INFO_MOVEMENTS: (context) =>
+                        VehicleInfoMovementsPage(),
+                    Constants.ROUTE_VEHICLE_INFO_EQUIPMENTS: (context) =>
+                        VehicleInfoEquipmentsPage(),
+                    Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST: (context) =>
+                        ImagesVehicleSearchListPage(),
+                    Constants.ROUTE_VEHICLE_INFO_LOCATION: (context) =>
+                        VehicleInfoLocationPage(),
+                    Constants.ROUTE_IMAGES_NEW_VEHICLE: (context) =>
+                        ImagesNewVehiclePage(),
+                    Constants.ROUTE_IMAGES_HISTORY: (context) =>
+                        ImagesHistoryPage(),
+                    Constants.ROUTE_IMAGES_HISTORY_GALERY: (context) =>
+                        ImagesHistoryGaleryPage(),
+                    Constants.ROUTE_MOVEMENT_PLANNED_MOVEMENT_SEARCH_LIST:
+                        (context) => MovementPlannedMovementSearchListPage(),
+                    Constants.ROUTE_MOVEMENT_SEARCH_LIST: (context) =>
+                        MovementSearchListPage(),
+                    Constants.ROUTE_MOVEMENT_OVERVIEW: (context) =>
+                        MovementOverviewPage(),
+                    Constants.ROUTE_MOVEMENT_DRIVING_LICENSE: (context) =>
+                        MovementDrivingLicensePage(),
+                    Constants.ROUTE_MOVEMENT_LICENSEPLATE_AND_MILES:
+                        (context) => MovementLicensPlateAndMilesPage(),
+                    Constants.ROUTE_MOVEMENT_PROTOCOL: (context) =>
+                        MovementProtocolPage(),
+                    Constants.ROUTE_IMAGES_LOG_PAGE: (context) =>
+                        ImagesLogPage(),
+                  },
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }
 
 class BaseApplication extends StatelessWidget {

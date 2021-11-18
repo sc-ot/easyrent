@@ -5,7 +5,6 @@ import 'package:easyrent/models/camera.dart';
 import 'package:easyrent/services/camera/camera_provider.dart';
 import 'package:easyrent/widgets/menu_page_container_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';

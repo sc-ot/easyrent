@@ -178,7 +178,7 @@ class VehicleInfoPage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    /* SizedBox(
                                       height: 16,
                                     ),
                                     Container(
@@ -213,7 +213,7 @@ class VehicleInfoPage extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                    ),
+                                    ),*/
                                   ],
                                 ),
                               ),
