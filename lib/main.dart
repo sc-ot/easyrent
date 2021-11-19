@@ -35,7 +35,6 @@ import 'core/application.dart';
 import 'services/client/client_page.dart';
 import 'services/login/login_page.dart';
 
-//import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 

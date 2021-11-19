@@ -25,11 +25,6 @@ class VehicleInfoLocationProvider extends StateProvider {
   }
 
   void getCurrentPosition() {
-    Utils.determinePosition().asStream().listen(
-      (event) {
-        currentUserPosition = LatLng(event.latitude, event.longitude);
-        setState(state: STATE.IDLE);
-      },
-    );
+  
   }
 }

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "271459241379",
+    "project_id": "easyrent-7a2d2",
+    "storage_bucket": "easyrent-7a2d2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:271459241379:android:8256c9756a7a2d041dde16",
+        "android_client_info": {
+          "package_name": "com.example.easyrent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "271459241379-msh7agqqo30t58ii9o8ut6ph53jtnf3b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB9GpsQzcsgXKVxbh_jo0Q9I-L_YEd5M8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "271459241379-msh7agqqo30t58ii9o8ut6ph53jtnf3b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "271459241379-lan81gecmcq4r0q9mu64iq9e63676rei.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.symblcrowd.easyrent"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
