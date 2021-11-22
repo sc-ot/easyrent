@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:exif/exif.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 enum Device {
   TABLET,
@@ -39,6 +40,36 @@ class Utils {
     }
   }
 
+  static Future<String> createFolderInAppDocDir(String folderName) async {
+    //Get this App Document Directory
+    final Directory _appDocDir = await getApplicationDocumentsDirectory();
+    //App Document Directory + folder name
+    final Directory _appDocDirFolder =
+        Directory('${_appDocDir.path}/$folderName/');
+
+    if (await _appDocDirFolder.exists()) {
+      //if folder already exists return path
+      return _appDocDirFolder.path;
+    } else {
+      //if folder not exists create folder and then return its path
+      final Directory _appDocDirNewFolder =
+          await _appDocDirFolder.create(recursive: true);
+      return _appDocDirNewFolder.path;
+    }
+  }
+
+  static Future<File> moveFile(File sourceFile, String newPath) async {
+    try {
+      /// prefer using rename as it is probably faster
+      /// if same directory path
+      return await sourceFile.rename(newPath);
+    } catch (e) {
+      /// if rename fails, copy the source file
+      final newFile = await sourceFile.copy(newPath);
+      return newFile;
+    }
+  }
+
   static printExifOf(String path) async {
     Map<String, IfdTag> data =
         await readExifFromBytes(await File(path).readAsBytes());
@@ -61,6 +92,4 @@ class Utils {
       print("$key (${data[key]?.tagType}): ${data[key]}");
     }
   }
-
-
 }

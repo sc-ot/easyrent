@@ -1,27 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/main.dart';
 import 'package:easyrent/models/camera.dart';
 import 'package:easyrent/models/camera_picture.dart';
 import 'package:easyrent/models/fleet_vehicle_image_upload_process.dart';
-import 'package:easyrent/models/image_history.dart';
 import 'package:easyrent/network/repository.dart';
-import 'package:exif/exif.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:provider/provider.dart';
-import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
 import 'package:sc_appframework/models/file_payload.dart';
-import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 import 'camera_page.dart';
 
@@ -39,7 +35,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   double _minAvailableZoom = 1.0;
   double _maxAvailableZoom = 10.0;
   int pointers = 0;
-
+  String path = "";
   late Future initCameraFuture;
   bool showPreviewImage = false;
   File? previewImage;
@@ -75,13 +71,13 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
 
     for (var tag in camera.tags) {
       images.add(
-        CameraPicture(null, tag, true, "", ""),
+        CameraPicture(null, tag, true, "", "", ""),
       );
     }
 
     if (images.length == 0) {
       images.add(
-        CameraPicture(null, "Optionales Bild 1", true, "", ""),
+        CameraPicture(null, "Optionales Bild 1", true, "", "", ""),
       );
     }
 
@@ -95,6 +91,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
 
   Future<void> initCamera() async {
     cameras = await availableCameras();
+    path = await Utils.createFolderInAppDocDir("images");
     cameraController = CameraController(
       cameras[0],
       ResolutionPreset.max,
@@ -140,6 +137,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
 
   Future<void> resetCamera(CameraDescription cameraDescription) async {
     initialising = true;
+
     if (cameraController != null) {
       await cameraController!.dispose();
     }
@@ -195,7 +193,6 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
           case NativeDeviceOrientation.unknown:
             await cameraController!
                 .lockCaptureOrientation(DeviceOrientation.portraitUp);
-
             break;
         }
       } else {
@@ -228,41 +225,51 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
 
       try {
         cameraController!.takePicture().then(
-          (XFile? file) async {
-            int currentIndex = currentImageIndex;
-            images[currentImageIndex].image = file;
-            images[currentImageIndex].base64 = "data:image/jpg;base64," +
-                base64Encode(await file!.readAsBytes());
-            // Nur 1 Foto erlaubt
-            if (camera.singleImage) {
-              closeCamera(context);
-              return;
-            }
+          (XFile? xFile) async {
+            if (xFile != null) {
+              int currentIndex = currentImageIndex;
+              String newPath = path +
+                  DateTime.now().millisecondsSinceEpoch.toString() +
+                  ".jpg";
+              xFile.saveTo(newPath);
+              images[currentIndex].image = xFile;
+              images[currentIndex].imageStoragePath = newPath;
 
-            if (currentIndex == images.length - 1) {
-              images.add(
-                CameraPicture(
-                    null,
-                    "Optionales Bild " +
-                        (images.length + 1 - mandatoryImages).toString(),
-                    true,
-                    "",
-                    ""),
+              // Nur 1 Foto erlaubt
+              if (camera.singleImage) {
+                closeCamera(context);
+                return;
+              }
+
+              // Optionales Bild
+              if (currentIndex == images.length - 1) {
+                images.add(
+                  CameraPicture(
+                      null,
+                      "Optionales Bild " +
+                          (images.length + 1 - mandatoryImages).toString(),
+                      true,
+                      "",
+                      "",
+                      ""),
+                );
+              }
+
+              // Preview Image setzen + Blackscreen
+              previewImage = File(xFile.path);
+              showPreviewImage = true;
+              takingPicturefinished = true;
+              await cameraController!
+                  .lockCaptureOrientation(DeviceOrientation.portraitUp);
+              notifyListeners();
+              Future.delayed(
+                Duration(seconds: 2),
+                () {
+                  showPreviewImage = false;
+                  notifyListeners();
+                },
               );
             }
-            previewImage = File(file.path);
-            showPreviewImage = true;
-            takingPicturefinished = true;
-            await cameraController!
-                .lockCaptureOrientation(DeviceOrientation.portraitUp);
-            notifyListeners();
-            Future.delayed(
-              Duration(seconds: 2),
-              () {
-                showPreviewImage = false;
-                notifyListeners();
-              },
-            );
           },
         );
       } catch (e) {
@@ -432,7 +439,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                         .uploadImage(
                           camera.vehicle!.id,
                           FilePayload(
-                            File(image.image!.path),
+                            image.imageStoragePath!,
                             {
                               "tag": image.tag,
                               "upload_process": uploadProccess.id.toString(),
@@ -441,7 +448,9 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                                   ? "1"
                                   : "0",
                             },
+                            deleteFile: true,
                           ),
+                          image.tag,
                         )
                         .asStream()
                         .listen(
@@ -465,13 +474,14 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                         .uploadImage(
                           0,
                           FilePayload(
-                            File(image.image!.path),
+                            image.imageStoragePath!,
                             {
                               "tag": image.tag,
                               "vin": camera.vin!,
                               "upload_process": uploadProccess.id.toString(),
                             },
                           ),
+                          image.tag,
                         )
                         .asStream()
                         .listen(

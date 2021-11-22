@@ -131,16 +131,20 @@ class EasyRentRepository {
 
   Future<Either<Failure, dynamic>> uploadImage(
     int vehicleId,
-    FilePayload file,
+    FilePayload filePayload,
+    String tag,
   ) =>
       api.request(
         Method.MULTIPART,
         "fleet/vehicles/$vehicleId/images/files",
         retry: true,
         onProgress: (bytes, length) {
-          print("BYTES $bytes - LENGTH: $length");
+          if (bytes >= length) {
+            print("\x1B[32m$tag - $bytes/$length\x1B[0m");
+          }
+          print("$tag - $bytes/$length");
         },
-        file: file,
+        filePayload: filePayload,
         cacheRequest: true,
       );
 

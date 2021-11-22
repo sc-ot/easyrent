@@ -64,7 +64,9 @@ class _CameraPageState extends State<CameraPage> {
                               Align(
                                 alignment: Alignment.topCenter,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: EdgeInsets.only(
+                                      top: MediaQuery.of(context).padding.top +
+                                          8),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
