@@ -1,3 +1,4 @@
+import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/widgets/loading_indicator.dart';
@@ -5,7 +6,7 @@ import 'package:easyrent/widgets/menu_page_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'images_log_provider.dart';
+import 'image_log_provider.dart';
 
 class ImagesLogPage extends StatelessWidget {
   const ImagesLogPage({Key? key}) : super(key: key);
@@ -142,7 +143,17 @@ class ImagesLogPage extends StatelessWidget {
                     },
                   ),
                 ),
-          appBar: AppBar(),
+          appBar: AppBar(
+            actions: [
+              IconButton(
+                icon: Icon(Icons.history),
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, Constants.ROUTE_IMAGES_CACHE_LOG);
+                },
+              )
+            ],
+          ),
         );
       },
     );

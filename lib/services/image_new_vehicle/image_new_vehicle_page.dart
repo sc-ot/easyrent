@@ -2,7 +2,7 @@ import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/models/camera.dart';
 import 'package:easyrent/services/camera/camera_page.dart';
-import 'package:easyrent/services/images_new_vehicle/images_new_vehicle_provider.dart.dart';
+import 'package:easyrent/services/image_new_vehicle/image_new_vehicle_provider.dart';
 import 'package:easyrent/widgets/menu_page_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

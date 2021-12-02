@@ -5,11 +5,9 @@ import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/themes.dart';
 import 'package:easyrent/services/camera/camera_page.dart';
-import 'package:easyrent/services/image_history_galery/images_history_galery_page.dart';
-import 'package:easyrent/services/image_log/images_log_page.dart';
-import 'package:easyrent/services/images_history/images_history_page.dart';
-import 'package:easyrent/services/images_new_vehicle/images_new_vehicle_page.dart';
-import 'package:easyrent/services/images_vehicle_search_list/images_vehicle_search_list_page.dart';
+import 'package:easyrent/services/image_cache_log/image_cache_log_page.dart';
+import 'package:easyrent/services/image_history_galery/image_history_galery_page.dart';
+import 'package:easyrent/services/image_log/image_log_page.dart';
 import 'package:easyrent/services/menu/menu_page.dart';
 import 'package:easyrent/services/movement_driving_license/movement_driving_license_page.dart';
 import 'package:easyrent/services/movement_license_plate_and_miles/movement_license_plate_and_miles_page.dart';
@@ -33,8 +31,10 @@ import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 import 'core/application.dart';
 import 'services/client/client_page.dart';
+import 'services/image_history/image_history_page.dart';
+import 'services/image_new_vehicle/image_new_vehicle_page.dart';
+import 'services/image_vehicle_search_list/image_vehicle_search_list_page.dart';
 import 'services/login/login_page.dart';
-
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -93,7 +93,7 @@ void main() async {
                     Constants.ROUTE_VEHICLE_INFO_EQUIPMENTS: (context) =>
                         VehicleInfoEquipmentsPage(),
                     Constants.ROUTE_CAMERA_VEHICLE_SEARCH_LIST: (context) =>
-                        ImagesVehicleSearchListPage(),
+                        ImageVehicleSearchListPage(),
                     Constants.ROUTE_VEHICLE_INFO_LOCATION: (context) =>
                         VehicleInfoLocationPage(),
                     Constants.ROUTE_IMAGES_NEW_VEHICLE: (context) =>
@@ -116,6 +116,8 @@ void main() async {
                         MovementProtocolPage(),
                     Constants.ROUTE_IMAGES_LOG_PAGE: (context) =>
                         ImagesLogPage(),
+                    Constants.ROUTE_IMAGES_CACHE_LOG: (context) =>
+                        ImageCacheLogPage(),
                   },
                 );
               },

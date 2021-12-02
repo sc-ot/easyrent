@@ -4,7 +4,7 @@ import 'package:easyrent/widgets/menu_page_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'images_history_provider.dart';
+import 'image_history_provider.dart';
 
 class ImagesHistoryPage extends StatelessWidget {
   const ImagesHistoryPage({Key? key}) : super(key: key);
@@ -77,7 +77,8 @@ class ImagesHistoryPage extends StatelessWidget {
                                           .subtitle2!
                                           .copyWith(
                                               color: Theme.of(context)
-                                                  .colorScheme.secondary),
+                                                  .colorScheme
+                                                  .secondary),
                                     ),
                                     Text(
                                         imagesHistoryProvider

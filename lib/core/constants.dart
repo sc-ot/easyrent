@@ -26,6 +26,8 @@ class Constants {
   static const String ROUTE_IMAGES_NEW_VEHICLE = "/images_new_vehicle";
   static const String ROUTE_IMAGES_HISTORY = "/images_history";
   static const String ROUTE_IMAGES_HISTORY_GALERY = "/images_history_galery";
+  static const String ROUTE_IMAGES_CACHE_LOG = "/images_cache_log";
+
   static const String ROUTE_MOVEMENT_PLANNED_MOVEMENT_SEARCH_LIST =
       "/movement_planned_movement_search_list";
   static const String ROUTE_MOVEMENT_SEARCH_LIST = "/movement_search_list";

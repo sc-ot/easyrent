@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:provider/provider.dart';
 
-import 'images_history_galery_provider.dart';
+import 'image_history_galery_provider.dart';
 
 class ImagesHistoryGaleryPage extends StatelessWidget {
   const ImagesHistoryGaleryPage({Key? key}) : super(key: key);
