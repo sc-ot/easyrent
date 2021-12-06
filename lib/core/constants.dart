@@ -49,4 +49,5 @@ class Constants {
   static const String KEY_SHOW_IMAGES_IN_MENU = "KEY_SHOW_IMAGES_IN_MENU";
 
   static const int VIN_MAX_LENGTH = 17;
+  static const FILE_NAME_DELIMITER = "__";
 }

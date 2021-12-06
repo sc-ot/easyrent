@@ -114,10 +114,12 @@ class ImagesHistoryPage extends StatelessWidget {
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .subtitle1),
-                                              Text("Bilder",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle2),
+                                              Text(
+                                                "Bilder",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle2,
+                                              ),
                                             ],
                                           ),
                               ),

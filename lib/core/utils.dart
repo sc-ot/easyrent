@@ -10,6 +10,10 @@ enum Device {
   PHONE,
 }
 
+extension Ex on double {
+  double toPrecision(int n) => double.parse(toStringAsFixed(n));
+}
+
 class Utils {
   static Device getDevice(BuildContext context) {
     if (MediaQuery.of(context).size.width > 600) {

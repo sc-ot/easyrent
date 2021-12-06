@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 
-import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/client.dart';
 import 'package:easyrent/models/fleet_vehicle_image_upload_process.dart';
@@ -130,22 +129,25 @@ class EasyRentRepository {
       );
 
   Future<Either<Failure, dynamic>> uploadImage(
-    int vehicleId,
-    FilePayload filePayload,
-    String tag,
-  ) =>
+          int vehicleId, FilePayload filePayload, String tag,
+          {Function(int, int)? onProgressCallback}) =>
       api.request(
         Method.MULTIPART,
         "fleet/vehicles/$vehicleId/images/files",
         retry: true,
+        cacheRequest: true,
         onProgress: (bytes, length) {
-          if (bytes >= length) {
-            print("\x1B[32m$tag - $bytes/$length\x1B[0m");
+          if (onProgressCallback != null) {
+            onProgressCallback(bytes, length);
+          } else {
+            if (bytes >= length) {
+              print("\x1B[32m$tag - $bytes/$length\x1B[0m");
+            }
+            print("$tag - $bytes/$length");
           }
-          print("$tag - $bytes/$length");
         },
         filePayload: filePayload,
-        cacheRequest: true,
+        timeoutSeconds: 600,
       );
 
   Future<Either<Failure, dynamic>> getPlannedMovementsForToday(
@@ -191,9 +193,10 @@ class EasyRentRepository {
         searchQuery: searchQuery,
       );
 
-  Future<Either<Failure, dynamic>> getImageUploadProcess() => api.request(
+  Future<Either<Failure, dynamic>> getImageUploadProcess(int countImages) =>
+      api.request(
         Method.GET,
-        "fleet/vehicles/images/upload-process-groups/next",
+        "fleet/vehicles/images/upload-process-groups/next?count_images=$countImages",
         responseType: ResponseType.SINGLE,
         serializer: (_) => FleetVehicleImageUploadProccess.fromJson(_),
         retry: true,

@@ -37,7 +37,7 @@ class ClientProvider extends StateProvider {
   }
 
   void selectClient(BuildContext context, int clientIndex) {
-    Constants.BASE_URL = clients[clientIndex].backendUrl;
+    //Constants.BASE_URL = clients[clientIndex].backendUrl;
 
     Application application = Provider.of<Application>(context, listen: false);
 

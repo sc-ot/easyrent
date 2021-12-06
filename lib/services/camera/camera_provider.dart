@@ -91,7 +91,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
 
   Future<void> initCamera() async {
     cameras = await availableCameras();
-    path = await Utils.createFolderInAppDocDir("images");
+
     cameraController = CameraController(
       cameras[0],
       ResolutionPreset.max,
@@ -228,12 +228,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
           (XFile? xFile) async {
             if (xFile != null) {
               int currentIndex = currentImageIndex;
-              String newPath = path +
-                  DateTime.now().millisecondsSinceEpoch.toString() +
-                  ".jpg";
-              xFile.saveTo(newPath);
               images[currentIndex].image = xFile;
-              images[currentIndex].imageStoragePath = newPath;
 
               // Nur 1 Foto erlaubt
               if (camera.singleImage) {
@@ -327,6 +322,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
         break;
       default:
         showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (context) {
             return AlertDialog(
@@ -401,6 +397,8 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
         camera.vin,
       );
 
+      
+
 
       
       dynamic historyInPref;
@@ -424,80 +422,90 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
         );
       }*/
 
-      easyRentRepository.getImageUploadProcess().asStream().listen(
+      easyRentRepository.getImageUploadProcess(images.length).asStream().listen(
         (response) {
           response.fold(
             (failure) => null,
-            (response) {
+            (response) async {
               FleetVehicleImageUploadProccess uploadProccess =
                   response as FleetVehicleImageUploadProccess;
+              Map<String, String> keys = {};
+              int vehicleId = 0;
+              String newPath = "";
+              path = await Utils.createFolderInAppDocDir(
+                  "images/${uploadProccess.id}");
 
-              switch (camera.type) {
-                case CameraType.VEHICLE:
-                  for (var image in images) {
-                    easyRentRepository
-                        .uploadImage(
-                          camera.vehicle!.id,
-                          FilePayload(
-                            image.imageStoragePath!,
-                            {
-                              "tag": image.tag,
-                              "upload_process": uploadProccess.id.toString(),
-                              "is_favorite": image.tag == "Frontal-Links" ||
-                                      image.tag == "Heck-Rechts"
-                                  ? "1"
-                                  : "0",
-                            },
-                            deleteFile: true,
-                          ),
-                          image.tag,
-                        )
-                        .asStream()
-                        .listen(
-                      (response) {
-                        response.fold(
-                          (l) {},
-                          (r) {
-                            successUploadedImages++;
-                            if (successUploadedImages == images.length) {
-                              showSuccessNotification(images);
-                            }
-                          },
-                        );
+              for (var image in images) {
+                switch (camera.type) {
+                  case CameraType.VEHICLE:
+                    vehicleId = camera.vehicle!.id;
+                    keys = {
+                      "tag": image.tag,
+                      "upload_process": uploadProccess.id.toString(),
+                      "is_favorite": image.tag == "Frontal-Links" ||
+                              image.tag == "Heck-Rechts"
+                          ? "1"
+                          : "0",
+                    };
+
+                    break;
+                  case CameraType.NEW_VEHICLE:
+                    vehicleId = 0;
+                    {
+                      keys = {
+                        "tag": image.tag,
+                        "vin": camera.vin!,
+                        "upload_process": uploadProccess.id.toString(),
+                        "is_favorite": image.tag == "Frontal-Links" ||
+                                image.tag == "Heck-Rechts"
+                            ? "1"
+                            : "0",
+                      };
+
+                      break;
+                    }
+                  default:
+                }
+
+                newPath = path +
+                    DateTime.now().millisecondsSinceEpoch.toString() +
+                    Constants.FILE_NAME_DELIMITER +
+                    vehicleId.toString() +
+                    Constants.FILE_NAME_DELIMITER +
+                    image.tag +
+                    Constants.FILE_NAME_DELIMITER +
+                    uploadProccess.id.toString() +
+                    Constants.FILE_NAME_DELIMITER +
+                    "${camera.vin ?? camera.vehicle!.vin}" +
+                    Constants.FILE_NAME_DELIMITER +
+                    ".jpg";
+
+                image.image!.saveTo(newPath);
+                image.imageStoragePath = newPath;
+                easyRentRepository
+                    .uploadImage(
+                      vehicleId,
+                      FilePayload(
+                        image.imageStoragePath!,
+                        keys,
+                        deleteFile: true,
+                      ),
+                      image.tag,
+                    )
+                    .asStream()
+                    .listen(
+                  (response) {
+                    response.fold(
+                      (l) {},
+                      (r) {
+                        successUploadedImages++;
+                        if (successUploadedImages == images.length) {
+                          showSuccessNotification(images);
+                        }
                       },
                     );
-                  }
-                  break;
-                case CameraType.NEW_VEHICLE:
-                  for (var image in images) {
-                    easyRentRepository
-                        .uploadImage(
-                          0,
-                          FilePayload(
-                            image.imageStoragePath!,
-                            {
-                              "tag": image.tag,
-                              "vin": camera.vin!,
-                              "upload_process": uploadProccess.id.toString(),
-                            },
-                          ),
-                          image.tag,
-                        )
-                        .asStream()
-                        .listen(
-                      (response) {
-                        response.fold(
-                          (l) {},
-                          (r) {
-                            successUploadedImages++;
-                            if (successUploadedImages == images.length) {
-                              showSuccessNotification(images);
-                            }
-                          },
-                        );
-                      },
-                    );
-                  }
+                  },
+                );
               }
             },
           );
