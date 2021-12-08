@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/client.dart';
+import 'package:easyrent/models/fleet_vehicle_image.dart';
 import 'package:easyrent/models/fleet_vehicle_image_upload_process.dart';
 import 'package:easyrent/models/image_upload_group.dart';
 import 'package:easyrent/models/inspection_report.dart';
@@ -200,6 +201,16 @@ class EasyRentRepository {
         responseType: ResponseType.SINGLE,
         serializer: (_) => FleetVehicleImageUploadProccess.fromJson(_),
         retry: true,
+      );
+
+  Future<Either<Failure, dynamic>> checkIfImageExists(String filename) =>
+      api.request(
+        Method.GET,
+        "fleet/vehicles/images/exists",
+        params: {"file_name": filename},
+        responseType: ResponseType.SINGLE,
+        serializer: (_) => FleetVehicleImage.fromJson(_),
+        timeoutSeconds: 20,
       );
 
   Future<Either<Failure, dynamic>> generateInspectionReport(

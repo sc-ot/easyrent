@@ -8,7 +8,6 @@ import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 class Application with ChangeNotifier {
   ThemeMode themeMode = ThemeMode.light;
-
   late Client client;
 
   Application() {

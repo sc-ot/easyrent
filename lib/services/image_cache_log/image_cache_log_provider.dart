@@ -30,6 +30,7 @@ class ImageCacheLogProvider extends StateProvider {
         await Utils.createFolderInAppDocDir("images") + "$uploadGroupId" + "/";
     Directory dir = Directory(imagesPath);
     List<FileSystemEntity> images = [];
+
     try {
       images = dir.listSync(recursive: true, followLinks: false);
     } catch (e) {
@@ -39,7 +40,6 @@ class ImageCacheLogProvider extends StateProvider {
     }
 
     getImageDataFromFileNames(images);
-
     directoryWatcherSubscription?.cancel();
 
     directoryWatcherSubscription = DirectoryWatcher(imagesPath).events.listen(
@@ -84,7 +84,6 @@ class ImageCacheLogProvider extends StateProvider {
           "tag": keyStrings[2],
           "upload_process": keyStrings[3],
           "vin": keyStrings[4],
-          "on_progress_callback": null,
           "uploading": false,
         },
       );
@@ -103,6 +102,30 @@ class ImageCacheLogProvider extends StateProvider {
   }
 
   void uploadImage(Map<String, dynamic> key) {
+    // TODO CANCEL REQUEST
+    /* if (key["uploading"]) {
+      keys.firstWhere(
+        (keyIterator) {
+          if (keyIterator["tag"] == key["tag"]) {
+            keyIterator["uploading"] = false;
+            List<SCCachedRequest> cachedRequests =
+                SCNetworkApi().cachedRequests;
+            for (var cachedRequest in cachedRequests) {
+              if (cachedRequest.method == Method.MULTIPART &&
+                  cachedRequest.filePayload != null &&
+                  cachedRequest.filePayload!.filePath == key["path"]) {
+                SCNetworkApi().cancelRequest(cachedRequest);
+              }
+            }
+            return true;
+          }
+          return false;
+        },
+      );
+      setState(state: STATE.SUCCESS);
+      return;
+    }*/
+
     /*Function(int, int) onProgressCallback = (send, max) {
       keys[index]["send"] = send;
       keys[index]["max"] = max;

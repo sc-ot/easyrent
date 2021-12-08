@@ -27,6 +27,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:sc_appframework/network/sc_network_api.dart';
 import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 import 'core/application.dart';
@@ -50,7 +51,9 @@ void main() async {
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await SCSharedPrefStorage().init();
+
     await Firebase.initializeApp();
+
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);

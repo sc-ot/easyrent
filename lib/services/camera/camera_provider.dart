@@ -4,6 +4,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
+import 'package:easyrent/core/application.dart';
+import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/main.dart';
@@ -17,6 +19,7 @@ import 'package:flutter/services.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:sc_appframework/models/file_payload.dart';
 
 import 'camera_page.dart';
@@ -40,6 +43,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   bool showPreviewImage = false;
   File? previewImage;
   int mandatoryImages = 0;
+  bool mounted = true;
 
   bool initialising = true;
   bool takingPicturefinished = true;
@@ -132,6 +136,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
     cameraController?.dispose();
+    mounted = false;
     super.dispose();
   }
 
@@ -256,12 +261,16 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
               takingPicturefinished = true;
               await cameraController!
                   .lockCaptureOrientation(DeviceOrientation.portraitUp);
-              notifyListeners();
+              if (mounted) {
+                notifyListeners();
+              }
               Future.delayed(
                 Duration(seconds: 2),
                 () {
                   showPreviewImage = false;
-                  notifyListeners();
+                  if (mounted) {
+                    notifyListeners();
+                  }
                 },
               );
             }
@@ -440,6 +449,11 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                   case CameraType.VEHICLE:
                     vehicleId = camera.vehicle!.id;
                     keys = {
+                      "client": Authenticator.getUsername(),
+                      "images_count": images.length.toString(),
+                      "created_at": DateTime.now().toIso8601String(),
+                      "vehicle_number": camera.vehicle!.vehicleNumber,
+                      "vin": camera.vehicle!.vin,
                       "tag": image.tag,
                       "upload_process": uploadProccess.id.toString(),
                       "is_favorite": image.tag == "Frontal-Links" ||
@@ -453,9 +467,12 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                     vehicleId = 0;
                     {
                       keys = {
-                        "tag": image.tag,
+                        "client": Authenticator.getUsername(),
+                        "images_count": images.length.toString(),
+                        "created_at": DateTime.now().toIso8601String(),
                         "vin": camera.vin!,
                         "upload_process": uploadProccess.id.toString(),
+                        "tag": image.tag,
                         "is_favorite": image.tag == "Frontal-Links" ||
                                 image.tag == "Heck-Rechts"
                             ? "1"
@@ -480,7 +497,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                     Constants.FILE_NAME_DELIMITER +
                     ".jpg";
 
-                image.image!.saveTo(newPath);
+                await image.image!.saveTo(newPath);
                 image.imageStoragePath = newPath;
                 easyRentRepository
                     .uploadImage(

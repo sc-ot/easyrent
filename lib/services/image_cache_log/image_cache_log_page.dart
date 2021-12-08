@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/core/utils.dart';
-import 'package:easyrent/services/camera/camera_page.dart';
 import 'package:easyrent/widgets/loading_indicator.dart';
 import 'package:easyrent/widgets/menu_page_container_widget.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +9,6 @@ import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:provider/provider.dart';
 
 import 'image_cache_log_provider.dart';
-
-// TODO Doppelte Request nicht erlauben, Ui Error wenn man zu viele anklickt, Bilder nur für entsprechene processId anzeigen ordnerstruktur mit ids!!
 
 class ImageCacheLogPage extends StatelessWidget {
   const ImageCacheLogPage({Key? key}) : super(key: key);
@@ -49,7 +46,6 @@ class ImageCacheLogPage extends StatelessWidget {
                           title = imageCacheLogProvider.keys[index]["vin"] +
                               " " +
                               imageCacheLogProvider.keys[index]["tag"];
-
                           return Column(
                             children: [
                               ListTile(
@@ -60,8 +56,10 @@ class ImageCacheLogPage extends StatelessWidget {
                                     child: Hero(
                                       tag: "fullScreenImage" + index.toString(),
                                       child: Image.file(
-                                        File(imageCacheLogProvider.keys[index]
-                                            ["path"]),
+                                        File(
+                                          imageCacheLogProvider.keys[index]
+                                              ["path"],
+                                        ),
                                       ),
                                     ),
                                   ),

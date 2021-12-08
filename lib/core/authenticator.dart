@@ -5,7 +5,7 @@ import 'package:sc_appframework/network/sc_network_api.dart';
 import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 class Authenticator {
-  static void saveAuthentication(Login login) {
+  static Future<void> saveAuthentication(Login login) async {
     SCNetworkApi().addToHeader(
       {
         "Authorization": Authenticator.getToken(),
@@ -13,7 +13,7 @@ class Authenticator {
     );
     Authenticator.saveToken("Bearer " + login.sessionToken);
     Authenticator.saveUser(login.firstName);
-    Authenticator.saveUserId(login.id);
+    await Authenticator.saveUserId(login.id);
   }
 
   static void initAuthentication() {
@@ -49,8 +49,8 @@ class Authenticator {
     return SCSharedPrefStorage.readString(Constants.KEY_USERNAME) ?? "";
   }
 
-  static void saveUserId(int id) {
-    return SCSharedPrefStorage.saveData(Constants.KEY_USER_ID, id);
+  static Future<void> saveUserId(int id) async {
+    return await SCSharedPrefStorage.saveData(Constants.KEY_USER_ID, id);
   }
 
   static int getUserId() {

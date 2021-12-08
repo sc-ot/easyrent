@@ -35,9 +35,9 @@ class LoginProvider extends StateProvider {
           (error) {
             setState(state: STATE.ERROR);
           },
-          (success) {
+          (success) async {
             success = success as Login;
-            Authenticator.saveAuthentication(success);
+            await Authenticator.saveAuthentication(success);
             Navigator.popAndPushNamed(
               context,
               Constants.ROUTE_CLIENTS,
