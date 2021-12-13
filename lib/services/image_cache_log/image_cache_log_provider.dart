@@ -50,12 +50,12 @@ class ImageCacheLogProvider extends StateProvider {
             (keyIterator) {
               if (keyIterator["tag"] == key) {
                 print(key + "WIRD ENTFERNT");
+                notifyListeners();
                 return true;
               }
               return false;
             },
           );
-          setState(state: STATE.SUCCESS);
         }
       },
     );
@@ -87,111 +87,6 @@ class ImageCacheLogProvider extends StateProvider {
           "uploading": false,
         },
       );
-    }
-
-    for (var key in keys) {
-      List<SCCachedRequest> cachedRequests = SCNetworkApi().cachedRequests;
-      for (var cachedRequest in cachedRequests) {
-        if (cachedRequest.method == Method.MULTIPART &&
-            cachedRequest.filePayload != null &&
-            cachedRequest.filePayload!.filePath == key["path"]) {
-          key["uploading"] = true;
-        }
-      }
-    }
-  }
-
-  void uploadImage(Map<String, dynamic> key) {
-    // TODO CANCEL REQUEST
-    /* if (key["uploading"]) {
-      keys.firstWhere(
-        (keyIterator) {
-          if (keyIterator["tag"] == key["tag"]) {
-            keyIterator["uploading"] = false;
-            List<SCCachedRequest> cachedRequests =
-                SCNetworkApi().cachedRequests;
-            for (var cachedRequest in cachedRequests) {
-              if (cachedRequest.method == Method.MULTIPART &&
-                  cachedRequest.filePayload != null &&
-                  cachedRequest.filePayload!.filePath == key["path"]) {
-                SCNetworkApi().cancelRequest(cachedRequest);
-              }
-            }
-            return true;
-          }
-          return false;
-        },
-      );
-      setState(state: STATE.SUCCESS);
-      return;
-    }*/
-
-    /*Function(int, int) onProgressCallback = (send, max) {
-      keys[index]["send"] = send;
-      keys[index]["max"] = max;
-      double progress = (keys[index]["send"] / keys[index]["max"] * 1);
-      progress = progress.toPrecision(1);
-      keys[index]["progress"] = progress;
-      print(progress);
-      double step = progress % 0.1;
-
-      if (step == 0) {
-        setState(state: STATE.SUCCESS);
-      }
-    };
-
-    keys[index]["on_progress_callback"] = onProgressCallback;*/
-
-    Map<String, String> paramKeys = {};
-    if (key["type"] == CameraType.NEW_VEHICLE) {
-      paramKeys = {
-        "tag": key["tag"],
-        "upload_process": key["upload_process"],
-        "is_favorite":
-            key["tag"] == "Frontal-Links" || key["tag"] == "Heck-Rechts"
-                ? "1"
-                : "0",
-      };
-    } else {
-      paramKeys = {
-        "tag": key["tag"],
-        "upload_process": key["upload_process"],
-        "is_favorite":
-            key["tag"] == "Frontal-Links" || key["tag"] == "Heck-Rechts"
-                ? "1"
-                : "0",
-      };
-    }
-    try {
-      key["uploading"] = true;
-      setState(state: STATE.SUCCESS);
-      easyRentRepository
-          .uploadImage(
-            int.parse(key["vehicle_id"]),
-            FilePayload(key["path"], paramKeys, deleteFile: true),
-            key["tag"],
-          )
-          .asStream()
-          .listen(
-        (event) {
-          event.fold(
-            (failure) {},
-            (r) {
-              keys.removeWhere((keyIterator) {
-                if (keyIterator["tag"] == key["tag"]) {
-                  print(key["tag"] + "WIRD ENTFERNT");
-
-                  return true;
-                }
-                return false;
-              });
-              setState(state: STATE.SUCCESS);
-            },
-          );
-        },
-      );
-    } catch (e) {
-      print(e);
     }
   }
 }

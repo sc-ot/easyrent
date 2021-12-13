@@ -44,7 +44,7 @@ class VehicleInfoEquipmentsPage extends StatelessWidget {
                               .linkedVehicleEquipments[index]
                               .fleetVehicleEquipment
                               .equipmentName,
-                      style: Theme.of(context).textTheme.subtitle2),
+                      style: Theme.of(context).textTheme.subtitle1),
                   subtitle: Text(
                     vehicleInfoEquipmentsProvider
                             .vehicle
@@ -58,10 +58,8 @@ class VehicleInfoEquipmentsPage extends StatelessWidget {
                             .linkedVehicleEquipments[index]
                             .fleetVehicleEquipment
                             .equipmentCode,
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption!
-                        .copyWith(color: Theme.of(context).colorScheme.secondary),
+                    style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                        color: Theme.of(context).colorScheme.secondary),
                   ),
                 );
               },

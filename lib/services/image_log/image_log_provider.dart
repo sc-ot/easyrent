@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/models/image_upload_group.dart';
@@ -9,6 +11,7 @@ import 'package:sc_appframework/network/sc_network_api.dart';
 
 class ImageLogProvider extends StateProvider {
   EasyRentRepository easyRentRepository = EasyRentRepository();
+  StreamSubscription? getImageLogSubscription;
 
   ImageLogProvider() {
     loadImages();
@@ -16,12 +19,22 @@ class ImageLogProvider extends StateProvider {
 
   List<ImageUploadGroup> imageUploadGroups = [];
 
+  @override
+  void dispose() {
+    getImageLogSubscription?.cancel();
+    super.dispose();
+  }
+
   void loadImages() {
+    getImageLogSubscription?.cancel();
     setState(state: STATE.LOADING);
-    easyRentRepository.getImageLog().asStream().listen(
+    getImageLogSubscription =
+        easyRentRepository.getImageLog().asStream().listen(
       (response) {
         response.fold(
-          (failure) {},
+          (failure) {
+            print("COULDNT GET");
+          },
           (success) {
             imageUploadGroups = List<ImageUploadGroup>.from(success);
             imageUploadGroups = imageUploadGroups.getRange(0, 29).toList();
@@ -52,8 +65,11 @@ class ImageLogProvider extends StateProvider {
                         cachedRequest.filePayload!.params["vin"] as String,
                         0,
                         cachedRequest.filePayload!.params["client"] as String,
-                        cachedRequest.filePayload!.params["vehicle_number"] ??
-                            "Neues Fahrzeug",
+                        cachedRequest.filePayload!.params["vehicle_number"] ==
+                                ""
+                            ? "Neues Fahrzeug"
+                            : cachedRequest
+                                .filePayload!.params["vehicle_number"]!,
                         int.tryParse(cachedRequest.filePayload!
                             .params["images_count"] as String) as int,
                         int.tryParse(cachedRequest.filePayload!

@@ -19,7 +19,7 @@ class MenuVehiclePage extends StatelessWidget {
         );
         vehicleProvider.onPressed = () => Navigator.pushNamed(
             context, Constants.ROUTE_VEHICLE_INFO,
-            arguments: vehicleProvider.vehicle);
+            arguments: vehicleProvider.vehicle.id);
         return vehicleProvider;
       },
       builder: (context, child) {

@@ -42,6 +42,15 @@ class EasyRentRepository {
         retry: true,
       );
 
+  Future<Either<Failure, dynamic>> getVehicle(int vehicleId) =>
+      api.request<Vehicle>(
+        Method.GET,
+        "fleet/vehicles/$vehicleId",
+        responseType: ResponseType.SINGLE,
+        serializer: (_) => Vehicle.fromJson(_),
+        retry: true,
+      );
+
   Future<Either<Failure, dynamic>> getVehicles(
           int paging, String? searchQuery) =>
       api.request(

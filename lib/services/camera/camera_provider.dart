@@ -13,6 +13,7 @@ import 'package:easyrent/models/camera.dart';
 import 'package:easyrent/models/camera_picture.dart';
 import 'package:easyrent/models/fleet_vehicle_image_upload_process.dart';
 import 'package:easyrent/network/repository.dart';
+import 'package:easyrent/services/camera/image_uploader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -495,35 +496,15 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                     Constants.FILE_NAME_DELIMITER +
                     "${camera.vin ?? camera.vehicle!.vin}" +
                     Constants.FILE_NAME_DELIMITER +
+                    Authenticator.getUsername() +
+                    Constants.FILE_NAME_DELIMITER +
+                    "${keys["vehicle_number"] ?? ""}" +
+                    Constants.FILE_NAME_DELIMITER +
                     ".jpg";
 
                 await image.image!.saveTo(newPath);
-                image.imageStoragePath = newPath;
-                easyRentRepository
-                    .uploadImage(
-                      vehicleId,
-                      FilePayload(
-                        image.imageStoragePath!,
-                        keys,
-                        deleteFile: true,
-                      ),
-                      image.tag,
-                    )
-                    .asStream()
-                    .listen(
-                  (response) {
-                    response.fold(
-                      (l) {},
-                      (r) {
-                        successUploadedImages++;
-                        if (successUploadedImages == images.length) {
-                          showSuccessNotification(images);
-                        }
-                      },
-                    );
-                  },
-                );
               }
+              ImageUploader.uoloadImageForImageGroup(uploadProccess.id);
             },
           );
         },

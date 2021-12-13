@@ -1,10 +1,15 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:isolate';
 
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/themes.dart';
+import 'package:easyrent/models/fleet_vehicle_image.dart';
+import 'package:easyrent/models/vehicle_image.dart';
+import 'package:easyrent/network/repository.dart';
 import 'package:easyrent/services/camera/camera_page.dart';
+import 'package:easyrent/services/camera/image_uploader.dart';
 import 'package:easyrent/services/image_cache_log/image_cache_log_page.dart';
 import 'package:easyrent/services/image_history_galery/image_history_galery_page.dart';
 import 'package:easyrent/services/image_log/image_log_page.dart';
@@ -27,6 +32,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:sc_appframework/network/sc_cache_request_handler.dart';
 import 'package:sc_appframework/network/sc_network_api.dart';
 import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
@@ -37,7 +43,41 @@ import 'services/image_new_vehicle/image_new_vehicle_page.dart';
 import 'services/image_vehicle_search_list/image_vehicle_search_list_page.dart';
 import 'services/login/login_page.dart';
 
+// bei start alle Bilder hochladen
+// bei start alle Bilder vor upload überprüfen ob schon vorhanden, wenn ja
+
 final navigatorKey = GlobalKey<NavigatorState>();
+
+Future<void> removeImageRequests() async {
+  await SCNetworkApi().deSerializeRequests(startCachedRequests: false);
+  List<SCCachedRequest> cachedRequests = SCNetworkApi().cachedRequests;
+  for (int i = 0; i < cachedRequests.length; i++) {
+    // TODO CHANGE IF CONDITION
+    if (cachedRequests[i].method == Method.MULTIPART) {
+      var response = await EasyRentRepository().checkIfImageExists(
+          cachedRequests[i].filePayload!.filePath.split("/").last);
+      await response.fold(
+          (l) => null,
+          await (result) async {
+            result = result as FleetVehicleImage;
+            if (result.id != 0) {
+              try {
+                File file = File(
+                    SCNetworkApi().cachedRequests[i].filePayload!.filePath);
+                await file.delete();
+              } catch (e) {
+                print(e);
+              }
+
+              SCNetworkApi().cachedRequests.removeAt(i);
+            }
+          });
+    }
+  }
+
+  await SCNetworkApi().serializeRequests();
+  SCNetworkApi().deSerializeRequests(startCachedRequests: true);
+}
 
 void main() async {
   Isolate.current.addErrorListener(RawReceivePort((pair) async {
@@ -58,7 +98,8 @@ void main() async {
 
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     Authenticator.initAuthentication();
-
+    await removeImageRequests();
+    ImageUploader.uploadAllCachedImages();
     runApp(
       ChangeNotifierProvider<Application>(
         create: (BuildContext context) => Application(),

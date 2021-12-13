@@ -102,6 +102,7 @@ class ImagesLogPage extends StatelessWidget {
                                             imageLogProvider
                                                 .imageUploadGroups[index]
                                                 .createdAt,
+                                            onError: "Wird synchronisiert",
                                           ),
                                           style: Theme.of(context)
                                               .textTheme

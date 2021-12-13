@@ -24,7 +24,5 @@ class VehicleInfoLocationProvider extends StateProvider {
     );
   }
 
-  void getCurrentPosition() {
-  
-  }
+  void getCurrentPosition() {}
 }

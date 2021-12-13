@@ -38,6 +38,7 @@ class ImageCacheLogPage extends StatelessWidget {
                     )
                   : Expanded(
                       child: ListView.builder(
+                        key: UniqueKey(),
                         itemCount: imageCacheLogProvider.keys.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
@@ -49,6 +50,7 @@ class ImageCacheLogPage extends StatelessWidget {
                           return Column(
                             children: [
                               ListTile(
+                                key: UniqueKey(),
                                 leading: Container(
                                   width: 20,
                                   child: FullScreenWidget(
@@ -71,17 +73,6 @@ class ImageCacheLogPage extends StatelessWidget {
                                             as DateTime)
                                         .toIso8601String(),
                                   ),
-                                ),
-                                trailing: IconButton(
-                                  icon: Icon(Icons.send),
-                                  onPressed: imageCacheLogProvider.keys[index]
-                                          ["uploading"]
-                                      ? null
-                                      : () {
-                                          imageCacheLogProvider.uploadImage(
-                                              imageCacheLogProvider
-                                                  .keys[index]);
-                                        },
                                 ),
                               ),
                               imageCacheLogProvider.keys[index]["uploading"]

@@ -1,4 +1,5 @@
-
+import 'package:easyrent/models/customer.dart';
+import 'package:easyrent/models/scheduling_status.dart';
 import 'package:easyrent/models/status.dart';
 import 'package:easyrent/models/status_def.dart';
 import 'package:easyrent/models/vehicle_category.dart';
@@ -31,6 +32,8 @@ class Vehicle {
   String firstRegistrationDate;
   EngineType engineType;
   Status status;
+  SchedulingStatus? schedulingStatus;
+
   Location location;
 
   String nextGeneralInspectionDate;
@@ -41,6 +44,7 @@ class Vehicle {
   List<LinkedVehicleEquipment> linkedVehicleEquipments;
   Movement? lastMovement;
   Contract? currentContract;
+  List<Contract> contracts;
 
   Vehicle(
     this.id,
@@ -72,6 +76,8 @@ class Vehicle {
     this.linkedVehicleEquipments,
     this.lastMovement,
     this.currentContract,
+    this.schedulingStatus,
+    this.contracts,
   );
   factory Vehicle.fromJson(Map<String, dynamic> json) {
     return Vehicle(
@@ -126,6 +132,14 @@ class Vehicle {
       json["current_contract"] != null
           ? Contract.fromJson(json["current_contract"])
           : null,
+      json["scheduling_status"] != null
+          ? SchedulingStatus.fromJson(json["scheduling_status"])
+          : null,
+      json["contracts"] != null
+          ? List<Contract>.from(
+              json["contracts"].map((x) => Contract.fromJson(x)),
+            )
+          : [],
     );
   }
 
@@ -160,6 +174,8 @@ class Vehicle {
           List<dynamic>.from(linkedVehicleEquipments.map((x) => x.toJson())),
       "last_movement": lastMovement?.toJson(),
       "current_contract": currentContract?.toJson(),
+      "scheduling_status": schedulingStatus?.toJson(),
+      "contracts": List<dynamic>.from(contracts.map((x) => x.toJson())),
     };
   }
 
@@ -197,6 +213,16 @@ class Vehicle {
       [],
       null,
       null,
+      SchedulingStatus(
+        "",
+        StatusDef(
+          0,
+          "",
+        ),
+        "",
+        Customer(0, "", false, "", ""),
+      ),
+      [],
     );
   }
 }
