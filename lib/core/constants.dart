@@ -7,7 +7,6 @@ class Constants {
 
   static const int MOVEMENT_TYPE_ENTRY = 1;
   static const int MOVEMENT_TYPE_EXIT = 2;
-
   static const String THEME_1 = "theme-1";
   static const String THEME_2 = "theme-2";
   static const String THEME_MARGARITIS = "theme-margaritis";

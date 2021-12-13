@@ -44,7 +44,7 @@ class Vehicle {
   List<LinkedVehicleEquipment> linkedVehicleEquipments;
   Movement? lastMovement;
   Contract? currentContract;
-  List<Contract> contracts;
+  Contract? lastContract;
 
   Vehicle(
     this.id,
@@ -77,7 +77,7 @@ class Vehicle {
     this.lastMovement,
     this.currentContract,
     this.schedulingStatus,
-    this.contracts,
+    this.lastContract,
   );
   factory Vehicle.fromJson(Map<String, dynamic> json) {
     return Vehicle(
@@ -135,11 +135,9 @@ class Vehicle {
       json["scheduling_status"] != null
           ? SchedulingStatus.fromJson(json["scheduling_status"])
           : null,
-      json["contracts"] != null
-          ? List<Contract>.from(
-              json["contracts"].map((x) => Contract.fromJson(x)),
-            )
-          : [],
+      json["last_contract"] != null
+          ? Contract.fromJson(json["last_contract"])
+          : null,
     );
   }
 
@@ -175,7 +173,7 @@ class Vehicle {
       "last_movement": lastMovement?.toJson(),
       "current_contract": currentContract?.toJson(),
       "scheduling_status": schedulingStatus?.toJson(),
-      "contracts": List<dynamic>.from(contracts.map((x) => x.toJson())),
+      "last_contract": lastContract?.toJson(),
     };
   }
 
@@ -222,7 +220,7 @@ class Vehicle {
         "",
         Customer(0, "", false, "", ""),
       ),
-      [],
+      null,
     );
   }
 }

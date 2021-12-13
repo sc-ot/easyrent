@@ -247,18 +247,18 @@ class VehicleInfoPage extends StatelessWidget {
                                       VehicleInfoCardEntry(
                                           "Dispo-Status",
                                           "${vehicleInfoProvider.vehicle.schedulingStatus?.statusDef.statusName ?? ''}" +
-                                              " - " +
-                                              "${vehicleInfoProvider.vehicle.schedulingStatus?.customer.orgName ?? ''}" +
-                                              " - " +
+                                              " "
+                                                  "${vehicleInfoProvider.vehicle.schedulingStatus?.customer.orgName ?? ''}" +
+                                              " " +
                                               "${vehicleInfoProvider.vehicle.schedulingStatus?.notice ?? ''}",
                                           LineIcons.info),
                                       VehicleInfoCardEntry(
                                           "Vertrag",
                                           vehicleInfoProvider
-                                                  .vehicle.contracts.isEmpty
-                                              ? ""
-                                              : vehicleInfoProvider.vehicle
-                                                  .contracts[0].documentNumber,
+                                                  .vehicle
+                                                  .lastContract
+                                                  ?.documentNumber ??
+                                              "",
                                           LineIcons.fileContract),
                                       VehicleInfoCardEntry(
                                           "Standort",
