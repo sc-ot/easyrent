@@ -1,10 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/utils.dart';
@@ -14,14 +11,10 @@ import 'package:easyrent/models/camera_picture.dart';
 import 'package:easyrent/models/fleet_vehicle_image_upload_process.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:easyrent/services/camera/image_uploader.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:sc_appframework/models/file_payload.dart';
 
 import 'camera_page.dart';
 
