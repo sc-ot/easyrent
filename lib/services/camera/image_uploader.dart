@@ -7,22 +7,27 @@ import 'package:easyrent/network/repository.dart';
 import 'package:sc_appframework/models/file_payload.dart';
 
 class ImageUploader {
+
+
+
   static void uploadAllCachedImages() async {
     String imagesPath = await Utils.createFolderInAppDocDir("images");
     Directory dir = Directory(imagesPath);
     List<FileSystemEntity> listOfAllFolderAndFiles =
         await dir.list(recursive: false).toList();
     for (var dir in listOfAllFolderAndFiles) {
-      await uoloadImageForImageGroup(int.parse(dir.path.split("/").last));
+      await uploadImageForImageGroup(int.parse(dir.path.split("/").last));
     }
   }
 
-  static Future<void> uoloadImageForImageGroup(int uploadGroupId) async {
+  static Future<void> uploadImageForImageGroup(int uploadGroupId) async {
+    
+
+    String baseUrl = EasyRentRepository().api.baseUrl;
     String imagesPath =
         await Utils.createFolderInAppDocDir("images") + "$uploadGroupId" + "/";
     Directory dir = Directory(imagesPath);
     List<FileSystemEntity> images = [];
-    List<Map<String, dynamic>> keys = [];
     EasyRentRepository easyRentRepository = EasyRentRepository();
 
     try {
@@ -62,6 +67,7 @@ class ImageUploader {
       };
 
       var result = await easyRentRepository.uploadImage(
+        baseUrl,
         int.parse(keys["vehicle_id"]),
         FilePayload(
           images[i].path,

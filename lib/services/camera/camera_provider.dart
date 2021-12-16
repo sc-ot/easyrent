@@ -497,7 +497,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
 
                 await image.image!.saveTo(newPath);
               }
-              ImageUploader.uoloadImageForImageGroup(uploadProccess.id);
+              ImageUploader.uploadImageForImageGroup(uploadProccess.id);
             },
           );
         },

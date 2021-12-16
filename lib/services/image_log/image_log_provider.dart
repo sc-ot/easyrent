@@ -37,7 +37,7 @@ class ImageLogProvider extends StateProvider {
           },
           (success) {
             imageUploadGroups = List<ImageUploadGroup>.from(success);
-            imageUploadGroups = imageUploadGroups.getRange(0, 29).toList();
+            imageUploadGroups = imageUploadGroups.toList();
             List<SCCachedRequest> cachedRequests =
                 SCNetworkApi().cachedRequests;
 

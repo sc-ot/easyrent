@@ -675,9 +675,11 @@ packages:
   sc_appframework:
     dependency: "direct main"
     description:
-      path: "../sc_appframework"
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: "4e3121da1a38c10f1a3bec051a31a6197af488e7"
+      url: "https://github.com/symblCrowd/sc_appframework.git"
+    source: git
     version: "0.0.1"
   shared_preferences:
     dependency: transitive
