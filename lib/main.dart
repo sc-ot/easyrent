@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 
@@ -37,6 +38,7 @@ import 'package:sc_appframework/network/sc_network_api.dart';
 import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 import 'core/application.dart';
+import 'models/client.dart';
 import 'services/client/client_page.dart';
 import 'services/image_history/image_history_page.dart';
 import 'services/image_new_vehicle/image_new_vehicle_page.dart';

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/constants.dart';
@@ -8,16 +9,17 @@ import 'package:easyrent/network/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:easyrent/models/client.dart';
 import 'package:provider/provider.dart';
+import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 class ClientProvider extends StateProvider {
   EasyRentRepository easyRentRepository = EasyRentRepository();
   StreamSubscription? clientSubscription;
   List<Client> clients = [];
 
-  ClientProvider() {
-    loadClients();
+  ClientProvider(BuildContext context) {
+    loadClients(context);
   }
-  void loadClients() {
+  void loadClients(BuildContext context) {
     clientSubscription?.cancel();
     clientSubscription = easyRentRepository.getClients().asStream().listen(
       (response) {
@@ -26,8 +28,12 @@ class ClientProvider extends StateProvider {
             ui = STATE.ERROR;
           },
           (response) async {
+            Application application =
+                Provider.of<Application>(context, listen: false);
             clients = List<Client>.from(response);
-
+            var result = jsonEncode(clients);
+            await SCSharedPrefStorage.saveData(Constants.KEY_CLIENTS, result);
+            application.clients = clients;
             ui = STATE.SUCCESS;
             notifyListeners();
           },

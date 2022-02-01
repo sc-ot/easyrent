@@ -138,8 +138,8 @@ class EasyRentRepository {
         retry: true,
       );
 
-  Future<Either<Failure, dynamic>> uploadImage(String baseUrl,
-          int vehicleId, FilePayload filePayload, String tag,
+  Future<Either<Failure, dynamic>> uploadImage(
+          String baseUrl, int vehicleId, FilePayload filePayload, String tag,
           {Function(int, int)? onProgressCallback}) =>
       api.request(
         Method.MULTIPART,

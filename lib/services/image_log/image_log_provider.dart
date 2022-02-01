@@ -46,7 +46,8 @@ class ImageLogProvider extends StateProvider {
               (cachedRequest) {
                 //  IMAGE REQUEST
                 if (cachedRequest.method == Method.MULTIPART &&
-                    cachedRequest.filePayload != null) {
+                    cachedRequest.filePayload != null &&
+                    cachedRequest.route.contains(SCNetworkApi().baseUrl)) {
                   // LOOP WITH THE CACHED REQUEST OVER ALL IMAGEUPLOADS. NOT FOUND => ADD, ELSE DONT ADD!
 
                   bool found = false;

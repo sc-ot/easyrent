@@ -13,7 +13,7 @@ class ClientPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ChangeNotifierProvider(
-        create: (_) => ClientProvider(),
+        create: (_) => ClientProvider(context),
         builder: (context, child) {
           ClientProvider clientProvider =
               Provider.of<ClientProvider>(context, listen: true);

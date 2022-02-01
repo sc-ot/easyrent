@@ -3,7 +3,7 @@ class Constants {
   // "https://erbackend.works4dev.de/api/v1" prod example
   // "https://easyrentm1backend.works4dev.de/api/v1" test example
 
-  static String BASE_URL = "https://easyrentm1backend.works4dev.de/api/v1";
+  static String BASE_URL = "http://192.168.2.27:9001/api/v1";
 
   static const int MOVEMENT_TYPE_ENTRY = 1;
   static const int MOVEMENT_TYPE_EXIT = 2;
@@ -46,6 +46,7 @@ class Constants {
   static const String KEY_SHOW_CAMERA_OVERLAY = "KEY_SHOW_CAMERA_OVERLAY";
   static const String KEY_SAVE_IMAGES_ON_DEVICE = "KEY_SAVE_IMAGES_ON_DEVICE";
   static const String KEY_SHOW_IMAGES_IN_MENU = "KEY_SHOW_IMAGES_IN_MENU";
+  static const String KEY_CLIENTS = "KEY_CLIENTS";
 
   static const int VIN_MAX_LENGTH = 17;
   static const FILE_NAME_DELIMITER = "__";

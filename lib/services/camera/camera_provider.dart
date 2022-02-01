@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/utils.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
 
 import 'camera_page.dart';
 
@@ -425,6 +427,9 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
         );
       }*/
 
+      Application application =
+          Provider.of<Application>(context, listen: false);
+
       easyRentRepository.getImageUploadProcess(images.length).asStream().listen(
         (response) {
           response.fold(
@@ -493,11 +498,14 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
                     Constants.FILE_NAME_DELIMITER +
                     "${keys["vehicle_number"] ?? ""}" +
                     Constants.FILE_NAME_DELIMITER +
+                    application.client.id.toString() +
+                    Constants.FILE_NAME_DELIMITER +
                     ".jpg";
 
                 await image.image!.saveTo(newPath);
               }
-              ImageUploader.uploadImageForImageGroup(uploadProccess.id);
+              ImageUploader.uploadImageForImageGroup(
+                  uploadProccess.id, application.clients);
             },
           );
         },

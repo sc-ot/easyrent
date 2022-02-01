@@ -19,4 +19,13 @@ class Client {
       json["angular_theme"] ?? "theme-1",
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "backend_url": backendUrl,
+      "angular_theme": theme,
+    };
+  }
 }

@@ -1,29 +1,34 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/utils.dart';
+import 'package:easyrent/models/client.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:sc_appframework/models/file_payload.dart';
+import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 class ImageUploader {
-
-
-
   static void uploadAllCachedImages() async {
-    String imagesPath = await Utils.createFolderInAppDocDir("images");
-    Directory dir = Directory(imagesPath);
-    List<FileSystemEntity> listOfAllFolderAndFiles =
-        await dir.list(recursive: false).toList();
-    for (var dir in listOfAllFolderAndFiles) {
-      await uploadImageForImageGroup(int.parse(dir.path.split("/").last));
+    String? result = SCSharedPrefStorage.readString(Constants.KEY_CLIENTS);
+    if (result != null) {
+      var listResult = List<Client>.from(
+        jsonDecode(result).map((x) => Client.fromJson(x)),
+      );
+      String imagesPath = await Utils.createFolderInAppDocDir("images");
+      Directory dir = Directory(imagesPath);
+      List<FileSystemEntity> listOfAllFolderAndFiles =
+          await dir.list(recursive: false).toList();
+      for (var dir in listOfAllFolderAndFiles) {
+        await uploadImageForImageGroup(
+            int.parse(dir.path.split("/").last), listResult);
+      }
     }
   }
 
-  static Future<void> uploadImageForImageGroup(int uploadGroupId) async {
-    
-
-    String baseUrl = EasyRentRepository().api.baseUrl;
+  static Future<void> uploadImageForImageGroup(
+      int uploadGroupId, List<Client> clients) async {
     String imagesPath =
         await Utils.createFolderInAppDocDir("images") + "$uploadGroupId" + "/";
     Directory dir = Directory(imagesPath);
@@ -49,7 +54,16 @@ class ImageUploader {
         "vin": keyStrings[4],
         "username": keyStrings[5],
         "vehicle_number": keyStrings[6],
+        "client_id": keyStrings[7],
       };
+
+      String baseUrl = "";
+      for (int i = 0; i < clients.length; i++) {
+        if (clients[i].id == int.parse(keys["client_id"])) {
+          baseUrl = clients[i].backendUrl;
+          break;
+        }
+      }
 
       Map<String, String> filePayloadParams = {
         "created_at": DateTime.now().toIso8601String(),
