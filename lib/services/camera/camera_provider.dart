@@ -28,6 +28,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   List<CameraPicture> images = [];
   late Camera camera;
   late NativeDeviceOrientation currentOrientation;
+  FlashMode? currentFlashMode;
 
   double _currentScale = 1.0;
   double _baseScale = 1.0;
@@ -89,6 +90,12 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     currentOrientation = orientation;
   }
 
+  void setFlashMode(FlashMode flashMode) {
+    cameraController!.setFlashMode(flashMode);
+    currentFlashMode = flashMode;
+    notifyListeners();
+  }
+
   Future<void> initCamera() async {
     cameras = await availableCameras();
 
@@ -99,6 +106,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     await cameraController!.initialize();
     await cameraController!
         .lockCaptureOrientation(DeviceOrientation.portraitUp);
+    currentFlashMode = cameraController!.value.flashMode;
   }
 
   void handleScaleStart(ScaleStartDetails details) {

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:easyrent/core/themes.dart';
 import 'package:easyrent/models/camera.dart';
 import 'package:easyrent/services/camera/camera_provider.dart';
 import 'package:easyrent/widgets/menu_page_container_widget.dart';
@@ -93,102 +94,177 @@ class _CameraPageState extends State<CameraPage> {
                                 alignment: Alignment.bottomCenter,
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.grey.withOpacity(0.2),
-                                    ),
-                                    height: 100,
-                                    child: Stack(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: RawMaterialButton(
-                                              onPressed: () {
-                                                cameraProvider.pageController
-                                                    .nextPage(
-                                                        duration: Duration(
-                                                            milliseconds: 500),
-                                                        curve: Curves.easeIn);
-                                              },
-                                              fillColor:
-                                                  Colors.grey.withOpacity(0.05),
-                                              child: Icon(
-                                                Icons.image_search_outlined,
-                                                size: 35.0,
-                                                color: Colors.white,
-                                              ),
-                                              padding: EdgeInsets.all(15.0),
-                                              shape: CircleBorder(),
-                                            ),
-                                          ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: Colors.grey.withOpacity(0.2),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Align(
-                                            alignment: Alignment.bottomCenter,
-                                            child: RawMaterialButton(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            IconButton(
                                               onPressed: () {
-                                                cameraProvider
-                                                    .takePicture(context);
+                                                cameraProvider.setFlashMode(
+                                                    FlashMode.auto);
                                               },
-                                              fillColor:
-                                                  Colors.grey.withOpacity(0.05),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(
-                                                    LineIcons.camera,
+                                              icon: Icon(
+                                                Icons.flash_auto_outlined,
+                                                color: cameraProvider
+                                                            .currentFlashMode ==
+                                                        FlashMode.auto
+                                                    ? Themes.accentColor
+                                                    : Colors.white,
+                                              ),
+                                            ),
+                                            IconButton(
+                                              onPressed: () {
+                                                cameraProvider.setFlashMode(
+                                                  FlashMode.off,
+                                                );
+                                              },
+                                              icon: Icon(
+                                                Icons.flash_off_outlined,
+                                                color: cameraProvider
+                                                            .currentFlashMode ==
+                                                        FlashMode.off
+                                                    ? Themes.accentColor
+                                                    : Colors.white,
+                                              ),
+                                            ),
+                                            IconButton(
+                                              onPressed: () {
+                                                cameraProvider.setFlashMode(
+                                                    FlashMode.torch);
+                                              },
+                                              icon: Icon(
+                                                Icons.flash_on,
+                                                color: cameraProvider
+                                                            .currentFlashMode ==
+                                                        FlashMode.torch
+                                                    ? Themes.accentColor
+                                                    : Colors.white,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 16,
+                                      ),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: Colors.grey.withOpacity(0.2),
+                                        ),
+                                        height: 100,
+                                        child: Stack(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Align(
+                                                alignment: Alignment.bottomLeft,
+                                                child: RawMaterialButton(
+                                                  onPressed: () {
+                                                    cameraProvider
+                                                        .pageController
+                                                        .nextPage(
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    500),
+                                                            curve:
+                                                                Curves.easeIn);
+                                                  },
+                                                  fillColor: Colors.grey
+                                                      .withOpacity(0.05),
+                                                  child: Icon(
+                                                    Icons.image_search_outlined,
                                                     size: 35.0,
                                                     color: Colors.white,
                                                   ),
-                                                  Text(
-                                                    (cameraProvider
-                                                                .mandatoryImagesTaken)
-                                                            .toString() +
-                                                        " / " +
-                                                        cameraProvider
-                                                            .mandatoryImages
-                                                            .toString(),
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .button!
-                                                        .copyWith(
-                                                            color:
-                                                                Colors.white),
-                                                  )
-                                                ],
+                                                  padding: EdgeInsets.all(15.0),
+                                                  shape: CircleBorder(),
+                                                ),
                                               ),
-                                              shape: CircleBorder(),
                                             ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Align(
-                                            alignment: Alignment.bottomRight,
-                                            child: RawMaterialButton(
-                                              onPressed: () {
-                                                cameraProvider
-                                                    .closeCamera(context);
-                                              },
-                                              fillColor:
-                                                  Colors.grey.withOpacity(0.05),
-                                              child: Icon(
-                                                LineIcons.times,
-                                                size: 35.0,
-                                                color: Colors.white,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Align(
+                                                alignment:
+                                                    Alignment.bottomCenter,
+                                                child: RawMaterialButton(
+                                                  onPressed: () {
+                                                    cameraProvider
+                                                        .takePicture(context);
+                                                  },
+                                                  fillColor: Colors.grey
+                                                      .withOpacity(0.05),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        LineIcons.camera,
+                                                        size: 35.0,
+                                                        color: Colors.white,
+                                                      ),
+                                                      Text(
+                                                        (cameraProvider
+                                                                    .mandatoryImagesTaken)
+                                                                .toString() +
+                                                            " / " +
+                                                            cameraProvider
+                                                                .mandatoryImages
+                                                                .toString(),
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .button!
+                                                            .copyWith(
+                                                                color: Colors
+                                                                    .white),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  shape: CircleBorder(),
+                                                ),
                                               ),
-                                              padding: EdgeInsets.all(15.0),
-                                              shape: CircleBorder(),
                                             ),
-                                          ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(16.0),
+                                              child: Align(
+                                                alignment:
+                                                    Alignment.bottomRight,
+                                                child: RawMaterialButton(
+                                                  onPressed: () {
+                                                    cameraProvider
+                                                        .closeCamera(context);
+                                                  },
+                                                  fillColor: Colors.grey
+                                                      .withOpacity(0.05),
+                                                  child: Icon(
+                                                    LineIcons.times,
+                                                    size: 35.0,
+                                                    color: Colors.white,
+                                                  ),
+                                                  padding: EdgeInsets.all(15.0),
+                                                  shape: CircleBorder(),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),

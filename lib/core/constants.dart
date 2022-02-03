@@ -3,7 +3,7 @@ class Constants {
   // "https://erbackend.works4dev.de/api/v1" prod example
   // "https://easyrentm1backend.works4dev.de/api/v1" test example
 
-  static String BASE_URL = "http://192.168.2.27:9001/api/v1";
+  static String BASE_URL = "https://easyrentm1backend.works4dev.de/api/v1";
 
   static const int MOVEMENT_TYPE_ENTRY = 1;
   static const int MOVEMENT_TYPE_EXIT = 2;
