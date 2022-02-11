@@ -1,3 +1,4 @@
+import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/services/vehicle/vehicle_provider.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,9 @@ class VehicleSearchListEntry extends StatelessWidget {
                       children: [
                         Text(
                           vehicle.manufacturer.manufacturerName,
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style: Utils.getDevice(context) == Device.PHONE
+                              ? Theme.of(context).textTheme.bodyText2
+                              : Theme.of(context).textTheme.subtitle1,
                           overflow: TextOverflow.fade,
                         ),
                         SizedBox(
@@ -74,7 +77,9 @@ class VehicleSearchListEntry extends StatelessWidget {
                         Expanded(
                           child: Text(
                             vehicle.vehicleCategory.vehicleCategoryName,
-                            style: Theme.of(context).textTheme.bodyText2,
+                            style: Utils.getDevice(context) == Device.PHONE
+                                ? Theme.of(context).textTheme.bodyText2
+                                : Theme.of(context).textTheme.subtitle1,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
@@ -86,7 +91,9 @@ class VehicleSearchListEntry extends StatelessWidget {
                     ),
                     Text(
                       vehicle.licensePlate,
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Utils.getDevice(context) == Device.PHONE
+                          ? Theme.of(context).textTheme.bodyText2
+                          : Theme.of(context).textTheme.subtitle1,
                       overflow: TextOverflow.fade,
                     ),
                     ...dateWidget,

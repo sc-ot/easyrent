@@ -30,47 +30,52 @@ class InspectionReport {
   String drivingLicenseBack;
   String screen;
   List<String> recipients;
-
   bool generateWorkshopOrder;
   bool receivedInstructions;
+  int allowedMileage;
+  int allowedMileageTotal;
+  int replacementVehicleMileage;
+  double moreKmPrice;
+
   InspectionReport? linkedReport;
   InspectionReport? previousReport;
   int allowedMilleage;
   int allowedMilleageTotal;
-  int replacementVehicleMileage;
-  double moreKmPrice;
 
   InspectionReport(
-      this.id,
-      this.status,
-      this.reportType,
-      this.reportDate,
-      this.categories,
-      this.contact,
-      this.contract,
-      this.vehicle,
-      this.replacementForVehicle,
-      this.currentMilleage,
-      this.nextGeneralInspectionDate,
-      this.nextSecurityInspectionDate,
-      this.nextSpeedoMeterInspectionDate,
-      this.nextUvvInspectionDate,
-      this.licensePlate,
-      this.location,
-      this.signature,
-      this.identification,
-      this.drivingLicense,
-      this.drivingLicenseBack,
-      this.screen,
-      this.recipients,
-      this.generateWorkshopOrder,
-      this.receivedInstructions,
-      this.linkedReport,
-      this.previousReport,
-      this.allowedMilleage,
-      this.allowedMilleageTotal,
-      this.replacementVehicleMileage,
-      this.moreKmPrice);
+    this.id,
+    this.status,
+    this.reportType,
+    this.reportDate,
+    this.categories,
+    this.contact,
+    this.contract,
+    this.vehicle,
+    this.replacementForVehicle,
+    this.currentMilleage,
+    this.nextGeneralInspectionDate,
+    this.nextSecurityInspectionDate,
+    this.nextSpeedoMeterInspectionDate,
+    this.nextUvvInspectionDate,
+    this.licensePlate,
+    this.location,
+    this.signature,
+    this.identification,
+    this.drivingLicense,
+    this.drivingLicenseBack,
+    this.screen,
+    this.recipients,
+    this.generateWorkshopOrder,
+    this.receivedInstructions,
+    this.linkedReport,
+    this.previousReport,
+    this.allowedMilleage,
+    this.allowedMilleageTotal,
+    this.replacementVehicleMileage,
+    this.moreKmPrice,
+    this.allowedMileage,
+    this.allowedMileageTotal,
+  );
 
   factory InspectionReport.fromJson(Map<String, dynamic> json) {
     return InspectionReport(
@@ -104,17 +109,24 @@ class InspectionReport {
       json["driving_license_back"] ?? "",
       json["screen"] ?? "",
       json["recipients"] != null
-          ? json["recipients"].map<String>((element) => element as String).toList()
+          ? json["recipients"]
+              .map<String>((element) => element as String)
+              .toList()
           : [],
       json["generate_workshop_order"] ?? false,
       json["received_instructions"] ?? false,
-      json["linked_report"] != null ? InspectionReport.fromJson(json["linked_report"]) : null,
-      json["previous_report"] != null ? InspectionReport.fromJson(json["previous_report"]) : null,
+      json["linked_report"] != null
+          ? InspectionReport.fromJson(json["linked_report"])
+          : null,
+      json["previous_report"] != null
+          ? InspectionReport.fromJson(json["previous_report"])
+          : null,
       json["allowed_mileage"] ?? 0,
       json["allowed_mileage_total"] ?? 0,
       json["replacement_vehicle_mileage"] ?? 0,
       json["more_km_price"] ?? 0,
-
+      json["allowed_mileage"] ?? 0,
+      json["allowed_mileage_total"] ?? 0,
     );
   }
 }

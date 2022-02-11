@@ -59,12 +59,11 @@ class MenuPage extends StatelessWidget {
             iconColor: Theme.of(context).colorScheme.secondary,
             iconActiveColor: Theme.of(context).colorScheme.secondary,
             text: menu[index].text,
-            textColor: Theme.of(context).textTheme.headline5!.color,
+            textColor: Theme.of(context).textTheme.headline6!.color,
             backgroundColor:
                 Theme.of(context).primaryColorDark.withOpacity(0.2),
-            iconSize: 24,
-            padding: EdgeInsets.all(
-                Utils.getDevice(context) == Device.PHONE ? 8 : 16),
+            iconSize: Utils.getDevice(context) == Device.PHONE ? 24 : 30,
+            padding: EdgeInsets.all(8),
           ),
         );
         return SafeArea(

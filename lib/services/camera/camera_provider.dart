@@ -106,7 +106,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
     await cameraController!.initialize();
     await cameraController!
         .lockCaptureOrientation(DeviceOrientation.portraitUp);
-    currentFlashMode = cameraController!.value.flashMode;
+    setFlashMode(FlashMode.off);
   }
 
   void handleScaleStart(ScaleStartDetails details) {

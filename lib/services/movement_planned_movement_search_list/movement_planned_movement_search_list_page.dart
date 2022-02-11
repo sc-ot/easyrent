@@ -25,7 +25,7 @@ class _MovementPlannedMovementSearchListPageState
   @override
   late TabController tabController;
   void initState() {
-     tabController = TabController(length: 2, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -38,9 +38,7 @@ class _MovementPlannedMovementSearchListPageState
             MovementPlannedMovementSearchListProvider();
         movementPlannedMovementSearchListProvider.onPressed = () =>
             Navigator.pushNamed(context, Constants.ROUTE_MOVEMENT_OVERVIEW,
-                arguments: MovementOverview(
-                    tabController.index+1,
-                    null,
+                arguments: MovementOverview(tabController.index + 1, null,
                     movementPlannedMovementSearchListProvider.plannedMovement));
         return movementPlannedMovementSearchListProvider;
       },
@@ -49,72 +47,72 @@ class _MovementPlannedMovementSearchListPageState
             movementPlannedMovementSearchListProvider =
             Provider.of<MovementPlannedMovementSearchListProvider>(context,
                 listen: true);
-        return 
-          Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: AppBar(
-              bottom: TabBar(
-                controller: tabController,
-                tabs: [
-                  Tab(
-                    icon: Icon(
-                      LineIcons.arrowDown,
-                    ),
-                    text: "Eingänge",
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            bottom: TabBar(
+              indicatorColor: Colors.orange,
+              controller: tabController,
+              tabs: [
+                Tab(
+                  icon: Icon(
+                    LineIcons.arrowDown,
                   ),
-                  Tab(
-                    icon: Icon(
-                      LineIcons.arrowUp,
-                    ),
-                    text: "Ausgänge",
+                  text: "Eingänge",
+                ),
+                Tab(
+                  icon: Icon(
+                    LineIcons.arrowUp,
                   ),
-                ],
-              ),
-              title: Text(
-                "Geplante Bewegung",
-                style: Theme.of(context).textTheme.headline6,
-              ),
+                  text: "Ausgänge",
+                ),
+              ],
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 32,
-                  ),
-                  Container(
-                    child: TextField(
-                      controller: movementPlannedMovementSearchListProvider
-                          .plannedMovementSearchFieldTextEditingController,
-                      onChanged: (text) {
-                        movementPlannedMovementSearchListProvider
-                            .getPlannedMovements(Constants.MOVEMENT_TYPE_ENTRY);
-                        movementPlannedMovementSearchListProvider
-                            .getPlannedMovements(Constants.MOVEMENT_TYPE_EXIT);
-                      },
-                      style: Theme.of(context).textTheme.headline5,
-                      decoration: InputDecoration(
-                        labelText: "Suchen",
-                        labelStyle: Theme.of(context).textTheme.bodyText1,
-                        counterStyle:
-                            TextStyle(color: Theme.of(context).colorScheme.secondary),
-                      ),
+            title: Text(
+              "Geplante Bewegung",
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 32,
+                ),
+                Container(
+                  child: TextField(
+                    controller: movementPlannedMovementSearchListProvider
+                        .plannedMovementSearchFieldTextEditingController,
+                    onChanged: (text) {
+                      movementPlannedMovementSearchListProvider
+                          .getPlannedMovements(Constants.MOVEMENT_TYPE_ENTRY);
+                      movementPlannedMovementSearchListProvider
+                          .getPlannedMovements(Constants.MOVEMENT_TYPE_EXIT);
+                    },
+                    style: Theme.of(context).textTheme.headline5,
+                    decoration: InputDecoration(
+                      labelText: "Suchen",
+                      labelStyle: Theme.of(context).textTheme.bodyText1,
+                      counterStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary),
                     ),
                   ),
-                  SizedBox(
-                    height: 16,
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                Expanded(
+                  child: TabBarView(
+                    controller: tabController,
+                    children: [
+                      PlannedMovementList(Constants.MOVEMENT_TYPE_ENTRY),
+                      PlannedMovementList(Constants.MOVEMENT_TYPE_EXIT),
+                    ],
                   ),
-                  Expanded(
-                    child: TabBarView(
-                      controller: tabController,
-                      children: [
-                        PlannedMovementList(Constants.MOVEMENT_TYPE_ENTRY),
-                        PlannedMovementList(Constants.MOVEMENT_TYPE_EXIT),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -256,7 +254,7 @@ class PlannedMovementList extends StatelessWidget {
                       return Divider();
                     },
                     itemBuilder: (context, index) {
-                       return PlannedMovementSearchListEntry(
+                      return PlannedMovementSearchListEntry(
                         plannedMovementsForFuture[index],
                         elevation: 0,
                       );

@@ -30,6 +30,7 @@ class MenuPageContainer extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(16, 16, 16, paddingBottom),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),

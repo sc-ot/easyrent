@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import 'package:easyrent/core/constants.dart';
+import 'package:easyrent/models/accident.dart';
 import 'package:easyrent/models/client.dart';
 import 'package:easyrent/models/fleet_vehicle_image.dart';
 import 'package:easyrent/models/fleet_vehicle_image_upload_process.dart';
@@ -219,6 +220,15 @@ class EasyRentRepository {
         params: {"file_name": filename},
         responseType: ResponseType.SINGLE,
         serializer: (_) => FleetVehicleImage.fromJson(_),
+        timeoutSeconds: 20,
+      );
+
+  Future<Either<Failure, dynamic>> getVehicleAccidents(int vehicleId) =>
+      api.request(
+        Method.GET,
+        "fleet/vehicles/$vehicleId/accidents",
+        responseType: ResponseType.LIST,
+        serializer: (_) => Accident.fromJson(_),
         timeoutSeconds: 20,
       );
 

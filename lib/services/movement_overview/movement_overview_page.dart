@@ -2,16 +2,18 @@ import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/models/movement_overview.dart';
-import 'package:easyrent/widgets/custom_grid_view.dart';
 import 'package:easyrent/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../../widgets/menu_page_container_widget.dart';
 import 'movement_overview_provider.dart';
 
 class MovementOverviewPage extends StatelessWidget {
-  const MovementOverviewPage({Key? key}) : super(key: key);
+  MovementOverviewPage({Key? key}) : super(key: key);
+
+  final _form = GlobalKey<FormState>(); //for storing form state.
 
   @override
   Widget build(BuildContext context) {
@@ -24,128 +26,118 @@ class MovementOverviewPage extends StatelessWidget {
         MovementOverviewProvider movementOverviewProvider =
             Provider.of<MovementOverviewProvider>(context, listen: true);
 
-        List<Widget> tiles = [];
-        List<Widget> textFields = [];
-        for (var entry
-            in movementOverviewProvider.vehicleAppointments.entries) {
-          if (entry.key == "Übergabedatum") {
-            tiles.add(
-              getListTile(
-                context,
-                entry.key,
-                entry.value["date_formatted"]!,
-                changeTime: true,
-              ),
-            );
-          } else {
-            tiles.add(
-              getListTile(
-                context,
-                entry.key,
-                entry.value["date_formatted"]!,
-              ),
-            );
-          }
-        }
-
-        textFields.add(
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: movementOverviewProvider.textEditingControllerMiles,
-              onChanged: (miles) {
-                //  movementOverviewProvider.milesChanged(miles);
-              },
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "Kilometerstand",
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(color: Theme.of(context).colorScheme.secondary),
-              ),
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ),
-        );
-
-        textFields.add(
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller:
-                  movementOverviewProvider.textEditingControllerLicensePlate,
-              decoration: InputDecoration(
-                labelText: "Kennzeichen",
-                labelStyle: Theme.of(context)
-                    .textTheme
-                    .bodyText1!
-                    .copyWith(color: Theme.of(context).colorScheme.secondary),
-              ),
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ),
-        );
-
         return MenuPageContainer(
           "Prüfungstermine",
           "Überprüfen Sie die Daten",
           movementOverviewProvider.ui == STATE.SUCCESS
-              ? Container(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        CustomGridView(
-                          fillEmptySpace: false,
-                          mainAxisCount:
-                              Utils.getDevice(context) == Device.PHONE ? 1 : 2,
-                          builder: (context, index) {
-                            return tiles[index];
-                          },
-                          list: tiles,
-                        ),
-                        CustomGridView(
-                          fillEmptySpace: false,
-                          mainAxisCount:
-                              Utils.getDevice(context) == Device.PHONE ? 1 : 2,
-                          builder: (context, index) {
-                            return textFields[index];
-                          },
-                          list: textFields,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(64.0),
+              ? Expanded(
+                  child: Form(
+                    key: _form,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 32,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            child: Card(
+                              color: Colors.red,
+                              child: ListTile(
+                                title: Text("Unfallfahrzeug"),
+                                subtitle: Text("Bitte Absprache mit Jola"),
+                                trailing: Icon(
+                                  Icons.warning,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 32,
+                          ),
+                          Text(
+                            "Datum & Uhrzeit",
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          getTextField(context, "Übergabedatum",
+                              changeTime: true),
+                          SizedBox(
+                            height: 48,
+                          ),
+                          Text(
+                            "Fahrzeugtermine",
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Wrap(
+                            runSpacing: 32,
+                            spacing: 32,
+                            children: [
+                              getTextField(
+                                context,
+                                "Hauptuntersuchung",
+                              ),
+                              getTextField(
+                                context,
+                                "Sicherheitsprüfung",
+                              ),
+                              getTextField(
+                                context,
+                                "Tachoprüfung",
+                              ),
+                              getTextField(
+                                context,
+                                "UVV",
+                              ),
+                              TextFormField(
+                                validator: (miles) {
+                                  int? milesParsed = int.tryParse(miles ?? "");
+                                  if (milesParsed != null) {
+                                    movementOverviewProvider
+                                        .updateMiles(milesParsed);
+                                    return null;
+                                  } else {
+                                    return "Bitte Kilomerstand angeben!";
+                                  }
+                                },
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                decoration: InputDecoration(
+                                    suffixIcon: Icon(Icons.speed),
+                                    helperText: "Kilometerstand"),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16.0),
+                                child: Container(
+                                  height: 48,
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      movementOverviewProvider.startMovement(
+                                          _form, context);
+                                    },
+                                    child: Text(
+                                      "Übergabe starten",
+                                      style: Theme.of(context).textTheme.button,
+                                    ),
                                   ),
                                 ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Text(
-                                  "Fortfahren",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(color: Colors.white),
-                                ),
-                              ),
-                              onPressed: () {
-                                Navigator.pushNamed(context,
-                                    Constants.ROUTE_MOVEMENT_DRIVING_LICENSE,
-                                    arguments: movementOverviewProvider
-                                        .inspectionReport);
-                              },
-                            ),
+                            ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 )
@@ -163,51 +155,30 @@ class MovementOverviewPage extends StatelessWidget {
     );
   }
 
-  Widget getListTile(BuildContext context, String title, String value,
+  Widget getTextField(BuildContext context, String title,
       {bool changeTime = false}) {
     MovementOverviewProvider movementOverviewProvider =
         Provider.of<MovementOverviewProvider>(context, listen: false);
 
-    return Card(
-      elevation: 8,
-      child: InkWell(
-        onTap: () {
-          movementOverviewProvider.changeDate(title, context);
-        },
-        child: ListTile(
-          contentPadding: EdgeInsets.all(32),
-          trailing: IconButton(
-            icon: Icon(
-              Icons.edit,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            onPressed: () {
-              movementOverviewProvider.changeDate(title, context,
-                  changeTime: changeTime);
-            },
-          ),
-          title: Text(
-            title,
-            textAlign: TextAlign.start,
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                  color: Theme.of(context).colorScheme.secondary,
-                  overflow: TextOverflow.ellipsis,
-                ),
-          ),
-          subtitle: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-            child: Text(
-              changeTime
-                  ? Utils.formatDateTimestringWithTime(value,
-                      onError: "Nicht hinterlegt")
-                  : Utils.formatDateTimestring(value,
-                      onError: "Nicht hinterlegt"),
-              style: Theme.of(context).textTheme.bodyText1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ),
+    return TextField(
+      readOnly: true,
+      controller: TextEditingController(
+        text: changeTime
+            ? Utils.formatDateTimestringWithTime(
+                movementOverviewProvider
+                    .vehicleAppointments[title]!["date_formatted"],
+                onError: "Nicht hinterlegt")
+            : Utils.formatDateTimestring(
+                movementOverviewProvider
+                    .vehicleAppointments[title]!["date_formatted"],
+                onError: "Nicht hinterlegt"),
       ),
+      decoration: InputDecoration(
+          suffixIcon: Icon(Icons.date_range), helperText: title),
+      onTap: () {
+        movementOverviewProvider.changeDate(title, context,
+            changeTime: changeTime);
+      },
     );
   }
 }

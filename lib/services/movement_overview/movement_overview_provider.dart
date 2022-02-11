@@ -2,15 +2,14 @@ import 'dart:async';
 
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
+import 'package:easyrent/models/accident.dart';
 import 'package:easyrent/models/contract.dart';
 import 'package:easyrent/models/inspection_report.dart';
 import 'package:easyrent/models/movement_overview.dart';
 import 'package:easyrent/models/planned_movement.dart';
 import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/network/repository.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 enum DATETYPE {
   REPORT,
@@ -22,12 +21,15 @@ enum DATETYPE {
 
 class MovementOverviewProvider extends StateProvider {
   StreamSubscription? movementProtocolSubscription;
+  StreamSubscription? vehicleAccidentSubscription;
   MovementOverview movementOverview;
   EasyRentRepository easyRentRepository = EasyRentRepository();
+  List<Accident> accidents = [];
 
   late InspectionReport inspectionReport;
   MovementOverviewProvider(this.movementOverview) {
     generateInspectionReport();
+    getVehicleAccidents();
   }
   Vehicle get vehicle {
     return movementOverview.plannedMovement != null
@@ -157,7 +159,7 @@ class MovementOverviewProvider extends StateProvider {
     showDialog(
       context: context,
       builder: (context) {
-        return StatefulBuilder(builder: (context, setState) {
+        return StatefulBuilder(builder: (context, state) {
           return AlertDialog(
             title: Text(
               key,
@@ -306,7 +308,7 @@ class MovementOverviewProvider extends StateProvider {
                           );
                         }
 
-                        setState(
+                        state(
                           () {},
                         );
                         if (successful) {
@@ -353,6 +355,8 @@ class MovementOverviewProvider extends StateProvider {
                               break;
                             default:
                           }
+                          setState(state: STATE.SUCCESS);
+
                           Navigator.pop(context);
                         }
                       },
@@ -467,9 +471,38 @@ class MovementOverviewProvider extends StateProvider {
     return true;
   }
 
+  void getVehicleAccidents() async {
+    vehicleAccidentSubscription =
+        easyRentRepository.getVehicleAccidents(vehicle.id).asStream().listen(
+      (response) {
+        response.fold(
+          (error) {},
+          (success) {
+            accidents = List<Accident>.from(success);
+          },
+        );
+      },
+    );
+  }
+
+  void updateMiles(int miles) {
+    inspectionReport.currentMilleage = miles;
+  }
+
+  void startMovement(GlobalKey<FormState> key, BuildContext context) {
+    if (key.currentState!.validate()) {
+      Navigator.pushNamed(
+        context,
+        Constants.ROUTE_MOVEMENT_PROTOCOL,
+        arguments: inspectionReport,
+      );
+    }
+  }
+
   @override
   void dispose() {
     movementProtocolSubscription?.cancel();
+    vehicleAccidentSubscription?.cancel();
     super.dispose();
   }
 }

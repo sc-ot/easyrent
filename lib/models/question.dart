@@ -8,8 +8,9 @@ class Question {
   QuestionTemplate? questionTemplate;
   Answer? answer;
   List<ActionData> actionsData;
-
-  Question(this.id, this.questionTemplate, this.answer, this.actionsData);
+  int categoryTemplateId;
+  Question(this.id, this.questionTemplate, this.answer, this.actionsData,
+      this.categoryTemplateId);
 
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(
@@ -17,14 +18,13 @@ class Question {
       json["question_template"] != null
           ? QuestionTemplate.fromJson(json["question_template"])
           : null,
-      json["answer"] != null
-          ? Answer.fromJson(json["answer"])
-          : null,
+      json["answer"] != null ? Answer.fromJson(json["answer"]) : null,
       json["actions_data"] != null
           ? json["actions_data"]
               .map<ActionData>((element) => ActionData.fromJson(element))
               .toList()
           : [],
+      0,
     );
   }
 

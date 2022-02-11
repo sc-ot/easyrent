@@ -15,14 +15,20 @@ class Category {
 
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      json["id"],
+      json["category_template"] != null
+          ? json["category_template"]["id"] ?? 0
+          : 0,
       json["category_template"] != null
           ? CategoryTemplate.fromJson(json["category_template"])
           : null,
       json["questions"] != null
-          ? json["questions"]
-              .map<Question>((element) => Question.fromJson(element))
-              .toList()
+          ? json["questions"].map<Question>((element) {
+              Question question = Question.fromJson(element);
+              question.categoryTemplateId = json["category_template"] != null
+                  ? json["category_template"]["id"] ?? 0
+                  : 0;
+              return question;
+            }).toList()
           : [],
     );
   }
