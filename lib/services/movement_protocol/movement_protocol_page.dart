@@ -1,3 +1,5 @@
+import 'package:easyrent/core/constants.dart';
+import 'package:easyrent/models/action_data.dart';
 import 'package:easyrent/models/answer.dart';
 import 'package:easyrent/models/inspection_report.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,8 @@ class MovementProtocolPage extends StatelessWidget {
     final args = ModalRoute.of(context)!.settings.arguments;
     InspectionReport inspectionReport = args as InspectionReport;
     return ChangeNotifierProvider<MovementProtocolProvider>(
-      create: (context) => MovementProtocolProvider(inspectionReport),
+      create: (contextProvider) =>
+          MovementProtocolProvider(inspectionReport, context),
       builder: (context, child) {
         MovementProtocolProvider movementProtocolProvider =
             Provider.of<MovementProtocolProvider>(context, listen: true);
@@ -25,77 +28,220 @@ class MovementProtocolPage extends StatelessWidget {
               maxLines: 1,
               textAlign: TextAlign.center,
             ),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  int? result = await Navigator.pushNamed(context,
+                          Constants.ROUTE_MOVEMENT_PROTOCOL_QUESTION_OVERVIEW,
+                          arguments: movementProtocolProvider.inspectionReport)
+                      as int?;
+                  if (result != null) {
+                    movementProtocolProvider.goToPage(result);
+                  }
+                },
+                child: Text(
+                  "Fragenübersicht",
+                  style: Theme.of(context).textTheme.button,
+                ),
+              ),
+            ],
           ),
           resizeToAvoidBottomInset: false,
 
           // see https://stackoverflow.com/questions/61058420/flutter-pagecontroller-page-cannot-be-accessed-before-a-pageview-is-built-with
           body: FutureBuilder(
-              future: movementProtocolProvider.initializeController(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return SizedBox();
-                }
-                return Stack(
-                  children: [
-                    PageView.builder(
-                      itemCount: movementProtocolProvider.questionCount,
-                      controller: movementProtocolProvider.pageController,
-                      onPageChanged: (index) {
-                        movementProtocolProvider.updatePage(index);
-                      },
-                      itemBuilder: (context, index) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                movementProtocolProvider.currentQuestion
-                                        .questionTemplate?.questionText ??
-                                    "",
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 16,
-                            ),
-                            MovementProtocolQuestionAnswerButtons(
-                                movementProtocolProvider.currentQuestion
-                                        .questionTemplate?.answers ??
-                                    []),
-                          ],
-                        );
-                      },
-                    ),
-                    Container(
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.width * 0.1,
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Text(
-                              (movementProtocolProvider.currentPageIndex + 1)
-                                      .toString() +
-                                  " von " +
-                                  movementProtocolProvider.questionCount
-                                      .toString(),
-                            ),
-                            Text(
-                              (movementProtocolProvider.currentCategory
-                                      .categoryTemplate?.categoryName ??
-                                  ""),
-                            ),
-                          ],
-                        ),
+            future: movementProtocolProvider.initializeController(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return SizedBox();
+              }
+              return Stack(
+                children: [
+                  PageView.builder(
+                    itemCount:
+                        movementProtocolProvider.lastAnsweredQuestion + 1,
+                    controller: movementProtocolProvider.pageController,
+                    onPageChanged: (index) {
+                      movementProtocolProvider.updatePage();
+                    },
+                    itemBuilder: (context, index) {
+                      return QuestionView(index);
+                    },
+                  ),
+
+                  // TOP  QUESTION COUNT
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: double.infinity,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            (movementProtocolProvider.currentPageIndex + 1)
+                                    .toString() +
+                                " von " +
+                                movementProtocolProvider.questionCount
+                                    .toString(),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            (movementProtocolProvider.currentCategory
+                                    .categoryTemplate?.categoryName ??
+                                ""),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                );
-              }),
+                  ),
+                ],
+              );
+            },
+          ),
         );
       },
     );
   }
+}
+
+class QuestionView extends StatefulWidget {
+  int index;
+  QuestionView(this.index, {Key? key}) : super(key: key);
+
+  @override
+  _QuestionViewState createState() => _QuestionViewState();
+}
+
+class _QuestionViewState extends State<QuestionView>
+    with AutomaticKeepAliveClientMixin<QuestionView> {
+  @override
+  Widget build(BuildContext context) {
+    MovementProtocolProvider movementProtocolProvider =
+        Provider.of<MovementProtocolProvider>(context, listen: true);
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Stack(
+        children: [
+          // QUESTION
+          AnimatedPositioned(
+            top: movementProtocolProvider.questionPosition,
+            right: 0,
+            left: 0,
+            child: Text(
+              movementProtocolProvider
+                      .currentQuestion.questionTemplate?.questionText ??
+                  "",
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              style: Theme.of(context).textTheme.headline5,
+              overflow: TextOverflow.ellipsis,
+            ),
+            duration: Duration(
+              milliseconds: 300,
+            ),
+            curve: Curves.easeIn,
+          ),
+          // ANSWERS AND CHECKLIST
+          AnimatedPositioned(
+            top: movementProtocolProvider.answersPosition,
+            right: 0,
+            left: 0,
+            child: Column(
+              children: [
+                MovementProtocolQuestionAnswerButtons(
+                  movementProtocolProvider
+                          .currentQuestion.questionTemplate?.answers ??
+                      [],
+                ),
+                SizedBox(
+                  height:
+                      movementProtocolProvider.checklistAction == null ? 0 : 16,
+                ),
+                movementProtocolProvider.checklistAction == null
+                    ? Container()
+                    : MovementProtocolQuestionChecklist(
+                        movementProtocolProvider.checklistAction != null
+                            ? movementProtocolProvider
+                                .checklistAction!.actionData
+                            : [],
+                      ),
+              ],
+            ),
+            duration: Duration(
+              milliseconds: 300,
+            ),
+          ),
+
+          // NEXT AND CAMERA IMAGE BUTTON
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                movementProtocolProvider.imageAction != null
+                    ? Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 48,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary:
+                                  movementProtocolProvider.actionsCompleted()
+                                      ? Colors.green
+                                      : Colors.red),
+                          onPressed: movementProtocolProvider.answerSelected
+                              ? () {
+                                  movementProtocolProvider.takePictures();
+                                }
+                              : null,
+                          child: Text(
+                            "${movementProtocolProvider.missingImages()} / ${movementProtocolProvider.imagesToTake()} Fotos",
+                            style: Theme.of(context).textTheme.button,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
+                    : Container(),
+                SizedBox(
+                  height: movementProtocolProvider.imageAction != null ? 16 : 0,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 48,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: movementProtocolProvider.isLastPage()
+                            ? Colors.green
+                            : Colors.orange),
+                    onPressed: movementProtocolProvider.answerSelected
+                        ? () {
+                            if (movementProtocolProvider.isLastPage()) {
+                              movementProtocolProvider.goToPreviewPage();
+                            } else {
+                              movementProtocolProvider.goToNextQuestion();
+                            }
+                          }
+                        : null,
+                    child: Text(
+                      movementProtocolProvider.isLastPage()
+                          ? "Abschließen"
+                          : "Weiter",
+                      style: Theme.of(context).textTheme.button,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class MovementProtocolQuestionAnswerButtons extends StatelessWidget {
@@ -105,41 +251,72 @@ class MovementProtocolQuestionAnswerButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        for (var answer in answers)
-          Container(
-            width: MediaQuery.of(context).size.width / (answers.length + 1),
-            height: MediaQuery.of(context).size.height * 0.15,
-            child: Card(
-              elevation: 7,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: InkWell(
-                onTap: () {},
-                borderRadius: BorderRadius.circular(15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      answer.answerValue == 1
-                          ? Icons.thumb_up_outlined
+    MovementProtocolProvider movementProtocolProvider =
+        Provider.of<MovementProtocolProvider>(context, listen: false);
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: answers.length,
+      itemBuilder: (context, index) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          child: Card(
+            elevation: 7,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: InkWell(
+              onTap: () {
+                movementProtocolProvider.selectAnswer(answers[index]);
+              },
+              borderRadius: BorderRadius.circular(15),
+              child: ListTile(
+                title: Text(answers[index].answerText),
+                trailing: Icon(
+                  answers[index].answerValue == 1
+                      ? movementProtocolProvider
+                              .isAnswerSelected(answers[index])
+                          ? Icons.thumb_up
+                          : Icons.thumb_up_outlined
+                      : movementProtocolProvider
+                              .isAnswerSelected(answers[index])
+                          ? Icons.thumb_down
                           : Icons.thumb_down_outlined,
-                      color:
-                          answer.answerValue == 1 ? Colors.green : Colors.red,
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(answer.answerText),
-                  ],
+                  color: answers[index].answerValue == 1
+                      ? Colors.green
+                      : Colors.red,
                 ),
               ),
             ),
           ),
-      ],
+        );
+      },
+    );
+  }
+}
+
+class MovementProtocolQuestionChecklist extends StatelessWidget {
+  List<ActionData> actionData = [];
+  MovementProtocolQuestionChecklist(this.actionData, {Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    MovementProtocolProvider movementProtocolProvider =
+        Provider.of<MovementProtocolProvider>(context, listen: false);
+    return Container(
+      child: ListView.builder(
+        itemCount: actionData.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return CheckboxListTile(
+            title: Text(actionData[index].dataName),
+            value: actionData[index].tempValue,
+            onChanged: (val) {
+              movementProtocolProvider.selectChecklist(index, val!);
+            },
+          );
+        },
+      ),
     );
   }
 }

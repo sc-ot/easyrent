@@ -332,6 +332,7 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
           context,
           imagesToUpload(),
         );
+
         break;
       default:
         showDialog(
@@ -393,7 +394,6 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
   }
 
   void uploadImages(BuildContext context) async {
-    int successUploadedImages = 0;
     List<CameraPicture> images = imagesToUpload();
 
     if (images.length > 0) {

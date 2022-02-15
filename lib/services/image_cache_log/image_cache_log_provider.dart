@@ -6,9 +6,6 @@ import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:easyrent/services/camera/camera_page.dart';
-import 'package:sc_appframework/models/file_payload.dart';
-import 'package:sc_appframework/network/sc_cache_request_handler.dart';
-import 'package:sc_appframework/network/sc_network_api.dart';
 import 'package:watcher/watcher.dart';
 
 class ImageCacheLogProvider extends StateProvider {

@@ -79,20 +79,22 @@ class MenuCardIconText extends StatelessWidget {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          title,
-                          style: application.themeMode == ThemeMode.light &&
-                                  SCSharedPrefStorage.readBool(
-                                          Constants.KEY_SHOW_IMAGES_IN_MENU) !=
-                                      null &&
-                                  SCSharedPrefStorage.readBool(
-                                      Constants.KEY_SHOW_IMAGES_IN_MENU)
-                              ? Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(color: Colors.white)
-                              : Theme.of(context).textTheme.headline4,
-                          maxLines: 2,
+                        child: Container(
+                          child: Text(
+                            title,
+                            style: application.themeMode == ThemeMode.light &&
+                                    SCSharedPrefStorage.readBool(Constants
+                                            .KEY_SHOW_IMAGES_IN_MENU) !=
+                                        null &&
+                                    SCSharedPrefStorage.readBool(
+                                        Constants.KEY_SHOW_IMAGES_IN_MENU)
+                                ? Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(color: Colors.white)
+                                : Theme.of(context).textTheme.headline4,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                     )

@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/models/inspection_report.dart';
 import 'package:flutter/material.dart';
-import 'package:full_screen_image_null_safe/full_screen_image_null_safe.dart';
 import 'package:provider/provider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../widgets/menu_page_container_widget.dart';
 import 'movement_license_plate_and_miles_provider.dart';

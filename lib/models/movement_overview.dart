@@ -1,4 +1,3 @@
-import 'package:easyrent/models/movement.dart';
 import 'package:easyrent/models/planned_movement.dart';
 import 'package:easyrent/models/vehicle.dart';
 

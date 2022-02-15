@@ -35,6 +35,9 @@ class Themes {
         cursorColor: Themes.darkPrimaryColorLight,
       ),
       scaffoldBackgroundColor: Themes.darkPrimaryColor,
+      checkboxTheme: CheckboxThemeData(
+        fillColor: MaterialStateProperty.all(darkAccentColor),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color?>(

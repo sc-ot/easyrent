@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 import 'action_data.dart';
 
 class Action {

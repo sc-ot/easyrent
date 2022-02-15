@@ -20,6 +20,7 @@ import 'package:easyrent/services/movement_license_plate_and_miles/movement_lice
 import 'package:easyrent/services/movement_overview/movement_overview_page.dart';
 import 'package:easyrent/services/movement_planned_movement_search_list/movement_planned_movement_search_list_page.dart';
 import 'package:easyrent/services/movement_protocol/movement_protocol_page.dart';
+import 'package:easyrent/services/movement_protocol_question_overview_list/movement_protocol_question_overview_page.dart';
 import 'package:easyrent/services/movement_search_list/movement_search_list_page.dart';
 import 'package:easyrent/services/vehicle_info/vehicle_info_page.dart';
 import 'package:easyrent/services/vehicle_info_equipments/vehicle_info_equipments_page.dart';
@@ -164,6 +165,8 @@ void main() async {
                         ImagesLogPage(),
                     Constants.ROUTE_IMAGES_CACHE_LOG: (context) =>
                         ImageCacheLogPage(),
+                    Constants.ROUTE_MOVEMENT_PROTOCOL_QUESTION_OVERVIEW:
+                        (context) => MovementProtocolQuestionOverviewPage(),
                   },
                 );
               },

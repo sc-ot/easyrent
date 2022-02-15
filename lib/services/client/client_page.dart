@@ -2,7 +2,6 @@ import 'package:easyrent/core/authenticator.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/services/client/client_provider.dart';
 import 'package:easyrent/widgets/loading_indicator.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

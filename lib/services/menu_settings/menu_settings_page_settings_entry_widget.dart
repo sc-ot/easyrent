@@ -1,6 +1,5 @@
 import 'package:easyrent/core/application.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SettingsEntry extends StatefulWidget {
   final String text;
@@ -41,7 +40,8 @@ class _SettingsEntryState extends State<SettingsEntry> {
             Switch(
               activeColor: Theme.of(context).colorScheme.secondary,
               inactiveThumbColor: Theme.of(context).colorScheme.secondary,
-              inactiveTrackColor: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+              inactiveTrackColor:
+                  Theme.of(context).colorScheme.secondary.withOpacity(0.5),
               activeTrackColor: Theme.of(context).colorScheme.secondary,
               onChanged: (bool value) {
                 setState(

@@ -36,6 +36,8 @@ class Constants {
   static const String ROUTE_MOVEMENT_DRIVING_LICENSE =
       "/movement_driving_license";
   static const String ROUTE_MOVEMENT_PROTOCOL = "/movement_protocol";
+  static const String ROUTE_MOVEMENT_PROTOCOL_QUESTION_OVERVIEW =
+      "/movement_protocol_question_overview";
   static const String ROUTE_IMAGES_LOG_PAGE = "/images_log_page";
   static const String KEY_FIRST_BOOT = "KEY_FIRST_BOOT";
   static const String KEY_IMAGES = "KEY_IMAGES";

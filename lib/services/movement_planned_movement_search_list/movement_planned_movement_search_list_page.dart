@@ -1,12 +1,10 @@
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
-import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/models/movement_overview.dart';
 import 'package:easyrent/models/planned_movement.dart';
 import 'package:easyrent/services/movement_planned_movement_search_list/movement_planned_movement_search_list_provider.dart';
 import 'package:easyrent/widgets/loading_indicator.dart';
 import 'package:easyrent/widgets/planned_movement_search_list_entry.dart';
-import 'package:easyrent/widgets/vehicle_search_list_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';

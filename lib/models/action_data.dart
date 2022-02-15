@@ -5,6 +5,9 @@ class ActionData {
   bool isRequired;
   int orderValue;
 
+  // tempValue for Checklist
+  bool tempValue = false;
+
   ActionData(this.id, this.dataName, this.defaultDataValue, this.isRequired,
       this.orderValue);
 

@@ -32,7 +32,11 @@ dependencies:
   infinite_scroll_pagination: ^3.1.0
   loading_indicator: ^3.0.1
   connectivity: ^3.0.6
-  camera: ^0.9.4+1
+  camera:
+    git:
+      url: https://github.com/flutter/plugins
+      path: packages/camera/camera
+      ref: 9e46048ad2e1f085c1e8f6c77391fa52025e681f
   full_screen_image_null_safe: ^2.0.0
   preload_page_view: ^0.1.6
   flutter_svg: ^0.21.0
