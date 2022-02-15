@@ -96,6 +96,37 @@ class MovementProtocolPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: .0),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 48,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: movementProtocolProvider.isLastPage()
+                                  ? Colors.green
+                                  : Colors.orange),
+                          onPressed: movementProtocolProvider.answerSelected
+                              ? () {
+                                  if (movementProtocolProvider.isLastPage()) {
+                                    movementProtocolProvider.goToPreviewPage();
+                                  } else {
+                                    movementProtocolProvider.goToNextQuestion();
+                                  }
+                                }
+                              : null,
+                          child: Text(
+                            movementProtocolProvider.isLastPage()
+                                ? "Abschließen"
+                                : "Weiter",
+                            style: Theme.of(context).textTheme.button,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               );
             },
@@ -206,31 +237,6 @@ class _QuestionViewState extends State<QuestionView>
                     : Container(),
                 SizedBox(
                   height: movementProtocolProvider.imageAction != null ? 16 : 0,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 48,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: movementProtocolProvider.isLastPage()
-                            ? Colors.green
-                            : Colors.orange),
-                    onPressed: movementProtocolProvider.answerSelected
-                        ? () {
-                            if (movementProtocolProvider.isLastPage()) {
-                              movementProtocolProvider.goToPreviewPage();
-                            } else {
-                              movementProtocolProvider.goToNextQuestion();
-                            }
-                          }
-                        : null,
-                    child: Text(
-                      movementProtocolProvider.isLastPage()
-                          ? "Abschließen"
-                          : "Weiter",
-                      style: Theme.of(context).textTheme.button,
-                    ),
-                  ),
                 ),
               ],
             ),
