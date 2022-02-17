@@ -7,6 +7,7 @@ import 'package:easyrent/models/answer.dart';
 import 'package:easyrent/models/camera.dart';
 import 'package:easyrent/models/camera_picture.dart';
 import 'package:easyrent/models/category.dart';
+import 'package:easyrent/models/category_question_action_data.dart';
 import 'package:easyrent/models/inspection_report.dart';
 import 'package:easyrent/models/question.dart';
 import 'package:easyrent/models/action.dart' as ir;
@@ -103,6 +104,8 @@ class MovementProtocolProvider extends StateProvider {
     return completer.future;
   }
 
+  bool isLastPage() => this.currentPageIndex + 1 == this.questionCount;
+
   // get the checklistAction of the selected answer, null if not found
   ir.Action? get checklistAction {
     ir.Action? checklist;
@@ -146,8 +149,8 @@ class MovementProtocolProvider extends StateProvider {
           requiredActionDataCount++;
           bool actionDataFound = false;
           for (var addedActionData in question.actionsData) {
-            if (addedActionData.isRequired &&
-                addedActionData.id == actionData.id) {
+            if (addedActionData.actionData!.isRequired &&
+                addedActionData.actionData!.id == actionData.id) {
               actionDataFound = true;
             }
           }
@@ -173,8 +176,8 @@ class MovementProtocolProvider extends StateProvider {
     List<ActionData> requiredActionData = [];
     question.actionsData.forEach(
       (element) {
-        if (element.isRequired) {
-          requiredActionData.add(element);
+        if (element.actionData!.isRequired) {
+          requiredActionData.add(element.actionData!);
         }
       },
     );
@@ -196,20 +199,17 @@ class MovementProtocolProvider extends StateProvider {
         .length;
   }
 
-  bool isLastPage() => this.questionCount == this.lastAnsweredQuestion;
-
   int missingImages() {
     int imagesTaken = 0;
-    this.imageAction!.actionData.forEach(
-      (actionDataToTake) {
-        bool imageFound = this.currentQuestion.actionsData.contains(
-              actionDataToTake,
-            );
-        if (imageFound) {
+
+    for (int i = 0; i < this.imageAction!.actionData.length; i++) {
+      for (int z = 0; z < this.currentQuestion.actionsData.length; z++) {
+        if (this.imageAction!.actionData[i].id ==
+            this.currentQuestion.actionsData[z].actionData!.id) {
           imagesTaken++;
         }
-      },
-    );
+      }
+    }
     return imagesTaken;
   }
 
@@ -228,7 +228,7 @@ class MovementProtocolProvider extends StateProvider {
   void selectAnswer(Answer answer) {
     this.currentQuestion.answer = answer;
     updatePage();
-    if (this.currentQuestion.answer!.actions.isEmpty) {
+    if (this.currentQuestion.answer!.actions.isEmpty && !this.isLastPage()) {
       Future.delayed(
         Duration(milliseconds: 500),
         () {
@@ -240,7 +240,12 @@ class MovementProtocolProvider extends StateProvider {
 
   void selectChecklist(int index, bool value) {
     this.checklistAction!.actionData[index].tempValue = value;
-    currentQuestion.actionsData.add(this.checklistAction!.actionData[index]);
+    currentQuestion.actionsData.add(
+      CategoryQuestionData(
+          this.checklistAction!.actionData[index].tempValue ? "1" : "0",
+          this.checklistAction!.actionData[index],
+          this.checklistAction),
+    );
     updatePage();
   }
 
@@ -289,15 +294,25 @@ class MovementProtocolProvider extends StateProvider {
     for (int i = 0; i < images.length; i++) {
       for (int z = 0; z < this.imageAction!.actionData.length; z++) {
         if (images[i].tag == imageAction!.actionData[z].dataName) {
-          this.currentQuestion.actionsData.add(imageAction!.actionData[z]);
+          this.currentQuestion.actionsData.add(
+                CategoryQuestionData(
+                  images[i].base64,
+                  imageAction!.actionData[z],
+                  this.imageAction,
+                ),
+              );
         } else {
           this.currentQuestion.actionsData.add(
-                ActionData(
-                  0,
-                  images[i].tag,
+                CategoryQuestionData(
                   images[i].base64,
-                  false,
-                  10,
+                  ActionData(
+                    0,
+                    "",
+                    "",
+                    false,
+                    10,
+                  ),
+                  this.imageAction,
                 ),
               );
         }
@@ -312,7 +327,8 @@ class MovementProtocolProvider extends StateProvider {
         currentQuestion.answer!.id == answer.id;
   }
 
-  void goToPreviewPage() {
-    Navigator.pushNamed(context, Constants.ROUTE_LOGIN);
+  void goToPdfPreviewPage() {
+    Navigator.pushNamed(context, Constants.ROUTE_MOVEMENT_PROTOCOL_PDF_PREVIEW,
+        arguments: this.inspectionReport);
   }
 }

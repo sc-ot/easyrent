@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">271459241379-msh7agqqo30t58ii9o8ut6ph53jtnf3b.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">271459241379</string>
+    <string name="google_api_key" translatable="false">AIzaSyDB9GpsQzcsgXKVxbh_jo0Q9I-L_YEd5M8</string>
+    <string name="google_app_id" translatable="false">1:271459241379:android:8256c9756a7a2d041dde16</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDB9GpsQzcsgXKVxbh_jo0Q9I-L_YEd5M8</string>
+    <string name="google_storage_bucket" translatable="false">easyrent-7a2d2.appspot.com</string>
+    <string name="project_id" translatable="false">easyrent-7a2d2</string>
+</resources>

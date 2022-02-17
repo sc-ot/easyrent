@@ -17,7 +17,7 @@ class InspectionReport {
   Contract? contract;
   Vehicle? vehicle;
   Vehicle? replacementForVehicle;
-  int currentMilleage;
+  int currentMileage;
   String nextGeneralInspectionDate;
   String nextSecurityInspectionDate;
   String nextSpeedoMeterInspectionDate;
@@ -32,15 +32,13 @@ class InspectionReport {
   List<String> recipients;
   bool generateWorkshopOrder;
   bool receivedInstructions;
+
+  InspectionReport? linkedReport;
+  InspectionReport? previousReport;
   int allowedMileage;
   int allowedMileageTotal;
   int replacementVehicleMileage;
   double moreKmPrice;
-
-  InspectionReport? linkedReport;
-  InspectionReport? previousReport;
-  int allowedMilleage;
-  int allowedMilleageTotal;
 
   InspectionReport(
     this.id,
@@ -52,7 +50,7 @@ class InspectionReport {
     this.contract,
     this.vehicle,
     this.replacementForVehicle,
-    this.currentMilleage,
+    this.currentMileage,
     this.nextGeneralInspectionDate,
     this.nextSecurityInspectionDate,
     this.nextSpeedoMeterInspectionDate,
@@ -69,12 +67,10 @@ class InspectionReport {
     this.receivedInstructions,
     this.linkedReport,
     this.previousReport,
-    this.allowedMilleage,
-    this.allowedMilleageTotal,
-    this.replacementVehicleMileage,
-    this.moreKmPrice,
     this.allowedMileage,
     this.allowedMileageTotal,
+    this.replacementVehicleMileage,
+    this.moreKmPrice,
   );
 
   factory InspectionReport.fromJson(Map<String, dynamic> json) {
@@ -125,8 +121,41 @@ class InspectionReport {
       json["allowed_mileage_total"] ?? 0,
       json["replacement_vehicle_mileage"] ?? 0,
       json["more_km_price"] ?? 0,
-      json["allowed_mileage"] ?? 0,
-      json["allowed_mileage_total"] ?? 0,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "status": status,
+      "report_type": reportType,
+      "report_date": reportDate,
+      "categories": categories,
+      "contact": contact,
+      "contract": contract,
+      "vehicle": vehicle,
+      "replacement_for_vehicle": replacementForVehicle,
+      "current_mileage": currentMileage,
+      "next_general_inspection_date": nextGeneralInspectionDate,
+      "next_security_inspection_date": nextSecurityInspectionDate,
+      "next_speedometer_inspection_date": nextSpeedoMeterInspectionDate,
+      "next_uvv_inspection_date": nextUvvInspectionDate,
+      "license_plate": licensePlate,
+      "location": location,
+      "signature": signature,
+      "identification": identification,
+      "driving_license": drivingLicense,
+      "driving_license_back": drivingLicenseBack,
+      "screen": screen,
+      "recipients": recipients,
+      "generate_workshop_order": generateWorkshopOrder,
+      "received_instructions": receivedInstructions,
+      "linked_report": linkedReport,
+      "previous_report": previousReport,
+      "allowed_mileage": allowedMileage,
+      "allowed_mileage_total": allowedMileageTotal,
+      "replacement_vehicle_mileage": replacementVehicleMileage,
+      "more_km_price": moreKmPrice,
+    };
   }
 }

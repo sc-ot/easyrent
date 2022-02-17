@@ -96,10 +96,46 @@ class MovementProtocolPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: .0),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
+
+                  movementProtocolProvider.imageAction != null
+                      ? Positioned(
+                          bottom: 96,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 48,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: movementProtocolProvider
+                                          .actionsCompleted()
+                                      ? Colors.green
+                                      : Colors.red),
+                              onPressed: movementProtocolProvider.answerSelected
+                                  ? () {
+                                      movementProtocolProvider.takePictures();
+                                    }
+                                  : null,
+                              child: Text(
+                                "${movementProtocolProvider.missingImages()} / ${movementProtocolProvider.imagesToTake()} Fotos",
+                                style: Theme.of(context).textTheme.button,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
+
+                  Positioned(
+                    bottom: 32,
+                    left: 0,
+                    right: 0,
+                    child: AnimatedOpacity(
+                      duration: Duration(milliseconds: 300),
+                      opacity: movementProtocolProvider.answerSelected &&
+                              movementProtocolProvider.actionsCompleted()
+                          ? 1
+                          : 0.5,
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         height: 48,
@@ -108,10 +144,12 @@ class MovementProtocolPage extends StatelessWidget {
                               primary: movementProtocolProvider.isLastPage()
                                   ? Colors.green
                                   : Colors.orange),
-                          onPressed: movementProtocolProvider.answerSelected
+                          onPressed: movementProtocolProvider.answerSelected &&
+                                  movementProtocolProvider.actionsCompleted()
                               ? () {
                                   if (movementProtocolProvider.isLastPage()) {
-                                    movementProtocolProvider.goToPreviewPage();
+                                    movementProtocolProvider
+                                        .goToPdfPreviewPage();
                                   } else {
                                     movementProtocolProvider.goToNextQuestion();
                                   }
@@ -203,42 +241,6 @@ class _QuestionViewState extends State<QuestionView>
             ),
             duration: Duration(
               milliseconds: 300,
-            ),
-          ),
-
-          // NEXT AND CAMERA IMAGE BUTTON
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                movementProtocolProvider.imageAction != null
-                    ? Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 48,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary:
-                                  movementProtocolProvider.actionsCompleted()
-                                      ? Colors.green
-                                      : Colors.red),
-                          onPressed: movementProtocolProvider.answerSelected
-                              ? () {
-                                  movementProtocolProvider.takePictures();
-                                }
-                              : null,
-                          child: Text(
-                            "${movementProtocolProvider.missingImages()} / ${movementProtocolProvider.imagesToTake()} Fotos",
-                            style: Theme.of(context).textTheme.button,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      )
-                    : Container(),
-                SizedBox(
-                  height: movementProtocolProvider.imageAction != null ? 16 : 0,
-                ),
-              ],
             ),
           ),
         ],

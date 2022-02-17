@@ -36,12 +36,8 @@ class Category {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "category_template": categoryTemplate?.toJson(),
-      "questions": List<Question>.from(
-        questions.map(
-          (x) => x.toJson(),
-        ),
-      ),
+      "category_template": categoryTemplate,
+      "questions": questions,
     };
   }
 }

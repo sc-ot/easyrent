@@ -39,11 +39,7 @@ class Action {
       "action_tag": actionTag,
       "action_name": actionName,
       "required": isRequired,
-      "action_data": List<ActionData>.from(
-        actionData.map(
-          (x) => x.toJson(),
-        ),
-      ),
+      "action_data": actionData,
     };
   }
 }

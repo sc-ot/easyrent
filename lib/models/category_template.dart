@@ -29,11 +29,7 @@ class CategoryTemplate {
       "id": id,
       "category_name": categoryName,
       "category_tag": categoryTag,
-      "template_questions": List<TemplateQuestion>.from(
-        templateQuestions.map(
-          (x) => x.toJson(),
-        ),
-      ),
+      "template_questions": templateQuestions,
     };
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 
 class Themes {
   static Color darkPrimaryColor = Color(0xFF1d1c21);
@@ -52,7 +51,7 @@ class Themes {
       ),
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: GoogleFonts.roboto(
-          fontSize: 16.sp,
+          fontSize: 16,
           fontWeight: FontWeight.w400,
           letterSpacing: 0.5,
           color: Themes.darkAccentColor,
@@ -151,7 +150,7 @@ class Themes {
         ),
         inputDecorationTheme: InputDecorationTheme(
           labelStyle: GoogleFonts.roboto(
-            fontSize: 16.sp,
+            fontSize: 16,
             fontWeight: FontWeight.w400,
             letterSpacing: 0.5,
             color: Themes.primaryColor,

@@ -41,11 +41,7 @@ class Answer {
       "answer_type": answerType,
       "answer_value": answerValue,
       "order_value": orderValue,
-      "actions": List<Action>.from(
-        actions.map(
-          (x) => x.toJson(),
-        ),
-      ),
+      "actions": actions,
     };
   }
 }

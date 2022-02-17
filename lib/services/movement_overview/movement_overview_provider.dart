@@ -486,7 +486,7 @@ class MovementOverviewProvider extends StateProvider {
   }
 
   void updateMiles(int miles) {
-    inspectionReport.currentMilleage = miles;
+    inspectionReport.currentMileage = miles;
   }
 
   void startMovement(GlobalKey<FormState> key, BuildContext context) {

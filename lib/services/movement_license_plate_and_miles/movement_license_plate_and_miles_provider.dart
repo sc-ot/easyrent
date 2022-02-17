@@ -5,31 +5,28 @@ import 'package:flutter/cupertino.dart';
 class MovementLicensPlateAndMilesProvider extends StateProvider {
   PageController pageController = PageController();
   late InspectionReport inspectionReport;
-  
+
   TextEditingController textEditingControllerLicensePlate =
       TextEditingController();
   TextEditingController textEditingControllerMiles = TextEditingController();
 
   bool milesOkay = false;
 
-  MovementLicensPlateAndMilesProvider(InspectionReport inspectionReport){
+  MovementLicensPlateAndMilesProvider(InspectionReport inspectionReport) {
     this.inspectionReport = inspectionReport;
-    textEditingControllerLicensePlate.text = inspectionReport.vehicle!.licensePlate;
+    textEditingControllerLicensePlate.text =
+        inspectionReport.vehicle!.licensePlate;
   }
 
-
-  void milesChanged(String miles){
+  void milesChanged(String miles) {
     int? milesParsed = int.tryParse(miles);
-    if(milesParsed != null){
+    if (milesParsed != null) {
       inspectionReport.licensePlate = textEditingControllerLicensePlate.text;
-      inspectionReport.currentMilleage = milesParsed;
+      inspectionReport.currentMileage = milesParsed;
       milesOkay = true;
       setState(state: STATE.SUCCESS);
-    }
-    else{
+    } else {
       setState(state: STATE.ERROR);
     }
   }
-
-
 }

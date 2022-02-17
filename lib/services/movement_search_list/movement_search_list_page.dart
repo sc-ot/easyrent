@@ -1,7 +1,5 @@
 import 'package:easyrent/core/constants.dart';
-import 'package:easyrent/models/camera.dart';
 import 'package:easyrent/models/movement_overview.dart';
-import 'package:easyrent/services/camera/camera_page.dart';
 import 'package:easyrent/services/vehicle/vehicle_page.dart';
 import 'package:easyrent/services/vehicle/vehicle_provider.dart';
 import 'package:flutter/material.dart';

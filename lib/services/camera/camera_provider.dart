@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:native_device_orientation/native_device_orientation.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
+import 'package:sc_appframework/utils/base64_utils.dart';
 
 import 'camera_page.dart';
 
@@ -238,6 +239,11 @@ class CameraProvider with ChangeNotifier, WidgetsBindingObserver {
             if (xFile != null) {
               int currentIndex = currentImageIndex;
               images[currentIndex].image = xFile;
+
+              if (camera.type == CameraType.MOVEMENT) {
+                images[currentIndex].base64 = "data:image/jpg;base64," +
+                    Base64Utils.base64StringFromData(await xFile.readAsBytes());
+              }
 
               // Nur 1 Foto erlaubt
               if (camera.singleImage) {

@@ -29,11 +29,7 @@ class QuestionTemplate extends TemplateQuestion {
       "question_tag": questionTag,
       "required": isRequired,
       "question_type": questionType,
-      "answers": List<Answer>.from(
-        answers.map(
-          (x) => x.toJson(),
-        ),
-      ),
+      "answers": answers,
     };
   }
 }

@@ -49,7 +49,6 @@ dependencies:
   exif: ^3.0.0
   image: ^3.0.7
   native_device_orientation: ^1.0.0
-  responsive_sizer: ^3.0.4+4
   google_maps_flutter: ^2.1.0
   firebase_core: ^1.10.0
   firebase_crashlytics: ^2.3.0
@@ -71,6 +70,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   watcher: ^1.0.1
   dartz: ^0.10.0
+  # ^2.0.1 has a bug, needs to be fixxd! https://github.com/lohanidamodar/pdf_viewer/pull/102/files#diff-190672e1a29eb43f46f8f55b4d0184feee7ed1b32de3b53d37b0e39c0178444d
+  advance_pdf_viewer: 2.0.0
 
 dev_dependencies:
   flutter_test:

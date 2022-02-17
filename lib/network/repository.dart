@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:easyrent/core/constants.dart';
@@ -249,5 +252,17 @@ class EasyRentRepository {
           "contract_id": contractId?.toString(),
           "planned_movement_id": plannedMovementId?.toString(),
         },
+      );
+
+  Future<Either<Failure, dynamic>> getPdfDocument(
+          InspectionReport inspectionReport) =>
+      api.request(
+        Method.POST,
+        "fleet/inspection-reports/0/pdf",
+        retry: false,
+        decodeUtf8: true,
+        body: jsonEncode(
+          inspectionReport,
+        ),
       );
 }
