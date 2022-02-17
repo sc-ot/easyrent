@@ -49,125 +49,131 @@ class MovementProtocolPage extends StatelessWidget {
           resizeToAvoidBottomInset: false,
 
           // see https://stackoverflow.com/questions/61058420/flutter-pagecontroller-page-cannot-be-accessed-before-a-pageview-is-built-with
-          body: FutureBuilder(
-            future: movementProtocolProvider.initializeController(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return SizedBox();
-              }
-              return Stack(
-                children: [
-                  PageView.builder(
-                    itemCount:
-                        movementProtocolProvider.lastAnsweredQuestion + 1,
-                    controller: movementProtocolProvider.pageController,
-                    onPageChanged: (index) {
-                      movementProtocolProvider.updatePage();
-                    },
-                    itemBuilder: (context, index) {
-                      return QuestionView(index);
-                    },
-                  ),
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FutureBuilder(
+              future: movementProtocolProvider.initializeController(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return SizedBox();
+                }
+                return Stack(
+                  children: [
+                    PageView.builder(
+                      itemCount:
+                          movementProtocolProvider.lastAnsweredQuestion + 1,
+                      controller: movementProtocolProvider.pageController,
+                      onPageChanged: (index) {
+                        movementProtocolProvider.updatePage();
+                      },
+                      itemBuilder: (context, index) {
+                        return QuestionView(index);
+                      },
+                    ),
 
-                  // TOP  QUESTION COUNT
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    width: double.infinity,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            (movementProtocolProvider.currentPageIndex + 1)
-                                    .toString() +
-                                " von " +
-                                movementProtocolProvider.questionCount
-                                    .toString(),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            (movementProtocolProvider.currentCategory
-                                    .categoryTemplate?.categoryName ??
-                                ""),
-                          ),
-                        ],
+                    // TOP  QUESTION COUNT
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      width: double.infinity,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              (movementProtocolProvider.currentPageIndex + 1)
+                                      .toString() +
+                                  " von " +
+                                  movementProtocolProvider.questionCount
+                                      .toString(),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Text(
+                              (movementProtocolProvider.currentCategory
+                                      .categoryTemplate?.categoryName ??
+                                  ""),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
 
-                  movementProtocolProvider.imageAction != null
-                      ? Positioned(
-                          bottom: 96,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 48,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: movementProtocolProvider
-                                          .actionsCompleted()
-                                      ? Colors.green
-                                      : Colors.red),
-                              onPressed: movementProtocolProvider.answerSelected
-                                  ? () {
-                                      movementProtocolProvider.takePictures();
-                                    }
-                                  : null,
-                              child: Text(
-                                "${movementProtocolProvider.missingImages()} / ${movementProtocolProvider.imagesToTake()} Fotos",
-                                style: Theme.of(context).textTheme.button,
-                                textAlign: TextAlign.center,
+                    movementProtocolProvider.imageAction != null
+                        ? Positioned(
+                            bottom: 96,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 48,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: movementProtocolProvider
+                                            .actionsCompleted()
+                                        ? Colors.green
+                                        : Colors.red),
+                                onPressed: movementProtocolProvider
+                                        .answerSelected
+                                    ? () {
+                                        movementProtocolProvider.takePictures();
+                                      }
+                                    : null,
+                                child: Text(
+                                  "${movementProtocolProvider.missingImages()} / ${movementProtocolProvider.imagesToTake()} Fotos",
+                                  style: Theme.of(context).textTheme.button,
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                      : Container(),
+                          )
+                        : Container(),
 
-                  Positioned(
-                    bottom: 32,
-                    left: 0,
-                    right: 0,
-                    child: AnimatedOpacity(
-                      duration: Duration(milliseconds: 300),
-                      opacity: movementProtocolProvider.answerSelected &&
-                              movementProtocolProvider.actionsCompleted()
-                          ? 1
-                          : 0.5,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 48,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: movementProtocolProvider.isLastPage()
-                                  ? Colors.green
-                                  : Colors.orange),
-                          onPressed: movementProtocolProvider.answerSelected &&
-                                  movementProtocolProvider.actionsCompleted()
-                              ? () {
-                                  if (movementProtocolProvider.isLastPage()) {
-                                    movementProtocolProvider
-                                        .goToPdfPreviewPage();
-                                  } else {
-                                    movementProtocolProvider.goToNextQuestion();
+                    Positioned(
+                      bottom: 32,
+                      left: 0,
+                      right: 0,
+                      child: AnimatedOpacity(
+                        duration: Duration(milliseconds: 300),
+                        opacity: movementProtocolProvider.answerSelected &&
+                                movementProtocolProvider.actionsCompleted()
+                            ? 1
+                            : 0.5,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 48,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: movementProtocolProvider.isLastPage()
+                                    ? Colors.green
+                                    : Colors.orange),
+                            onPressed: movementProtocolProvider
+                                        .answerSelected &&
+                                    movementProtocolProvider.actionsCompleted()
+                                ? () {
+                                    if (movementProtocolProvider.isLastPage()) {
+                                      movementProtocolProvider
+                                          .goToPdfPreviewPage();
+                                    } else {
+                                      movementProtocolProvider
+                                          .goToNextQuestion();
+                                    }
                                   }
-                                }
-                              : null,
-                          child: Text(
-                            movementProtocolProvider.isLastPage()
-                                ? "Abschließen"
-                                : "Weiter",
-                            style: Theme.of(context).textTheme.button,
+                                : null,
+                            child: Text(
+                              movementProtocolProvider.isLastPage()
+                                  ? "Abschließen"
+                                  : "Weiter",
+                              style: Theme.of(context).textTheme.button,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
           ),
         );
       },

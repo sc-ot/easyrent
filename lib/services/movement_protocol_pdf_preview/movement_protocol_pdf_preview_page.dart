@@ -1,4 +1,5 @@
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
+import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/models/inspection_report.dart';
@@ -6,6 +7,7 @@ import 'package:easyrent/models/movement_overview.dart';
 import 'package:easyrent/services/movement_protocol/movement_protocol_page.dart';
 import 'package:easyrent/services/movement_protocol/movement_protocol_provider.dart';
 import 'package:easyrent/widgets/loading_indicator.dart';
+import 'package:easyrent/widgets/pdf_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -34,17 +36,38 @@ class MovementProtocolPdfPreviewPage extends StatelessWidget {
             child: Stack(
               children: [
                 Container(
-                  child: movementProtocolPdfPreviewProvider.ui == STATE.ERROR
-                      ? Container(
-                          height: 20,
-                          width: 20,
-                          color: Colors.red,
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(top: 16.0),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.75,
-                            child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.75,
+                      child: movementProtocolPdfPreviewProvider.ui ==
+                              STATE.ERROR
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Das Übergabeprotokoll kann nicht angezeigt werden (Fehler: ${movementProtocolPdfPreviewProvider.failure?.errorMessage} (Statuscode  ${movementProtocolPdfPreviewProvider.failure?.statusCode})",
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      movementProtocolPdfPreviewProvider
+                                          .getPdfDocument();
+                                    },
+                                    child: Text("Erneut versuchen",
+                                        style:
+                                            Theme.of(context).textTheme.button),
+                                  )
+                                ],
+                              ),
+                            )
+                          : Center(
                               child: movementProtocolPdfPreviewProvider.ui ==
                                       STATE.LOADING
                                   ? PDFLoadingIndicator(
@@ -60,8 +83,8 @@ class MovementProtocolPdfPreviewPage extends StatelessWidget {
                                               .pdfDocument!,
                                     ),
                             ),
-                          ),
-                        ),
+                    ),
+                  ),
                 ),
                 Positioned(
                   bottom: 32,
@@ -94,7 +117,17 @@ class MovementProtocolPdfPreviewPage extends StatelessWidget {
                           ? 1
                           : 0.5,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: movementProtocolPdfPreviewProvider.ui ==
+                            STATE.SUCCESS
+                        ? () {
+                            Navigator.pushNamed(
+                                context,
+                                Constants
+                                    .ROUTE_MOVEMENT_PROTOCOL_PDF_PREVIEW_FULLSCREEN,
+                                arguments: movementProtocolPdfPreviewProvider
+                                    .pdfDocument);
+                          }
+                        : null,
                     child: Text(
                       "Im Vollbild anzeigen",
                       style: Theme.of(context).textTheme.button,
@@ -106,31 +139,6 @@ class MovementProtocolPdfPreviewPage extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class PDFLoadingIndicator extends StatelessWidget {
-  String title;
-  PDFLoadingIndicator(this.title, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            child: ERLoadingIndicator(),
-            width: MediaQuery.of(context).size.height * 0.08,
-            height: MediaQuery.of(context).size.height * 0.08,
-          ),
-          Text(
-            this.title,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ],
-      ),
     );
   }
 }

@@ -56,7 +56,9 @@ class VehicleProvider extends StateProvider {
     lastSearchedText = vehicleSearchFieldController.text;
 
     if (pageKey == 0) {
-      setState(state: STATE.LOADING);
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        setState(state: STATE.LOADING);
+      });
     }
     vehicleStreamSubscription?.cancel();
 

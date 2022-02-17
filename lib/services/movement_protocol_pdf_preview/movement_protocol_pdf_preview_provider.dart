@@ -5,12 +5,14 @@ import 'package:easyrent/core/state_provider.dart';
 
 import 'package:easyrent/models/inspection_report.dart';
 import 'package:easyrent/network/repository.dart';
+import 'package:sc_appframework/models/failure.dart';
 import 'package:sc_appframework/storage/sc_internal_storage.dart';
 import 'package:sc_appframework/utils/file_utils.dart';
 
 class MovementProtocolPdfPreviewProvider extends StateProvider {
   late InspectionReport inspectionReport;
   PDFDocument? pdfDocument;
+  Failure? failure;
 
   MovementProtocolPdfPreviewProvider(this.inspectionReport) {
     getPdfDocument();
@@ -22,6 +24,7 @@ class MovementProtocolPdfPreviewProvider extends StateProvider {
     var result = await EasyRentRepository().getPdfDocument(inspectionReport);
     result.fold(
       (failure) {
+        this.failure = failure;
         setState(state: STATE.ERROR);
       },
       (success) async {

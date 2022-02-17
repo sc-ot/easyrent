@@ -3,11 +3,20 @@ import 'package:flutter/cupertino.dart';
 class StateProvider extends ChangeNotifier {
   STATE ui = STATE.IDLE;
 
+  bool disposed = false;
+
   void setState({STATE state = STATE.IDLE}) {
-    ui = state;
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    if (!disposed) {
+      ui = state;
+
       notifyListeners();
-    });
+    }
+  }
+
+  @override
+  void dispose() {
+    disposed = true;
+    super.dispose();
   }
 }
 
