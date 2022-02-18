@@ -70,8 +70,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   watcher: ^1.0.1
   dartz: ^0.10.0
-  # ^2.0.1 has a bug, needs to be fixxd! https://github.com/lohanidamodar/pdf_viewer/pull/102/files#diff-190672e1a29eb43f46f8f55b4d0184feee7ed1b32de3b53d37b0e39c0178444d
-  advance_pdf_viewer: 2.0.0
+  # ^2.0.1 has a bug, needs to be merged! https://github.com/lohanidamodar/pdf_viewer/pull/102/files#diff-190672e1a29eb43f46f8f55b4d0184feee7ed1b32de3b53d37b0e39c0178444d
+  advance_pdf_viewer: ^2.0.1
+  signature: ^5.0.0
+  lottie: ^1.2.2
+  horizontal_blocked_scroll_physics: ^4.0.0
 
 dev_dependencies:
   flutter_test:

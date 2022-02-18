@@ -9,11 +9,14 @@ class MovementProtocolPdfPreviewFullScreenPage extends StatelessWidget {
   Widget build(BuildContext context) {
     PDFDocument pdfDocument =
         ModalRoute.of(context)!.settings.arguments as PDFDocument;
-    return PDFViewer(
-      document: pdfDocument,
-      progressIndicator: PDFLoadingIndicator("Seite wird geladen"),
-      showPicker: false,
-      showNavigation: false,
+    return Scaffold(
+      appBar: AppBar(),
+      body: PDFViewer(
+        document: pdfDocument,
+        progressIndicator: PDFLoadingIndicator("Seite wird geladen"),
+        showPicker: false,
+        showNavigation: false,
+      ),
     );
   }
 }

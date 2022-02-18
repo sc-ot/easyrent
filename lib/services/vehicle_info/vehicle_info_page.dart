@@ -3,7 +3,6 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/core/utils.dart';
-import 'package:easyrent/models/vehicle.dart';
 import 'package:easyrent/services/vehicle_info/vehicle_info_provider.dart';
 import 'package:easyrent/widgets/custom_grid_view.dart';
 import 'package:easyrent/widgets/loading_indicator.dart';

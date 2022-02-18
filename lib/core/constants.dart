@@ -42,6 +42,8 @@ class Constants {
       "/movement_protocol_pdf_preview";
   static const String ROUTE_MOVEMENT_PROTOCOL_PDF_PREVIEW_FULLSCREEN =
       "/movement_protocol_pdf_preview_fullscreen";
+  static const ROUTE_MOVEMENT_PROTOCOL_SIGNATURE =
+      "/movement_protocol_signature";
 
   static const String ROUTE_IMAGES_LOG_PAGE = "/images_log_page";
   static const String KEY_FIRST_BOOT = "KEY_FIRST_BOOT";

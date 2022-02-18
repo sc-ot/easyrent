@@ -78,7 +78,7 @@ class MovementOverviewPage extends StatelessWidget {
                           ),
                           Wrap(
                             runSpacing: 32,
-                            spacing: 32,
+                            spacing: 64,
                             children: [
                               getTextField(
                                 context,
@@ -159,25 +159,28 @@ class MovementOverviewPage extends StatelessWidget {
     MovementOverviewProvider movementOverviewProvider =
         Provider.of<MovementOverviewProvider>(context, listen: false);
 
-    return TextField(
-      readOnly: true,
-      controller: TextEditingController(
-        text: changeTime
-            ? Utils.formatDateTimestringWithTime(
-                movementOverviewProvider
-                    .vehicleAppointments[title]!["date_formatted"],
-                onError: "Nicht hinterlegt")
-            : Utils.formatDateTimestring(
-                movementOverviewProvider
-                    .vehicleAppointments[title]!["date_formatted"],
-                onError: "Nicht hinterlegt"),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.4,
+      child: TextField(
+        readOnly: true,
+        controller: TextEditingController(
+          text: changeTime
+              ? Utils.formatDateTimestringWithTime(
+                  movementOverviewProvider
+                      .vehicleAppointments[title]!["date_formatted"],
+                  onError: "Nicht hinterlegt")
+              : Utils.formatDateTimestring(
+                  movementOverviewProvider
+                      .vehicleAppointments[title]!["date_formatted"],
+                  onError: "Nicht hinterlegt"),
+        ),
+        decoration: InputDecoration(
+            suffixIcon: Icon(Icons.date_range), helperText: title),
+        onTap: () {
+          movementOverviewProvider.changeDate(title, context,
+              changeTime: changeTime);
+        },
       ),
-      decoration: InputDecoration(
-          suffixIcon: Icon(Icons.date_range), helperText: title),
-      onTap: () {
-        movementOverviewProvider.changeDate(title, context,
-            changeTime: changeTime);
-      },
     );
   }
 }

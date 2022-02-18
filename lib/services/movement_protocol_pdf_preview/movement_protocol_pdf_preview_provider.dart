@@ -7,7 +7,6 @@ import 'package:easyrent/models/inspection_report.dart';
 import 'package:easyrent/network/repository.dart';
 import 'package:sc_appframework/models/failure.dart';
 import 'package:sc_appframework/storage/sc_internal_storage.dart';
-import 'package:sc_appframework/utils/file_utils.dart';
 
 class MovementProtocolPdfPreviewProvider extends StateProvider {
   late InspectionReport inspectionReport;

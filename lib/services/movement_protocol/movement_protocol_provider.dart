@@ -31,12 +31,21 @@ class MovementProtocolProvider extends StateProvider {
         if (question.answer!.id != 0 && actionsCompleted(question: question)) {
           lastAnsweredQuestionCount++;
         } else {
+          print(lastAnsweredQuestionCount);
           return lastAnsweredQuestionCount;
         }
       }
     }
 
     return lastAnsweredQuestionCount;
+  }
+
+  int get pageLimit {
+    if (lastAnsweredQuestion != this.questionCount) {
+      return lastAnsweredQuestion + 1;
+    } else {
+      return lastAnsweredQuestion;
+    }
   }
 
   int get questionCount {
@@ -239,12 +248,14 @@ class MovementProtocolProvider extends StateProvider {
   }
 
   void selectChecklist(int index, bool value) {
+    if (value) {}
     this.checklistAction!.actionData[index].tempValue = value;
     currentQuestion.actionsData.add(
       CategoryQuestionData(
-          this.checklistAction!.actionData[index].tempValue ? "1" : "0",
-          this.checklistAction!.actionData[index],
-          this.checklistAction),
+        this.checklistAction!.actionData[index].tempValue ? "1" : "0",
+        this.checklistAction!.actionData[index],
+        this.checklistAction,
+      ),
     );
     updatePage();
   }

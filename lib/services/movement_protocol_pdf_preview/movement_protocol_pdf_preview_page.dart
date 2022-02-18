@@ -1,15 +1,9 @@
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
-import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/models/inspection_report.dart';
-import 'package:easyrent/models/movement_overview.dart';
-import 'package:easyrent/services/movement_protocol/movement_protocol_page.dart';
-import 'package:easyrent/services/movement_protocol/movement_protocol_provider.dart';
-import 'package:easyrent/widgets/loading_indicator.dart';
 import 'package:easyrent/widgets/pdf_loading_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../../widgets/menu_page_container_widget.dart';
@@ -94,7 +88,16 @@ class MovementProtocolPdfPreviewPage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     height: 48,
                     child: ElevatedButton(
-                      onPressed: null,
+                      onPressed: () async {
+                        InspectionReport report = await Navigator.pushNamed(
+                            context,
+                            Constants.ROUTE_MOVEMENT_PROTOCOL_SIGNATURE,
+                            arguments: movementProtocolPdfPreviewProvider
+                                .inspectionReport) as InspectionReport;
+                        movementProtocolPdfPreviewProvider.inspectionReport =
+                            report;
+                        movementProtocolPdfPreviewProvider.getPdfDocument();
+                      },
                       child: Text(
                         "Unterschreiben",
                         style: Theme.of(context).textTheme.button,

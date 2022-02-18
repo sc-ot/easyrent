@@ -21,6 +21,7 @@ import 'package:easyrent/services/movement_protocol/movement_protocol_page.dart'
 import 'package:easyrent/services/movement_protocol_pdf_preview/movement_protocol_pdf_preview_fullscreen_page.dart';
 import 'package:easyrent/services/movement_protocol_pdf_preview/movement_protocol_pdf_preview_page.dart';
 import 'package:easyrent/services/movement_protocol_question_overview_list/movement_protocol_question_overview_page.dart';
+import 'package:easyrent/services/movement_protocol_signature/movement_protocol_signature_page.dart';
 import 'package:easyrent/services/movement_search_list/movement_search_list_page.dart';
 import 'package:easyrent/services/vehicle_info/vehicle_info_page.dart';
 import 'package:easyrent/services/vehicle_info_equipments/vehicle_info_equipments_page.dart';
@@ -162,6 +163,8 @@ void main() async {
                   MovementProtocolPdfPreviewPage(),
               Constants.ROUTE_MOVEMENT_PROTOCOL_PDF_PREVIEW_FULLSCREEN:
                   (context) => MovementProtocolPdfPreviewFullScreenPage(),
+              Constants.ROUTE_MOVEMENT_PROTOCOL_SIGNATURE: (context) =>
+                  MovementProtocolSignaturePage(),
             },
           );
         },

@@ -1,7 +1,6 @@
 import 'package:easyrent/models/category_question_action_data.dart';
 import 'package:easyrent/models/question_template.dart';
 
-import 'action_data.dart';
 import 'answer.dart';
 
 class Question {

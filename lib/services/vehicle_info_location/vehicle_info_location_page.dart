@@ -1,5 +1,4 @@
 import 'package:easyrent/models/vehicle.dart';
-import 'package:easyrent/services/vehicle_info_equipments/vehicle_info_equipments_provider.dart';
 import 'package:easyrent/services/vehicle_info_location/vehicle_info_location_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

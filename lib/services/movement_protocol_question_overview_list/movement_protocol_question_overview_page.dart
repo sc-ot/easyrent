@@ -1,12 +1,5 @@
-import 'package:easyrent/core/state_provider.dart';
-import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/models/inspection_report.dart';
-import 'package:easyrent/models/movement_overview.dart';
-import 'package:easyrent/services/movement_protocol/movement_protocol_page.dart';
-import 'package:easyrent/services/movement_protocol/movement_protocol_provider.dart';
-import 'package:easyrent/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../../widgets/menu_page_container_widget.dart';

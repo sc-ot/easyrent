@@ -1,11 +1,8 @@
 import 'dart:async';
 
-import 'package:easyrent/core/application.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/models/image_upload_group.dart';
 import 'package:easyrent/network/repository.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sc_appframework/network/sc_cache_request_handler.dart';
 import 'package:sc_appframework/network/sc_network_api.dart';
 

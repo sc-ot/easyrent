@@ -265,4 +265,16 @@ class EasyRentRepository {
           inspectionReport,
         ),
       );
+
+  Future<Either<Failure, dynamic>> uploadInspectionReport(
+          InspectionReport inspectionReport) =>
+      api.request(
+        Method.POST,
+        "api/v1/fleet/inspection-reports?status=2",
+        retry: true,
+        decodeUtf8: true,
+        body: jsonEncode(
+          inspectionReport,
+        ),
+      );
 }

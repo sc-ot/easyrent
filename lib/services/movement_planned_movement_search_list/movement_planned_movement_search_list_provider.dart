@@ -4,7 +4,6 @@ import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/models/planned_movement.dart';
 import 'package:easyrent/network/repository.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PlannedMovementViewData {
@@ -19,11 +18,10 @@ class PlannedMovementViewData {
   );
 }
 
-class MovementPlannedMovementSearchListProvider extends StateProvider  {
+class MovementPlannedMovementSearchListProvider extends StateProvider {
   EasyRentRepository easyRentRepository = EasyRentRepository();
   TextEditingController plannedMovementSearchFieldTextEditingController =
       TextEditingController();
-
 
   late PlannedMovement plannedMovement;
   late Function onPressed;
@@ -76,8 +74,7 @@ class MovementPlannedMovementSearchListProvider extends StateProvider  {
   String lastSearchedText = "";
   bool initPlannedMovements = true;
 
-
-  int getMovementType(BuildContext context){
+  int getMovementType(BuildContext context) {
     return DefaultTabController.of(context)!.index;
   }
 
@@ -104,26 +101,26 @@ class MovementPlannedMovementSearchListProvider extends StateProvider  {
       case Constants.MOVEMENT_TYPE_ENTRY:
         switch (index) {
           case 0:
-          plannedMovements["entry_today"]!.isExpanded = isExpanded;
+            plannedMovements["entry_today"]!.isExpanded = isExpanded;
             break;
           case 1:
-           plannedMovements["entry_past"]!.isExpanded = isExpanded;
+            plannedMovements["entry_past"]!.isExpanded = isExpanded;
             break;
           case 2:
-           plannedMovements["entry_future"]!.isExpanded = isExpanded;
+            plannedMovements["entry_future"]!.isExpanded = isExpanded;
             break;
         }
         break;
       case Constants.MOVEMENT_TYPE_EXIT:
         switch (index) {
           case 0:
-          plannedMovements["exit_today"]!.isExpanded = isExpanded;
+            plannedMovements["exit_today"]!.isExpanded = isExpanded;
             break;
           case 1:
-           plannedMovements["exit_past"]!.isExpanded = isExpanded;
+            plannedMovements["exit_past"]!.isExpanded = isExpanded;
             break;
           case 2:
-           plannedMovements["exit_future"]!.isExpanded = isExpanded;
+            plannedMovements["exit_future"]!.isExpanded = isExpanded;
             break;
         }
         break;

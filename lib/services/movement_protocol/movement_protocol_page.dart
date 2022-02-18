@@ -60,8 +60,7 @@ class MovementProtocolPage extends StatelessWidget {
                 return Stack(
                   children: [
                     PageView.builder(
-                      itemCount:
-                          movementProtocolProvider.lastAnsweredQuestion + 1,
+                      itemCount: movementProtocolProvider.pageLimit,
                       controller: movementProtocolProvider.pageController,
                       onPageChanged: (index) {
                         movementProtocolProvider.updatePage();
