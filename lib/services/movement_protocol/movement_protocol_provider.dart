@@ -20,85 +20,13 @@ class MovementProtocolProvider extends StateProvider {
 
   MovementProtocolProvider(this.inspectionReport, BuildContext context) {
     this.context = context;
-    this.questionPosition = MediaQuery.of(context).size.height * 0.3;
-    this.answersPosition = MediaQuery.of(context).size.height * 0.6;
-  }
 
-  int get lastAnsweredQuestion {
-    int lastAnsweredQuestionCount = 0;
     for (var category in inspectionReport.categories) {
       for (var question in category.questions) {
-        if (question.answer!.id != 0 && actionsCompleted(question: question)) {
-          lastAnsweredQuestionCount++;
-        } else {
-          print(lastAnsweredQuestionCount);
-          return lastAnsweredQuestionCount;
-        }
+        question.questionPosition = MediaQuery.of(context).size.height * 0.3;
+        question.answersPosition = MediaQuery.of(context).size.height * 0.6;
       }
     }
-
-    return lastAnsweredQuestionCount;
-  }
-
-  int get pageLimit {
-    if (lastAnsweredQuestion != this.questionCount) {
-      return lastAnsweredQuestion + 1;
-    } else {
-      return lastAnsweredQuestion;
-    }
-  }
-
-  int get questionCount {
-    int questionCount = 0;
-    for (var category in inspectionReport.categories) {
-      questionCount += category.questions.length;
-    }
-    return questionCount;
-  }
-
-  int get currentPageIndex =>
-      pageController.hasClients && pageController.position.haveDimensions
-          ? pageController.page!.round()
-          : 0;
-
-  bool get answerSelected {
-    return currentQuestion.answer != null && currentQuestion.answer!.id != 0;
-  }
-
-  bool get questionAnswered {
-    return currentQuestion.answer?.actions.isEmpty ?? false;
-  }
-
-  Question get currentQuestion {
-    List<Question> questions = [];
-    for (var category in inspectionReport.categories) {
-      questions += category.questions;
-    }
-    return questions[currentPageIndex];
-  }
-
-  Category get currentCategory {
-    for (var category in inspectionReport.categories) {
-      if (this.currentQuestion.categoryTemplateId == category.id) {
-        return category;
-      }
-    }
-    return inspectionReport.categories[0];
-  }
-
-  PageController pageController = PageController(initialPage: 0);
-
-  double questionPosition = 0.0;
-  double answersPosition = 0.0;
-
-  void updatePage() {
-    if (this.currentQuestion.answer != null &&
-        this.currentQuestion.answer!.actions.isEmpty) {
-      animateDown();
-    } else {
-      animateUp();
-    }
-    setState(state: STATE.SUCCESS);
   }
 
   Future<bool> initializeController() {
@@ -113,88 +41,72 @@ class MovementProtocolProvider extends StateProvider {
     return completer.future;
   }
 
-  bool isLastPage() => this.currentPageIndex + 1 == this.questionCount;
-
-  // get the checklistAction of the selected answer, null if not found
-  ir.Action? get checklistAction {
-    ir.Action? checklist;
-    if (answerSelected) {
-      currentQuestion.answer!.actions.forEach(
-        (action) {
-          if (action.actionType == "CHECKLIST") {
-            checklist = action;
-          }
-        },
-      );
-    }
-    return checklist;
+  void onPageChange() {
+    setState(state: STATE.SUCCESS);
   }
 
-  // get the imageAction of the selected answer, null if not found
-  ir.Action? get imageAction {
-    ir.Action? image;
-    if (answerSelected) {
-      currentQuestion.answer!.actions.forEach(
-        (action) {
-          if (action.actionType == "IMAGES") {
-            image = action;
-          }
-        },
-      );
+  // ALL QUESTIONS AS A LIST FOR THE PAGEVIEW
+  List<Question> get questions {
+    List<Question> questionList = [];
+    for (var category in inspectionReport.categories) {
+      questionList += category.questions;
     }
-    return image;
+    return questionList;
   }
 
-  bool actionsCompleted({Question? question}) {
-    if (question == null) {
-      question = currentQuestion;
-    }
-    bool actionsCompleted = true;
-    int requiredActionDataCount = 0;
-
-    for (var action in question.answer!.actions) {
-      for (var actionData in action.actionData) {
-        if (actionData.isRequired) {
-          requiredActionDataCount++;
-          bool actionDataFound = false;
-          for (var addedActionData in question.actionsData) {
-            if (addedActionData.actionData!.isRequired &&
-                addedActionData.actionData!.id == actionData.id) {
-              actionDataFound = true;
-            }
-          }
-          if (!actionDataFound) {
-            return false;
-          }
-        }
+  // INDEX OF THE LAST ANSWERED QUESTION (STARTING FROM  0)
+  int get lastAnsweredQuestion {
+    int lastAnsweredQuestionCount = 0;
+    for (var question in this.questions) {
+      if (question.answer!.id != 0 && question.actionsCompleted()) {
+        lastAnsweredQuestionCount++;
+      } else {
+        print(lastAnsweredQuestionCount);
+        return lastAnsweredQuestionCount;
       }
     }
 
-    // REQUIRED ACTIONDATA COUNT NOT SAME AS ADDED ACTIONS
-    if (requiredActionDataCount <
-        this.requiredActionData(question: question).length) {
-      return false;
-    }
-    return actionsCompleted;
+    return lastAnsweredQuestionCount;
   }
 
-  List<ActionData> requiredActionData({Question? question}) {
-    if (question == null) {
-      question = currentQuestion;
+  // PAGECOUNT OF PAGEVIEW (STARTING FROM 1)
+  int get pageLimit {
+    if (lastAnsweredQuestion != this.questionCount) {
+      return lastAnsweredQuestion + 1;
+    } else {
+      return lastAnsweredQuestion;
     }
-    List<ActionData> requiredActionData = [];
-    question.actionsData.forEach(
-      (element) {
-        if (element.actionData!.isRequired) {
-          requiredActionData.add(element.actionData!);
-        }
-      },
-    );
-    return requiredActionData;
   }
+
+  // GET THE TOTAL COUNT OF QUESTIONS
+  int get questionCount => questions.length;
+
+  // GET THE CURRENT PAGE INDEX
+  int get currentPageIndex =>
+      pageController.hasClients && pageController.position.haveDimensions
+          ? pageController.page!.round()
+          : 0;
+
+  // GET THE CURRENT QUESTION
+  Question get currentQuestion => questions[currentPageIndex];
+
+  // GET THE CURRENT CATEGORY
+  Category get currentCategory {
+    for (var category in inspectionReport.categories) {
+      if (this.currentQuestion.categoryTemplateId == category.id) {
+        return category;
+      }
+    }
+    return inspectionReport.categories[0];
+  }
+
+  PageController pageController = PageController(initialPage: 0);
+
+  bool isLastPage() => this.currentPageIndex + 1 == this.questionCount;
 
   int imagesToTake() {
     return this
+        .currentQuestion
         .imageAction!
         .actionData
         .map(
@@ -211,10 +123,14 @@ class MovementProtocolProvider extends StateProvider {
   int missingImages() {
     int imagesTaken = 0;
 
-    for (int i = 0; i < this.imageAction!.actionData.length; i++) {
-      for (int z = 0; z < this.currentQuestion.actionsData.length; z++) {
-        if (this.imageAction!.actionData[i].id ==
-            this.currentQuestion.actionsData[z].actionData!.id) {
+    for (int i = 0;
+        i < this.currentQuestion.imageAction!.actionData.length;
+        i++) {
+      for (int z = 0;
+          z < this.currentQuestion.categoryQuestionData.length;
+          z++) {
+        if (this.currentQuestion.imageAction!.actionData[i].id ==
+            this.currentQuestion.categoryQuestionData[z].actionData!.id) {
           imagesTaken++;
         }
       }
@@ -222,61 +138,79 @@ class MovementProtocolProvider extends StateProvider {
     return imagesTaken;
   }
 
-  void animateUp() {
-    this.questionPosition = MediaQuery.of(context).size.height * 0.11;
-    this.answersPosition = MediaQuery.of(context).size.height * 0.22;
-    setState(state: STATE.SUCCESS);
-  }
-
-  void animateDown() {
-    this.questionPosition = MediaQuery.of(context).size.height * 0.3;
-    this.answersPosition = MediaQuery.of(context).size.height * 0.6;
-    setState(state: STATE.SUCCESS);
+  void addAllChecklistData() {
+    // ONLY ADD CHECKLIST DATA FOR FIRST TIME, NOT ON EVERY ANSWER CLICK
+    if (this.currentQuestion.categoryQuestionData.length == 0) {
+      for (var actionData in currentQuestion.checklistAction!.actionData) {
+        currentQuestion.categoryQuestionData.add(
+          CategoryQuestionData(
+            "0",
+            actionData,
+            this.currentQuestion.checklistAction,
+          ),
+        );
+      }
+    }
   }
 
   void selectAnswer(Answer answer) {
     this.currentQuestion.answer = answer;
-    updatePage();
-    if (this.currentQuestion.answer!.actions.isEmpty && !this.isLastPage()) {
-      Future.delayed(
-        Duration(milliseconds: 500),
-        () {
-          goToNextQuestion();
-        },
-      );
-    }
-  }
-
-  void selectChecklist(int index, bool value) {
-    if (value) {}
-    this.checklistAction!.actionData[index].tempValue = value;
-    currentQuestion.actionsData.add(
-      CategoryQuestionData(
-        this.checklistAction!.actionData[index].tempValue ? "1" : "0",
-        this.checklistAction!.actionData[index],
-        this.checklistAction,
-      ),
-    );
-    updatePage();
-  }
-
-  void goToNextQuestion() {
-    if (this.lastAnsweredQuestion == this.questionCount) {
-      Navigator.pushNamed(
-          context, Constants.ROUTE_MOVEMENT_PROTOCOL_QUESTION_OVERVIEW);
-    }
-    if (this.currentQuestion.answer!.actions.isEmpty) {
-      pageController.nextPage(
-          duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+    if (currentQuestion.hasAction) {
+      // HAS CHECKLIST -> ADD ALL CHECKLIST ENTRIES WITH NONCHECKED AS DEFAULT
+      if (currentQuestion.checklistAction != null) {
+        addAllChecklistData();
+      }
+      animateUp();
     } else {
+      if (currentPageIndex + 1 != questionCount) {
+        goToNextQuestion();
+      } else {
+        animateDown();
+      }
+    }
+  }
+
+  void animateUp() {
+    this.currentQuestion.questionPosition =
+        MediaQuery.of(context).size.height * 0.11;
+    this.currentQuestion.answersPosition =
+        MediaQuery.of(context).size.height * 0.22;
+    setState(state: STATE.SUCCESS);
+  }
+
+  void animateDown() {
+    this.currentQuestion.questionPosition =
+        MediaQuery.of(context).size.height * 0.3;
+    this.currentQuestion.answersPosition =
+        MediaQuery.of(context).size.height * 0.6;
+    setState(state: STATE.SUCCESS);
+  }
+
+  void selectChecklist(ActionData actionData, bool value) {
+    for (var categoryQuestionData in currentQuestion.categoryQuestionData) {
+      if (categoryQuestionData.actionData!.id == actionData.id) {
+        if (categoryQuestionData.data == "0") {
+          categoryQuestionData.data = "1";
+        } else {
+          categoryQuestionData.data = "0";
+        }
+      }
+    }
+
+    setState(state: STATE.SUCCESS);
+  }
+
+  void goToNextQuestion({bool triggerAnimateDownAnimation = true}) {
+    if (triggerAnimateDownAnimation) {
       animateDown();
       Future.delayed(
         Duration(milliseconds: 500),
-        () {
-          pageController.nextPage(
-              duration: Duration(milliseconds: 500), curve: Curves.easeIn);
-        },
+        () => pageController.nextPage(
+            duration: Duration(milliseconds: 300), curve: Curves.easeIn),
       );
+    } else {
+      pageController.nextPage(
+          duration: Duration(milliseconds: 300), curve: Curves.easeIn);
     }
   }
 
@@ -290,7 +224,12 @@ class MovementProtocolProvider extends StateProvider {
       Constants.ROUTE_CAMERA,
       arguments: Camera(
         CameraType.MOVEMENT,
-        this.imageAction!.actionData.map((e) => e.dataName).toList(),
+        this
+            .currentQuestion
+            .imageAction!
+            .actionData
+            .map((e) => e.dataName)
+            .toList(),
         null,
         null,
       ),
@@ -298,22 +237,25 @@ class MovementProtocolProvider extends StateProvider {
 
     // DELETE OLD IMAGES
     if (images.isNotEmpty) {
-      this.currentQuestion.actionsData = [];
+      this.currentQuestion.categoryQuestionData = [];
     }
 
     // FIND OR MAKE IMAGES TO ACTIONDATA AND ADD THEM
     for (int i = 0; i < images.length; i++) {
-      for (int z = 0; z < this.imageAction!.actionData.length; z++) {
-        if (images[i].tag == imageAction!.actionData[z].dataName) {
-          this.currentQuestion.actionsData.add(
+      for (int z = 0;
+          z < this.currentQuestion.imageAction!.actionData.length;
+          z++) {
+        if (images[i].tag ==
+            this.currentQuestion.imageAction!.actionData[z].dataName) {
+          this.currentQuestion.categoryQuestionData.add(
                 CategoryQuestionData(
                   images[i].base64,
-                  imageAction!.actionData[z],
-                  this.imageAction,
+                  this.currentQuestion.imageAction!.actionData[z],
+                  this.currentQuestion.imageAction,
                 ),
               );
         } else {
-          this.currentQuestion.actionsData.add(
+          this.currentQuestion.categoryQuestionData.add(
                 CategoryQuestionData(
                   images[i].base64,
                   ActionData(
@@ -323,19 +265,13 @@ class MovementProtocolProvider extends StateProvider {
                     false,
                     10,
                   ),
-                  this.imageAction,
+                  this.currentQuestion.imageAction,
                 ),
               );
         }
       }
     }
-
-    updatePage();
-  }
-
-  bool isAnswerSelected(Answer answer) {
-    return currentQuestion.answer != null &&
-        currentQuestion.answer!.id == answer.id;
+    setState(state: STATE.SUCCESS);
   }
 
   void goToPdfPreviewPage() {

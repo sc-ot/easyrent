@@ -91,7 +91,8 @@ class Vehicle {
           : Manufacturer(0, ""),
       json["vehicle_category"] != null
           ? VehicleCategory.fromJson(json["vehicle_category"])
-          : VehicleCategory(0, ""),
+          : VehicleCategory(
+              0, "", false, false, false, false, false, false, false, false),
       json["letter_number"] ?? "",
       json["kilowatt"] ?? 0,
       json["horsepower"] ?? 0,
@@ -185,7 +186,8 @@ class Vehicle {
       "",
       0,
       Manufacturer(0, ""),
-      VehicleCategory(0, ""),
+      VehicleCategory(
+          0, "", false, false, false, false, false, false, false, false),
       "",
       0,
       0,

@@ -31,11 +31,14 @@ class Constants {
       "/movement_planned_movement_search_list";
   static const String ROUTE_MOVEMENT_SEARCH_LIST = "/movement_search_list";
   static const String ROUTE_MOVEMENT_OVERVIEW = "/movement_overview";
-  static const String ROUTE_MOVEMENT_LICENSEPLATE_AND_MILES =
-      "/movement_miles_and_license_plate";
-  static const String ROUTE_MOVEMENT_DRIVING_LICENSE =
-      "/movement_driving_license";
+
+  static const String ROUTE_MOVEMENT_PROTOCOL_DRIVING_LICENSE =
+      "/movement_prtocol_driving_license";
+  static const String ROUTE_MOVEMENT_PROTOCOL_DISPLAY =
+      "/movement_protocol_dislay";
   static const String ROUTE_MOVEMENT_PROTOCOL = "/movement_protocol";
+  static const ROUTE_MOVEMENT_PROTOCOL_REPLACEMENT_VEHICLE_LIST =
+      "/movement_protocol_replacement_vehicle_list";
   static const String ROUTE_MOVEMENT_PROTOCOL_QUESTION_OVERVIEW =
       "/movement_protocol_question_overview";
   static const String ROUTE_MOVEMENT_PROTOCOL_PDF_PREVIEW =

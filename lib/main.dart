@@ -13,14 +13,15 @@ import 'package:easyrent/services/image_cache_log/image_cache_log_page.dart';
 import 'package:easyrent/services/image_history_galery/image_history_galery_page.dart';
 import 'package:easyrent/services/image_log/image_log_page.dart';
 import 'package:easyrent/services/menu/menu_page.dart';
-import 'package:easyrent/services/movement_driving_license/movement_driving_license_page.dart';
-import 'package:easyrent/services/movement_license_plate_and_miles/movement_license_plate_and_miles_page.dart';
 import 'package:easyrent/services/movement_overview/movement_overview_page.dart';
 import 'package:easyrent/services/movement_planned_movement_search_list/movement_planned_movement_search_list_page.dart';
 import 'package:easyrent/services/movement_protocol/movement_protocol_page.dart';
+import 'package:easyrent/services/movement_protocol_display/movement_protocol_display_page.dart';
+import 'package:easyrent/services/movement_protocol_driving_license/movement_protocol_driving_license_page.dart';
 import 'package:easyrent/services/movement_protocol_pdf_preview/movement_protocol_pdf_preview_fullscreen_page.dart';
 import 'package:easyrent/services/movement_protocol_pdf_preview/movement_protocol_pdf_preview_page.dart';
 import 'package:easyrent/services/movement_protocol_question_overview_list/movement_protocol_question_overview_page.dart';
+import 'package:easyrent/services/movement_protocol_replacement_vehicle/movement_protocol_replacement_vehicle_page.dart';
 import 'package:easyrent/services/movement_protocol_signature/movement_protocol_signature_page.dart';
 import 'package:easyrent/services/movement_search_list/movement_search_list_page.dart';
 import 'package:easyrent/services/vehicle_info/vehicle_info_page.dart';
@@ -148,15 +149,15 @@ void main() async {
                   MovementSearchListPage(),
               Constants.ROUTE_MOVEMENT_OVERVIEW: (context) =>
                   MovementOverviewPage(),
-              Constants.ROUTE_MOVEMENT_DRIVING_LICENSE: (context) =>
-                  MovementDrivingLicensePage(),
-              Constants.ROUTE_MOVEMENT_LICENSEPLATE_AND_MILES: (context) =>
-                  MovementLicensPlateAndMilesPage(),
+              Constants.ROUTE_MOVEMENT_PROTOCOL_DRIVING_LICENSE: (context) =>
+                  MovementProtocolDrivingLicensePage(),
               Constants.ROUTE_MOVEMENT_PROTOCOL: (context) =>
                   MovementProtocolPage(),
               Constants.ROUTE_IMAGES_LOG_PAGE: (context) => ImagesLogPage(),
               Constants.ROUTE_IMAGES_CACHE_LOG: (context) =>
                   ImageCacheLogPage(),
+              Constants.ROUTE_MOVEMENT_PROTOCOL_DISPLAY: (context) =>
+                  MovementProtocolDisplayPage(),
               Constants.ROUTE_MOVEMENT_PROTOCOL_QUESTION_OVERVIEW: (context) =>
                   MovementProtocolQuestionOverviewPage(),
               Constants.ROUTE_MOVEMENT_PROTOCOL_PDF_PREVIEW: (context) =>
@@ -165,6 +166,8 @@ void main() async {
                   (context) => MovementProtocolPdfPreviewFullScreenPage(),
               Constants.ROUTE_MOVEMENT_PROTOCOL_SIGNATURE: (context) =>
                   MovementProtocolSignaturePage(),
+              Constants.ROUTE_MOVEMENT_PROTOCOL_REPLACEMENT_VEHICLE_LIST:
+                  (context) => MovementProtocolReplacementVehiclePage(),
             },
           );
         },

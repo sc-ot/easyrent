@@ -2,6 +2,7 @@ import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/models/action_data.dart';
 import 'package:easyrent/models/answer.dart';
 import 'package:easyrent/models/inspection_report.dart';
+import 'package:easyrent/models/question.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -59,15 +60,14 @@ class MovementProtocolPage extends StatelessWidget {
                 }
                 return Stack(
                   children: [
-                    PageView.builder(
-                      itemCount: movementProtocolProvider.pageLimit,
-                      controller: movementProtocolProvider.pageController,
+                    PageView(
                       onPageChanged: (index) {
-                        movementProtocolProvider.updatePage();
+                        movementProtocolProvider.onPageChange();
                       },
-                      itemBuilder: (context, index) {
-                        return QuestionView(index);
-                      },
+                      controller: movementProtocolProvider.pageController,
+                      children: movementProtocolProvider.questions
+                          .map((e) => QuestionView(e))
+                          .toList(),
                     ),
 
                     // TOP  QUESTION COUNT
@@ -98,7 +98,8 @@ class MovementProtocolPage extends StatelessWidget {
                       ),
                     ),
 
-                    movementProtocolProvider.imageAction != null
+                    // IMAGE BUTTON
+                    movementProtocolProvider.currentQuestion.imageAction != null
                         ? Positioned(
                             bottom: 96,
                             left: 0,
@@ -109,11 +110,12 @@ class MovementProtocolPage extends StatelessWidget {
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     primary: movementProtocolProvider
+                                            .currentQuestion
                                             .actionsCompleted()
                                         ? Colors.green
                                         : Colors.red),
                                 onPressed: movementProtocolProvider
-                                        .answerSelected
+                                        .currentQuestion.answerSelected
                                     ? () {
                                         movementProtocolProvider.takePictures();
                                       }
@@ -134,8 +136,10 @@ class MovementProtocolPage extends StatelessWidget {
                       right: 0,
                       child: AnimatedOpacity(
                         duration: Duration(milliseconds: 300),
-                        opacity: movementProtocolProvider.answerSelected &&
-                                movementProtocolProvider.actionsCompleted()
+                        opacity: movementProtocolProvider
+                                    .currentQuestion.answerSelected &&
+                                movementProtocolProvider.currentQuestion
+                                    .actionsCompleted()
                             ? 1
                             : 0.5,
                         child: Container(
@@ -147,8 +151,9 @@ class MovementProtocolPage extends StatelessWidget {
                                     ? Colors.green
                                     : Colors.orange),
                             onPressed: movementProtocolProvider
-                                        .answerSelected &&
-                                    movementProtocolProvider.actionsCompleted()
+                                        .currentQuestion.answerSelected &&
+                                    movementProtocolProvider.currentQuestion
+                                        .actionsCompleted()
                                 ? () {
                                     if (movementProtocolProvider.isLastPage()) {
                                       movementProtocolProvider
@@ -181,8 +186,8 @@ class MovementProtocolPage extends StatelessWidget {
 }
 
 class QuestionView extends StatefulWidget {
-  int index;
-  QuestionView(this.index, {Key? key}) : super(key: key);
+  Question question;
+  QuestionView(this.question, {Key? key}) : super(key: key);
 
   @override
   _QuestionViewState createState() => _QuestionViewState();
@@ -201,13 +206,11 @@ class _QuestionViewState extends State<QuestionView>
         children: [
           // QUESTION
           AnimatedPositioned(
-            top: movementProtocolProvider.questionPosition,
+            top: widget.question.questionPosition,
             right: 0,
             left: 0,
             child: Text(
-              movementProtocolProvider
-                      .currentQuestion.questionTemplate?.questionText ??
-                  "",
+              widget.question.questionTemplate?.questionText ?? "",
               textAlign: TextAlign.center,
               maxLines: 2,
               style: Theme.of(context).textTheme.headline5,
@@ -220,27 +223,25 @@ class _QuestionViewState extends State<QuestionView>
           ),
           // ANSWERS AND CHECKLIST
           AnimatedPositioned(
-            top: movementProtocolProvider.answersPosition,
+            top: widget.question.answersPosition,
             right: 0,
             left: 0,
             child: Column(
               children: [
                 MovementProtocolQuestionAnswerButtons(
-                  movementProtocolProvider
-                          .currentQuestion.questionTemplate?.answers ??
-                      [],
+                  widget.question.questionTemplate?.answers ?? [],
                 ),
                 SizedBox(
-                  height:
-                      movementProtocolProvider.checklistAction == null ? 0 : 16,
+                  height: movementProtocolProvider
+                              .currentQuestion.checklistAction ==
+                          null
+                      ? 0
+                      : 16,
                 ),
-                movementProtocolProvider.checklistAction == null
+                widget.question.checklistAction == null
                     ? Container()
                     : MovementProtocolQuestionChecklist(
-                        movementProtocolProvider.checklistAction != null
-                            ? movementProtocolProvider
-                                .checklistAction!.actionData
-                            : [],
+                        widget.question,
                       ),
               ],
             ),
@@ -286,11 +287,11 @@ class MovementProtocolQuestionAnswerButtons extends StatelessWidget {
                 title: Text(answers[index].answerText),
                 trailing: Icon(
                   answers[index].answerValue == 1
-                      ? movementProtocolProvider
+                      ? movementProtocolProvider.currentQuestion
                               .isAnswerSelected(answers[index])
                           ? Icons.thumb_up
                           : Icons.thumb_up_outlined
-                      : movementProtocolProvider
+                      : movementProtocolProvider.currentQuestion
                               .isAnswerSelected(answers[index])
                           ? Icons.thumb_down
                           : Icons.thumb_down_outlined,
@@ -308,8 +309,8 @@ class MovementProtocolQuestionAnswerButtons extends StatelessWidget {
 }
 
 class MovementProtocolQuestionChecklist extends StatelessWidget {
-  List<ActionData> actionData = [];
-  MovementProtocolQuestionChecklist(this.actionData, {Key? key})
+  Question question;
+  MovementProtocolQuestionChecklist(this.question, {Key? key})
       : super(key: key);
 
   @override
@@ -318,14 +319,16 @@ class MovementProtocolQuestionChecklist extends StatelessWidget {
         Provider.of<MovementProtocolProvider>(context, listen: false);
     return Container(
       child: ListView.builder(
-        itemCount: actionData.length,
+        itemCount: question.checklistAction!.actionData.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
           return CheckboxListTile(
-            title: Text(actionData[index].dataName),
-            value: actionData[index].tempValue,
+            title: Text(question.checklistAction!.actionData[index].dataName),
+            value: question.isCheckListEntrySelected(
+                question.checklistAction!.actionData[index]),
             onChanged: (val) {
-              movementProtocolProvider.selectChecklist(index, val!);
+              movementProtocolProvider.selectChecklist(
+                  question.checklistAction!.actionData[index], val!);
             },
           );
         },

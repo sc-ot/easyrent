@@ -53,10 +53,9 @@ class MovementOverviewProvider extends StateProvider {
     }
   }
 
-  TextEditingController textEditingControllerLicensePlate =
-      TextEditingController();
   TextEditingController textEditingControllerMiles = TextEditingController();
-
+  TextEditingController textEditingControllerOperatingHours =
+      TextEditingController();
   String? errorTextDay;
   String? errorTextMonth;
   String? errorTextYear;
@@ -493,7 +492,7 @@ class MovementOverviewProvider extends StateProvider {
     if (key.currentState!.validate()) {
       Navigator.pushNamed(
         context,
-        Constants.ROUTE_MOVEMENT_PROTOCOL,
+        Constants.ROUTE_MOVEMENT_PROTOCOL_DRIVING_LICENSE,
         arguments: inspectionReport,
       );
     }
@@ -504,5 +503,35 @@ class MovementOverviewProvider extends StateProvider {
     movementProtocolSubscription?.cancel();
     vehicleAccidentSubscription?.cancel();
     super.dispose();
+  }
+
+  void setReplacementVehicle(Vehicle vehicle) {
+    this.inspectionReport.replacementForVehicle = vehicle;
+    setState(state: STATE.SUCCESS);
+  }
+
+  bool replacementVehicleSelected() =>
+      this.inspectionReport.replacementForVehicle != null &&
+      this.inspectionReport.replacementForVehicle!.id != 0;
+
+  String getReplacementVehicleString() {
+    return inspectionReport.vehicle!.licensePlate != ""
+        ? inspectionReport.vehicle!.licensePlate
+        : inspectionReport.vehicle!.vin != ""
+            ? inspectionReport.vehicle!.vin
+            : inspectionReport.vehicle!.vehicleNumber;
+  }
+
+  String getAccidentVehicleString() {
+    return inspectionReport.replacementForVehicle!.licensePlate != ""
+        ? inspectionReport.replacementForVehicle!.licensePlate
+        : inspectionReport.replacementForVehicle!.vin != ""
+            ? inspectionReport.replacementForVehicle!.vin
+            : inspectionReport.replacementForVehicle!.vehicleNumber;
+  }
+
+  void deleteToBeReplacedVehicle() {
+    this.inspectionReport.replacementForVehicle = null;
+    setState(state: STATE.SUCCESS);
   }
 }

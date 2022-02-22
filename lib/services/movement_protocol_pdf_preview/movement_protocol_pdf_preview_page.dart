@@ -4,6 +4,7 @@ import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/models/inspection_report.dart';
 import 'package:easyrent/widgets/pdf_loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../../widgets/menu_page_container_widget.dart';
@@ -24,7 +25,7 @@ class MovementProtocolPdfPreviewPage extends StatelessWidget {
             Provider.of<MovementProtocolPdfPreviewProvider>(context,
                 listen: true);
         return MenuPageContainer(
-          "Übergabeprotokoll erstellen",
+          "Vorschau",
           "Zeigen Sie sich das Übergabeprotokoll an",
           Expanded(
             child: Stack(
@@ -89,6 +90,9 @@ class MovementProtocolPdfPreviewPage extends StatelessWidget {
                     height: 48,
                     child: ElevatedButton(
                       onPressed: () async {
+                        SystemChrome.setPreferredOrientations([
+                          DeviceOrientation.landscapeLeft,
+                        ]);
                         InspectionReport report = await Navigator.pushNamed(
                             context,
                             Constants.ROUTE_MOVEMENT_PROTOCOL_SIGNATURE,

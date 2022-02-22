@@ -1,6 +1,9 @@
+import 'package:easyrent/core/constants.dart';
 import 'package:easyrent/core/state_provider.dart';
 import 'package:easyrent/core/utils.dart';
 import 'package:easyrent/models/movement_overview.dart';
+import 'package:easyrent/models/vehicle.dart';
+import 'package:easyrent/services/vehicle/vehicle_provider.dart';
 import 'package:easyrent/widgets/loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,7 +48,7 @@ class MovementOverviewPage extends StatelessWidget {
                             child: Card(
                               color: Colors.red,
                               child: ListTile(
-                                title: Text("Unfallfahrzeug"),
+                                title: Text("Fahrzeug"),
                                 subtitle: Text("Bitte Absprache mit Jola"),
                                 trailing: Icon(
                                   Icons.warning,
@@ -57,17 +60,46 @@ class MovementOverviewPage extends StatelessWidget {
                           SizedBox(
                             height: 32,
                           ),
-                          Text(
-                            "Datum & Uhrzeit",
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          getTextField(context, "Übergabedatum",
-                              changeTime: true),
-                          SizedBox(
-                            height: 48,
+                          Wrap(
+                            spacing: 32,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Datum & Uhrzeit",
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  getTextField(context, "Übergabedatum",
+                                      changeTime: true),
+                                  SizedBox(
+                                    height: 48,
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Betriebsstunden",
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  getTextFieldForOperatingHours(
+                                      context, movementOverviewProvider),
+                                  SizedBox(
+                                    height: 48,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                           Text(
                             "Fahrzeugtermine",
@@ -116,20 +148,67 @@ class MovementOverviewPage extends StatelessWidget {
                                     helperText: "Kilometerstand"),
                               ),
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16.0),
+                                padding: const EdgeInsets.only(bottom: 16.0),
                                 child: Container(
                                   height: 48,
                                   width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      movementOverviewProvider.startMovement(
-                                          _form, context);
+                                  child: ListTile(
+                                    onTap: () async {
+                                      if (movementOverviewProvider
+                                          .replacementVehicleSelected()) {
+                                        movementOverviewProvider
+                                            .deleteToBeReplacedVehicle();
+                                      } else {
+                                        Vehicle? vehicle =
+                                            await Navigator.pushNamed(
+                                          context,
+                                          Constants
+                                              .ROUTE_MOVEMENT_PROTOCOL_REPLACEMENT_VEHICLE_LIST,
+                                        ) as Vehicle?;
+                                        if (vehicle != null) {
+                                          movementOverviewProvider
+                                              .setReplacementVehicle(vehicle);
+                                        }
+                                      }
                                     },
-                                    child: Text(
-                                      "Übergabe starten",
-                                      style: Theme.of(context).textTheme.button,
+                                    title: Text(
+                                      movementOverviewProvider
+                                              .replacementVehicleSelected()
+                                          ? "Zu ersetzende Fahrzeug: ${movementOverviewProvider.inspectionReport.replacementForVehicle!.licensePlate != "" ? movementOverviewProvider.inspectionReport.replacementForVehicle!.licensePlate : movementOverviewProvider.inspectionReport.replacementForVehicle!.vin != "" ? movementOverviewProvider.inspectionReport.replacementForVehicle!.vin : movementOverviewProvider.inspectionReport.replacementForVehicle!.vehicleNumber}"
+                                          : "Zu ersetzendes Fahrzeug auswählen",
                                     ),
+                                    subtitle: Text(
+                                      movementOverviewProvider
+                                              .replacementVehicleSelected()
+                                          ? "Das Ersatzfahrzeug " +
+                                              movementOverviewProvider
+                                                  .getReplacementVehicleString() +
+                                              " wird für das ersetzende Fahrzeug " +
+                                              movementOverviewProvider
+                                                  .getAccidentVehicleString() +
+                                              " übergeben. Bitte klicken Sie auf das Lösch-Symbol, um diesen Vorgang rückgängig zu machen."
+                                          : "Bitte wählen Sie ein zu ersetzendes Fahrzeug aus, falls Sie eine Übergabe mit einem Ersatzfahrzeug machen möchten. Klicken Sie hierzu auf das Fahrzeug-Symbol.",
+                                    ),
+                                    trailing: (Icon(
+                                      movementOverviewProvider
+                                              .replacementVehicleSelected()
+                                          ? Icons.delete
+                                          : Icons.directions_car,
+                                    )),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 48,
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    movementOverviewProvider.startMovement(
+                                        _form, context);
+                                  },
+                                  child: Text(
+                                    "Übergabe starten",
+                                    style: Theme.of(context).textTheme.button,
                                   ),
                                 ),
                               ),
@@ -160,7 +239,7 @@ class MovementOverviewPage extends StatelessWidget {
         Provider.of<MovementOverviewProvider>(context, listen: false);
 
     return Container(
-      width: MediaQuery.of(context).size.width * 0.4,
+      width: MediaQuery.of(context).size.width * 0.44,
       child: TextField(
         readOnly: true,
         controller: TextEditingController(
@@ -180,6 +259,24 @@ class MovementOverviewPage extends StatelessWidget {
           movementOverviewProvider.changeDate(title, context,
               changeTime: changeTime);
         },
+      ),
+    );
+  }
+
+  Widget getTextFieldForOperatingHours(
+      BuildContext context, MovementOverviewProvider movementOverviewProvider) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.44,
+      child: TextField(
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ],
+        controller:
+            movementOverviewProvider.textEditingControllerOperatingHours,
+        decoration: InputDecoration(
+            suffixIcon: Icon(Icons.hourglass_bottom),
+            helperText: "Betriebsstunden"),
       ),
     );
   }

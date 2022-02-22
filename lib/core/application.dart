@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:sc_appframework/storage/sc_shared_prefs_storage.dart';
 
 class Application with ChangeNotifier {
+  static GlobalKey globalKey = GlobalKey();
   ThemeMode themeMode = ThemeMode.light;
   late Client client;
   List<Client> clients = [];

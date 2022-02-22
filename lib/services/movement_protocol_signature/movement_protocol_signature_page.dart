@@ -21,9 +21,6 @@ class _MovementProtocolSignaturePageState
     extends State<MovementProtocolSignaturePage> {
   @override
   void initState() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-    ]);
     super.initState();
   }
 
@@ -59,13 +56,14 @@ class _MovementProtocolSignaturePageState
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                    Text(
-                      "Bitte unterschreiben Sie mit dem Finger auf die weiße Fläche",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline5!
-                          .copyWith(color: Colors.black),
-                      textAlign: TextAlign.center,
+                    Expanded(
+                      child: Text(
+                        "Bitte unterschreiben Sie mit dem Finger auf die weiße Fläche",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline5!
+                            .copyWith(color: Colors.black),
+                      ),
                     ),
                     SizedBox(
                       width: 32,
