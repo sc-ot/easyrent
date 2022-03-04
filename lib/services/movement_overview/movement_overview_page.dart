@@ -81,24 +81,29 @@ class MovementOverviewPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Betriebsstunden",
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
-                                  ),
-                                  SizedBox(
-                                    height: 16,
-                                  ),
-                                  getTextFieldForOperatingHours(
-                                      context, movementOverviewProvider),
-                                  SizedBox(
-                                    height: 48,
-                                  ),
-                                ],
-                              ),
+                              movementOverviewProvider.inspectionReport.vehicle!
+                                      .vehicleCategory.isConstructionVehicle
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Betriebsstunden",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        ),
+                                        SizedBox(
+                                          height: 16,
+                                        ),
+                                        getTextFieldForOperatingHours(
+                                            context, movementOverviewProvider),
+                                        SizedBox(
+                                          height: 48,
+                                        ),
+                                      ],
+                                    )
+                                  : Container(),
                             ],
                           ),
                           Text(

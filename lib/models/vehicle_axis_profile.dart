@@ -1,14 +1,14 @@
 import 'axis.dart';
 
-class VehicleAxisProfile {
+class AxisProfile {
   int id;
   String date;
   List<Axis> axis;
 
-  VehicleAxisProfile(this.id, this.date, this.axis);
+  AxisProfile(this.id, this.date, this.axis);
 
-  factory VehicleAxisProfile.fromJson(Map<String, dynamic> json) {
-    return VehicleAxisProfile(
+  factory AxisProfile.fromJson(Map<String, dynamic> json) {
+    return AxisProfile(
       json["id"],
       json["date"],
       json["axis"] != null

@@ -2,6 +2,7 @@ import 'package:easyrent/models/customer.dart';
 import 'package:easyrent/models/scheduling_status.dart';
 import 'package:easyrent/models/status.dart';
 import 'package:easyrent/models/status_def.dart';
+import 'package:easyrent/models/vehicle_axis_profile.dart';
 import 'package:easyrent/models/vehicle_category.dart';
 
 import 'contract.dart';
@@ -45,6 +46,7 @@ class Vehicle {
   Movement? lastMovement;
   Contract? currentContract;
   Contract? lastContract;
+  AxisProfile? axisProfile;
 
   Vehicle(
     this.id,
@@ -78,6 +80,7 @@ class Vehicle {
     this.currentContract,
     this.schedulingStatus,
     this.lastContract,
+    this.axisProfile,
   );
   factory Vehicle.fromJson(Map<String, dynamic> json) {
     return Vehicle(
@@ -139,6 +142,9 @@ class Vehicle {
       json["last_contract"] != null
           ? Contract.fromJson(json["last_contract"])
           : null,
+      json["axis_profile"] != null
+          ? AxisProfile.fromJson(json["axis_profile"])
+          : null,
     );
   }
 
@@ -149,8 +155,8 @@ class Vehicle {
       "license_plate": licensePlate,
       "vin": vin,
       "construction_year": constructionYear,
-      "manufacturer": manufacturer.toJson(),
-      "vehicle_category": vehicleCategory.toJson(),
+      "manufacturer": manufacturer,
+      "vehicle_category": vehicleCategory,
       "letter_number": letterNumber,
       "kilowatt": kilowatt,
       "horsepower": horsePower,
@@ -161,20 +167,20 @@ class Vehicle {
       "total_width": totalWidth,
       "count_axis": countAxis,
       "first_registration_date": firstRegistrationDate,
-      "engine_type": engineType.toJson(),
+      "engine_type": engineType,
       "status": status,
-      "location": location.toJson(),
+      "location": location,
       "next_general_inspection_date": nextGeneralInspectionDate,
       "next_security_inspection_date": nextSecurityInspectionDate,
       "next_speedometer_inspection_date": nextSpeedoMeterInspectionDate,
       "next_uvv_inspection_date": nextUvvInspectionDate,
       "notes": notes,
-      "linked_vehicle_equipments":
-          List<dynamic>.from(linkedVehicleEquipments.map((x) => x.toJson())),
-      "last_movement": lastMovement?.toJson(),
-      "current_contract": currentContract?.toJson(),
-      "scheduling_status": schedulingStatus?.toJson(),
-      "last_contract": lastContract?.toJson(),
+      "linked_vehicle_equipments": linkedVehicleEquipments,
+      "last_movement": lastMovement,
+      "current_contract": currentContract,
+      "scheduling_status": schedulingStatus,
+      "last_contract": lastContract,
+      "axis_profile": axisProfile,
     };
   }
 
@@ -223,6 +229,11 @@ class Vehicle {
         Customer(0, "", false, "", ""),
       ),
       null,
+      AxisProfile(
+        0,
+        "",
+        [],
+      ),
     );
   }
 }
